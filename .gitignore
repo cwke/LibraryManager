@@ -97,6 +97,5 @@ nb-configuration.xml
 *.snm
 *.vrb
 *.xdv
-*.pdf
 *.dvi
 *.ps
