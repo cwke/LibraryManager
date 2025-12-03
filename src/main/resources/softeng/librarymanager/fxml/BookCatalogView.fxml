@@ -1,38 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="softeng.librarymanager.controllers.BookCatalogController">
-                     <children>
-                        <SplitPane dividerPositions="0.85" prefHeight="596.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                          <items>
-                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-                                 <children>
-                                    <TableView fx:id="bookTable" layoutX="-8.0" layoutY="14.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-8.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="0.0">
-                                       <columns>
-                                          <TableColumn fx:id="titleBookCln" minWidth="200.0" prefWidth="200.0" text="Titolo" />
-                                          <TableColumn fx:id="authorBookCln" minWidth="150.0" prefWidth="111.199951171875" text="Autori" />
-                                          <TableColumn fx:id="publishYearBookCln" prefWidth="134.39996337890625" text="Anno di pubblicazione" />
-                                          <TableColumn fx:id="codeBookCln" prefWidth="46.4000244140625" text="ISBN" />
-                                          <TableColumn fx:id="availableCopiesBookCln" prefWidth="75.0" text="Copie" />
-                                       </columns>
-                                    </TableView>
-                                 </children>
-                              </AnchorPane>
-
-                              <fx:include fx:id="sideBar" source="SideBarView.fxml" />
-
-                              
-                          </items>
-                        </SplitPane>
-                     </children>
-                  </AnchorPane>
+<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="softeng.librarymanager.controllers.BookCatalogController">
+    <children>
+        <SplitPane dividerPositions="0.5" prefHeight="720.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <items>
+                <AnchorPane minWidth="490.0" prefWidth="1130.0">
+                    <children>
+                        <TableView fx:id="bookTable" layoutX="-8.0" layoutY="14.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <columns>
+                                <TableColumn fx:id="titleBookCln" prefWidth="250.0" text="Titolo" />
+                                <TableColumn fx:id="authorBookCln" prefWidth="350.0" text="Autori" />
+                                <TableColumn fx:id="publishYearBookCln" prefWidth="150.0" text="Anno di pubblicazione" />
+                                <TableColumn fx:id="codeBookCln" prefWidth="250.0" text="ISBN" />
+                                <TableColumn fx:id="availableCopiesBookCln" prefWidth="122.0" text="Copie" />
+                            </columns>
+                        </TableView>
+                    </children>
+                </AnchorPane>
+                <fx:include fx:id="sideBar" source="SideBarView.fxml" />
+            </items>
+        </SplitPane>
+    </children>
+</AnchorPane>

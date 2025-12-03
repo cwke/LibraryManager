@@ -10,78 +10,77 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="480.0" minWidth="640.0" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
-   <children>
-      <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <children>
-            <MenuBar>
-              <menus>
-                <Menu mnemonicParsing="false" text="File">
-                  <items>
-                        <MenuItem mnemonicParsing="false" text="Apri..." />
-                        <MenuItem mnemonicParsing="false" text="Close" />
-                        <MenuItem mnemonicParsing="false" text="Salva" />
-                        <MenuItem mnemonicParsing="false" text="Salva con nome..." />
-                  </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Edit">
-                  <items>
-                        <MenuItem mnemonicParsing="false" text="Registra Libro" />
-                        <MenuItem mnemonicParsing="false" text="Registra Utente" />
-                        <MenuItem mnemonicParsing="false" text="Registra Prestito" />
-                  </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Help">
-                  <items>
-                    <MenuItem mnemonicParsing="false" text="About" />
-                  </items>
-                </Menu>
-              </menus>
-            </MenuBar>
-
-            <TabPane id="TabPane" tabClosingPolicy="UNAVAILABLE">
-    <tabs>
-        <Tab text="Book Catalog">
-            <content>
-                <fx:include source="BookCatalogView.fxml" />
-            </content>
-            <graphic>
-                <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
-                    <image>
-                        <Image url="@../assets/book.png" />
-                    </image>
-                </ImageView>
-                </graphic>
-        </Tab>
-        <Tab text="Loan Register">
-        
-            <content>
-                <fx:include source="LoanRegisterView.fxml" />
-            </content>
-                                 <graphic>
-                        <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../assets/assignment.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-        </Tab>
-        <Tab text="Student Register">
-            <content>
-                <fx:include source="StudentRegisterView.fxml" />
-            </content>
-                                 <graphic>
-                        <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../assets/person.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                </Tab>
-            </tabs>
-        </TabPane>
-
-         </children>
-      </VBox>
-   </children>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="480.0" minWidth="640.0" prefHeight="720.0"
+            prefWidth="1280.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+              AnchorPane.topAnchor="0.0">
+            <children>
+                <MenuBar>
+                    <menus>
+                        <Menu mnemonicParsing="false" text="File">
+                            <items>
+                                <MenuItem mnemonicParsing="false" text="Apri..."/>
+                                <MenuItem mnemonicParsing="false" text="Close"/>
+                                <MenuItem mnemonicParsing="false" text="Salva"/>
+                                <MenuItem mnemonicParsing="false" text="Salva con nome..."/>
+                            </items>
+                        </Menu>
+                        <Menu mnemonicParsing="false" text="Edit">
+                            <items>
+                                <MenuItem mnemonicParsing="false" text="Registra Libro"/>
+                                <MenuItem mnemonicParsing="false" text="Registra Utente"/>
+                                <MenuItem mnemonicParsing="false" text="Registra Prestito"/>
+                            </items>
+                        </Menu>
+                        <Menu mnemonicParsing="false" text="Help">
+                            <items>
+                                <MenuItem mnemonicParsing="false" text="About"/>
+                            </items>
+                        </Menu>
+                    </menus>
+                </MenuBar>
+                <TabPane id="TabPane" tabClosingPolicy="UNAVAILABLE">
+                    <tabs>
+                        <Tab text="Book Catalog">
+                            <content>
+                                <fx:include source="BookCatalogView.fxml"/>
+                            </content>
+                            <graphic>
+                                <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../assets/book.png"/>
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                        </Tab>
+                        <Tab text="Student Register">
+                            <content>
+                                <fx:include source="StudentRegisterView.fxml"/>
+                            </content>
+                            <graphic>
+                                <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../assets/person.png"/>
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                        </Tab>
+                        <Tab text="Loan Register">
+                            <content>
+                                <fx:include source="LoanRegisterView.fxml"/>
+                            </content>
+                            <graphic>
+                                <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../assets/assignment.png"/>
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                        </Tab>
+                    </tabs>
+                </TabPane>
+            </children>
+        </VBox>
+    </children>
 </AnchorPane>
