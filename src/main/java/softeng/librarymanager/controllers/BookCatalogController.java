@@ -1,40 +1,42 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package softeng.librarymanager.controllers;
 
-import javafx.event.ActionEvent;
-import javafx.event.Event;
+import java.net.URL;
+import java.util.ResourceBundle;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
+import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import softeng.librarymanager.models.Book;
 
 /**
- *
- * @author Jakub
+ * FXML Controller class for BookCatalogView.fxml
  */
-public class BookCatalogController {
+public class BookCatalogController implements Initializable {
 
     @FXML
-    private TableView<?> bookTable;
+    private TableView<Book> bookTable;
     @FXML
-    private TableColumn<?, ?> titleBookCln;
+    private TableColumn<?, ?> titleBookClm;
     @FXML
-    private TableColumn<?, ?> authorBookCln;
+    private TableColumn<?, ?> authorBookClm;
     @FXML
-    private TableColumn<?, ?> publishYearBookCln;
+    private TableColumn<?, ?> publishYearBookClm;
     @FXML
-    private TableColumn<?, ?> codeBookCln;
+    private TableColumn<?, ?> codeBookClm;
     @FXML
-    private TableColumn<?, ?> availableCopiesBookCln;
-    @FXML
-    private SideBarController sideBarController;
+    private TableColumn<?, ?> availableCopiesBookClm;
 
-    @FXML
-    public void initialize() {
+
+    /**
+     * Initializes the controller class.
+     */
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        // TODO: Initialize the columns and table data
+        //sideBarController.setAddBtnOnAction(event -> test());
     }
+    
 
+    // TODO (per la ricerca studenti)
+    public void searchBook() {}
 }

@@ -4,10 +4,38 @@
  */
 package softeng.librarymanager.controllers;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+
 /**
  *
  * @author Jakub
  */
-public class StudentRegisterController {
+public class StudentRegisterController implements Initializable{
+
+    @FXML
+    private TableView<?> studentTable;
+    @FXML
+    private TableColumn<?, ?> nameClm;
+    @FXML
+    private TableColumn<?, ?> surnameClm;
+    @FXML
+    private TableColumn<?, ?> studentCodeClm;
+    @FXML
+    private TableColumn<?, ?> emailClm;
+    
+    @FXML
+    private SideBarController sideBarController;
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+    
+    }
+    
+    public void searchStudent() {}
     
 }

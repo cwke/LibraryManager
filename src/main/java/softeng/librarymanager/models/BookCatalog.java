@@ -12,7 +12,7 @@ import javafx.collections.ObservableMap;
  *
  * @author Jakub
  */
-public class BookCatalog implements Serializable{
+public class BookCatalog {
     private final ObservableMap<String, Book> books;
     
     public BookCatalog() {
