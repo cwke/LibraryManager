@@ -4,7 +4,6 @@
 
 tomcat
 
-
 #
 # Java
 #
@@ -17,7 +16,6 @@ tomcat
 *.nar
 hs_err_pid*
 replay_pid*
-
 
 #
 # Maven
@@ -35,7 +33,6 @@ buildNumber.properties
 .mvn/timing.properties
 .mvn/wrapper/maven-wrapper.jar
 
-
 #
 # Binaries
 #
@@ -49,7 +46,6 @@ buildNumber.properties
 *.zip
 *.sar
 
-
 #
 # NetBeans
 #
@@ -62,6 +58,16 @@ nbdist/
 nbactions.xml
 nb-configuration.xml
 
+#
+# IntelliJ IDEA
+#
+
+.idea/
+.idea_modules/
+*.iml
+*.ipr
+*.iws
+out/
 
 #
 # OS
@@ -69,13 +75,11 @@ nb-configuration.xml
 
 .DS_Store
 
-
 #
 # Misc
 #
 
 *.swp
-
 
 #
 # LaTeX
