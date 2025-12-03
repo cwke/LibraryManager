@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="480.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CONTROLLER_NAME">
+   <children>
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label text="Titolo">
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin></Label>
+            <TextField fx:id="titleTF" />
+             <Label text="Autori">
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin></Label>
+             <TextField fx:id="authorsTF" />
+             <Label text="Anno di publicazione">
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin></Label>
+             <TextField fx:id="publishYearTF" />
+             <Label text="ISBN">
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin></Label>
+             <TextField fx:id="bookCodeTF" />
+             <Label text="Copie">
+               <padding>
+                  <Insets top="10.0" />
+               </padding></Label>
+             <TextField fx:id="copiesTF" />
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+               <children>
+                   <Button fx:id="confirmBtn" mnemonicParsing="false" onAction="#confirmAction" text="Conferma">
+                     <graphic>
+                        <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../assets/check.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="cancelBtn" mnemonicParsing="false" onAction="#cancelAction" text="Annulla">
+                     <graphic>
+                        <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../assets/cancel.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
+            </HBox>
+         </children>
+         <padding>
+            <Insets left="50.0" right="50.0" />
+         </padding>
+      </VBox>
+   </children>
+</AnchorPane>
