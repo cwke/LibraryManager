@@ -5,6 +5,7 @@
 package softeng.librarymanager.controllers;
 
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
@@ -30,24 +31,10 @@ public class BookCatalogController {
     @FXML
     private TableColumn<?, ?> availableCopiesBookCln;
     @FXML
-    private TextField searchBookTF;
-    @FXML
-    private Button addBookBtn;
-    @FXML
-    private Button removeBookBtn;
-    @FXML
-    private Button modifyBookBtn;
+    private SideBarController sideBarController;
 
     @FXML
-    private void addBook(ActionEvent event) {
+    public void initialize() {
     }
 
-    @FXML
-    private void removeBook(ActionEvent event) {
-    }
-
-    @FXML
-    private void modifyBook(ActionEvent event) {
-    }
-    
 }

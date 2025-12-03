@@ -6,21 +6,23 @@ package softeng.librarymanager.controllers;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 
 /**
  * FXML Controller class
  *
  * @author Jakub
  */
-public class SideBarController implements Initializable {
+public class SideBarController {
 
-    /**
-     * Initializes the controller class.
-     */
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }    
-    
+    @FXML
+    private Button addBtn;
+
+    @FXML
+    private void onAdd(ActionEvent event) {
+    }
+
 }
