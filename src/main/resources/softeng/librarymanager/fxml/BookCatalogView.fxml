@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="softeng.librarymanager.controllers.BookCatalogController">
+                     <children>
+                        <SplitPane dividerPositions="0.85" prefHeight="596.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                          <items>
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                                 <children>
+                                    <TableView fx:id="bookTable" layoutX="-8.0" layoutY="14.0" AnchorPane.bottomAnchor="-14.0" AnchorPane.leftAnchor="-8.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="14.0">
+                                       <columns>
+                                          <TableColumn fx:id="titleBookCln" minWidth="200.0" prefWidth="200.0" text="Titolo" />
+                                          <TableColumn fx:id="authorBookCln" minWidth="150.0" prefWidth="111.199951171875" text="Autori" />
+                                          <TableColumn fx:id="publishYearBookCln" prefWidth="134.39996337890625" text="Anno di pubblicazione" />
+                                          <TableColumn fx:id="codeBookCln" prefWidth="46.4000244140625" text="ISBN" />
+                                          <TableColumn fx:id="availableCopiesBookCln" prefWidth="75.0" text="Copie" />
+                                       </columns>
+                                    </TableView>
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane maxWidth="150.0" minWidth="150.0">
+                                 <children>
+                                    <VBox alignment="TOP_CENTER" maxHeight="300.0" prefHeight="300.0" prefWidth="115.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <children>
+                                          <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                                             <VBox.margin>
+                                                <Insets top="10.0" />
+                                             </VBox.margin>
+                                             <image>
+                                                <Image url="@../assets/logo.png" />
+                                             </image>
+                                          </ImageView>
+                                          <TextField fx:id="searchBookTF" promptText="Cerca...">
+                                             <VBox.margin>
+                                                <Insets bottom="5.0" left="10.0" right="10.0" />
+                                             </VBox.margin>
+                                          </TextField>
+                                          <Button fx:id="addBookBtn" mnemonicParsing="false" onAction="#addBook" text="Aggiungi libro">
+                                             <VBox.margin>
+                                                <Insets />
+                                             </VBox.margin>
+                                             <graphic>
+                                                <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../assets/add.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Button>
+                                          <Button fx:id="removeBookBtn" mnemonicParsing="false" onAction="#removeBook" text="Rimuovi libro">
+                                             <graphic>
+                                                <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../assets/delete.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Button>
+                                          <Button fx:id="modifyBookBtn" mnemonicParsing="false" onAction="#modifyBook" text="Modifica libro">
+                                             <graphic>
+                                                <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../assets/edit.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Button>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </AnchorPane>
+                          </items>
+                        </SplitPane>
+                     </children>
+                  </AnchorPane>
