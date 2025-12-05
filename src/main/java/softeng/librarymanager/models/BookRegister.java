@@ -5,43 +5,41 @@
 package softeng.librarymanager.models;
 
 import java.io.Serializable;
+import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 import javafx.collections.ObservableSet;
+import javafx.util.Callback;
+import softeng.librarymanager.interfaces.Register;
 
 /**
  *
  * @author Jakub
  */
-public class BookCatalog {
+public class BookRegister implements Register<Book>{
     private final ObservableList<Book> books;
 
-    public BookCatalog() {
+    public BookRegister() {
         this.books = FXCollections.observableArrayList();
     }
 
-    // Il libro deve essere giàcorretto e univoco
-    // public boolean addBook(Book book) {
-
-    // }
-
-    // public boolean removeBook(Book book) {
-
-    // }
-
+    @Override
     public void add(Book book) {
         books.add(book);
     }
-
+    
+    @Override
     public void remove(Book book) {
         books.remove(book);
     }
 
+    @Override
     public ObservableList<Book> getObservableList() {
         return this.books;
     }
 
+    @Override
     public boolean isValid(Book other) {
         if (other.getBookCode().length() != 13) return false;
         for (Book b : books) {

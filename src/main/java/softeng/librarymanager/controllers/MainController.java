@@ -14,7 +14,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import softeng.librarymanager.models.Book;
-import softeng.librarymanager.models.BookCatalog;
+import softeng.librarymanager.models.BookRegister;
 import softeng.librarymanager.models.LoanRegister;
 import softeng.librarymanager.models.StudentRegister;
 
@@ -24,15 +24,12 @@ import softeng.librarymanager.models.StudentRegister;
  */
 public class MainController implements Initializable {
     
-    //@FXML
-    //BookCatalogController bookCatalogController;
-    
-    BookCatalog bookCatalog;
+    BookRegister bookRegister;
     StudentRegister studentRegister;
     LoanRegister loanRegister;
     
     @FXML
-    BookCatalogController bookCatalogController;
+    BookRegisterController bookRegisterController;
     @FXML
     StudentRegisterController studentRegisterController;
     @FXML
@@ -40,14 +37,14 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        bookCatalog = new BookCatalog();
+        bookRegister = new BookRegister();
 
         // codice di prova : va rimosso!
-        bookCatalog.add(new Book("titolo", 2025, "1234567890000", 3, "nome1 cognome1, nome2 cognome2"));
-        bookCatalog.add(new Book("superlibro", 2025, "1234567890111", 1, "nome1 cognome1, nome2 cognome2"));
+        bookRegister.add(new Book("titolo", 2025, "1234567890000", 3, "nome1 cognome1, nome2 cognome2"));
+        bookRegister.add(new Book("superlibro", 2025, "1234567890111", 1, "nome1 cognome1, nome2 cognome2"));
         // Fine codice di prova
         
-        bookCatalogController.setRegistry(bookCatalog);
+        bookRegisterController.setRegister(bookRegister);
         studentRegisterController.setRegistry(studentRegister);
         loanRegisterController.setRegistry(loanRegister);
     }

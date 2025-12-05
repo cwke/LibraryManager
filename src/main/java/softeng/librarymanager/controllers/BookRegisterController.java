@@ -9,6 +9,7 @@ import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
@@ -23,12 +24,13 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import softeng.librarymanager.models.Author;
 import softeng.librarymanager.models.Book;
-import softeng.librarymanager.models.BookCatalog;
+import softeng.librarymanager.models.BookRegister;
+import softeng.librarymanager.interfaces.Register;
 
 /**
  * FXML Controller class for BookCatalogView.fxml
  */
-public class BookCatalogController implements Initializable {
+public class BookRegisterController implements Initializable {
 
     @FXML
     private TableView<Book> bookTable;
@@ -45,7 +47,7 @@ public class BookCatalogController implements Initializable {
     @FXML
     private SideBarController sideBarController;
 
-    private BookCatalog bookCatalog;
+    private Register<Book> register;
 
     /**
      * Initializes the controller class.
@@ -53,9 +55,12 @@ public class BookCatalogController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         titleBookClm.setCellValueFactory(new PropertyValueFactory("title"));
-        authorBookClm.setCellValueFactory(new PropertyValueFactory("authors")); // Da cambiare magari con un stringconverter
+        authorBookClm.setCellValueFactory(new PropertyValueFactory("authors")); // Implementare autore correttamente
         codeBookClm.setCellValueFactory(new PropertyValueFactory("bookCode"));
 
+        // Imposta il removebtn disabled se non c'è nulla selezionato dalla tabella
+        sideBarController.getRemoveBtn().disableProperty()
+                .bind(Bindings.isNull(bookTable.getSelectionModel().selectedItemProperty()));
         sideBarController.setAddBtnOnAction(event -> openPopup());
         sideBarController.setModifyBtnOnAction(event -> openPopup());
         sideBarController.setRemoveBtnOnAction(event -> remove());
@@ -67,7 +72,7 @@ public class BookCatalogController implements Initializable {
             Parent root = loader.load();
 
             BookPopupController bookPopupController = loader.getController();
-            bookPopupController.setRegistry(this.bookCatalog);
+            bookPopupController.setItemAdder(register);
 
             Book selectedBook = bookTable.getSelectionModel().getSelectedItem();
             if (selectedBook != null) {
@@ -79,19 +84,22 @@ public class BookCatalogController implements Initializable {
             popup.initModality(Modality.APPLICATION_MODAL);
             popup.setScene(scene);
             popup.showAndWait();
+            bookTable.refresh();
         } catch (IOException ex) {
-            Logger.getLogger(BookCatalogController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(BookRegisterController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
 
     private void remove() {
+        Book selectedBook = bookTable.getSelectionModel().getSelectedItem();
+        register.remove(selectedBook);
     }
 
-    public void setRegistry(BookCatalog bookCatalog) {
-        this.bookCatalog = bookCatalog;
+    public void setRegister(Register bookRegister) {
+        this.register = bookRegister;
 
-        bookTable.setItems(bookCatalog.getObservableList());
+        bookTable.setItems(register.getObservableList());
     }
 
     // TODO (per la ricerca studenti)

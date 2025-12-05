@@ -32,18 +32,6 @@ public class Book implements Comparable<Book>, Serializable {
     public String getAuthors() {
         return authors;
     }
-    
-    /*
-    // Orrendo dobbiamo capire cosa fare
-    public String getAuthorsString() {
-        String authorsString = "";
-        for (Author author : authors) {
-            authorsString += author.getName() + " " + author.getSurname() + ", ";
-        }
-        return authorsString;
-    }
-    */
-    
 
     public String getTitle() {
         return title;
