@@ -1,16 +1,11 @@
 package softeng.librarymanager.controllers;
 
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.net.URL;
-import java.util.HashSet;
-import java.util.Objects;
 import java.util.ResourceBundle;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -21,14 +16,13 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import softeng.librarymanager.models.Author;
 import softeng.librarymanager.models.Book;
-import softeng.librarymanager.models.BookCatalog;
+import softeng.librarymanager.models.BookRegister;
 
 /**
  * FXML Controller class for BookCatalogView.fxml
  */
-public class BookCatalogController implements Initializable {
+public class BookRegisterController implements Initializable {
 
     @FXML
     private TableView<Book> bookTable;
@@ -45,7 +39,7 @@ public class BookCatalogController implements Initializable {
     @FXML
     private SideBarController sideBarController;
 
-    private BookCatalog bookCatalog;
+    private BookRegister bookRegister;
 
     /**
      * Initializes the controller class.
@@ -67,7 +61,7 @@ public class BookCatalogController implements Initializable {
             Parent root = loader.load();
 
             BookPopupController bookPopupController = loader.getController();
-            bookPopupController.setRegistry(this.bookCatalog);
+            bookPopupController.setRegistry(this.bookRegister);
 
             Book selectedBook = bookTable.getSelectionModel().getSelectedItem();
             if (selectedBook != null) {
@@ -80,7 +74,7 @@ public class BookCatalogController implements Initializable {
             popup.setScene(scene);
             popup.showAndWait();
         } catch (IOException ex) {
-            Logger.getLogger(BookCatalogController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(BookRegisterController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
@@ -88,10 +82,10 @@ public class BookCatalogController implements Initializable {
     private void remove() {
     }
 
-    public void setRegistry(BookCatalog bookCatalog) {
-        this.bookCatalog = bookCatalog;
+    public void setRegistry(BookRegister bookRegister) {
+        this.bookRegister = bookRegister;
 
-        bookTable.setItems(bookCatalog.getObservableList());
+        bookTable.setItems(bookRegister.getObservableList());
     }
 
     // TODO (per la ricerca studenti)

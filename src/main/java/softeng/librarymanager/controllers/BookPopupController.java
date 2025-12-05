@@ -5,9 +5,8 @@
 package softeng.librarymanager.controllers;
 
 import java.net.URL;
-import java.util.HashSet;
 import java.util.ResourceBundle;
-import java.util.Set;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -16,9 +15,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import softeng.librarymanager.models.Author;
 import softeng.librarymanager.models.Book;
-import softeng.librarymanager.models.BookCatalog;
+import softeng.librarymanager.models.BookRegister;
 
 /**
  * FXML Controller class
@@ -43,7 +41,7 @@ public class BookPopupController implements Initializable {
     private Button cancelBtn;
 
     // Si potrebbe utilizzare un interfaccia che abbia come metodi add e isValid
-    private BookCatalog bookCatalog;
+    private BookRegister bookRegister;
    
     
     private boolean editing = false;
@@ -75,13 +73,13 @@ public class BookPopupController implements Initializable {
             Book newBook = new Book(titleTF.getText(), Integer.parseInt(publishYearTF.getText()), bookCodeTF.getText(), Integer.parseInt(publishYearTF.getText()), authorsTF.getText());
             // ----- Parte da cambiare in base alla ui e la modifica degli autori
 
-            if (!bookCatalog.isValid(newBook)) {
+            if (!bookRegister.isValid(newBook)) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Errore inserimento dati");
                 alert.setHeaderText("Il codice identificativo del libro è già presente nel catalogo o non è valido");
                 alert.showAndWait();
             } else {
-                bookCatalog.add(newBook);
+                bookRegister.add(newBook);
                 ((Stage) ((Node) event.getSource()).getScene().getWindow()).close();
             }
         } else {   
@@ -125,8 +123,8 @@ public class BookPopupController implements Initializable {
     
     
     // Qui si utilizzerebbe public void setRegistry(Registry registry)
-    public void setRegistry(BookCatalog bookCatalog) {
-        this.bookCatalog = bookCatalog;
+    public void setRegistry(BookRegister bookRegister) {
+        this.bookRegister = bookRegister;
     }
     
     public void setItemToEdit(Book editItem) {

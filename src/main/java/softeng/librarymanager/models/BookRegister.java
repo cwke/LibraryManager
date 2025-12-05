@@ -4,20 +4,17 @@
  */
 package softeng.librarymanager.models;
 
-import java.io.Serializable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.ObservableMap;
-import javafx.collections.ObservableSet;
 
 /**
  *
  * @author Jakub
  */
-public class BookCatalog {
+public class BookRegister {
     private final ObservableList<Book> books;
 
-    public BookCatalog() {
+    public BookRegister() {
         this.books = FXCollections.observableArrayList();
     }
 
