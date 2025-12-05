@@ -45,7 +45,7 @@ public class MainController implements Initializable {
         // Fine codice di prova
         
         bookRegisterController.setRegister(bookRegister);
-        studentRegisterController.setRegistry(studentRegister);
+        studentRegisterController.setRegister(studentRegister);
         loanRegisterController.setRegistry(loanRegister);
     }
 

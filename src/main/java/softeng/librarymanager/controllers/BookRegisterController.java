@@ -1,17 +1,11 @@
 package softeng.librarymanager.controllers;
 
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.net.URL;
-import java.util.HashSet;
-import java.util.Objects;
 import java.util.ResourceBundle;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.binding.Bindings;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -22,14 +16,9 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import softeng.librarymanager.models.Author;
 import softeng.librarymanager.models.Book;
-import softeng.librarymanager.models.BookRegister;
 import softeng.librarymanager.interfaces.Register;
 
-/**
- * FXML Controller class for BookCatalogView.fxml
- */
 public class BookRegisterController implements Initializable {
 
     @FXML
@@ -44,14 +33,12 @@ public class BookRegisterController implements Initializable {
     private TableColumn<Book, String> codeBookClm;
     @FXML
     private TableColumn<Book, Integer> availableCopiesBookClm;
+
     @FXML
     private SideBarController sideBarController;
 
     private Register<Book> register;
 
-    /**
-     * Initializes the controller class.
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         titleBookClm.setCellValueFactory(new PropertyValueFactory("title"));
@@ -96,7 +83,7 @@ public class BookRegisterController implements Initializable {
         register.remove(selectedBook);
     }
 
-    public void setRegister(Register bookRegister) {
+    public void setRegister(Register<Book> bookRegister) {
         this.register = bookRegister;
 
         bookTable.setItems(register.getObservableList());
