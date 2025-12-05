@@ -55,13 +55,13 @@ public class BookPopupController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
         // Tutti i campi devono essere riempiti per poter abilitare il pulsante Conferma
         // Andrebbe reso più leggibile
         confirmBtn.disableProperty().bind(
                 titleTF.textProperty().isEmpty().or(authorsTF.textProperty().isEmpty().or(publishYearTF.textProperty()
                         .isEmpty().or(bookCodeTF.textProperty().isEmpty().or(copiesTF.textProperty().isEmpty())))));
 
+        
         // Si potrebbe fare tramite binding il controllo se annopubblicazione e
         // numerocopie sono numeri (credo)
 
@@ -112,10 +112,10 @@ public class BookPopupController implements Initializable {
         bookCodeTF.setDisable(true);
 
         titleTF.setText(this.editItem.getTitle());
-        publishYearTF.setText("" + this.editItem.getPublishYear()); // Molto lame
+        publishYearTF.setText("" + this.editItem.getPublishYear());
         bookCodeTF.setText(this.editItem.getBookCode());
         authorsTF.setText(this.editItem.getAuthors()); // TODO: autori
-        copiesTF.setText("" + this.editItem.getAvailableCopies()); // di nuovo: lame
+        copiesTF.setText("" + this.editItem.getAvailableCopies());
     }
 
 }

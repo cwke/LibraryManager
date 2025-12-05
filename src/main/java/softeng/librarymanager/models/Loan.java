@@ -55,11 +55,15 @@ public class Loan implements Comparable<Loan>, Serializable{
 
     public void setReturned(boolean returned) {
         this.returned = returned;
+        // TODO: da implementare
+            // Se il libro è stato restituito incrementare availableLoans di studente
+            // Altrimenti decrementare
     }
 
     @Override
     public int compareTo(Loan o) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        // TODO: da implementare
+        return 0;
     }
     
 }

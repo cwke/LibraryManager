@@ -16,12 +16,22 @@ public class Student implements Comparable<Student>, Serializable{
     private String surname;
     private final String studentCode;
     private String email;
+    private int availableLoans;
 
     public Student(String name, String surname, String studentCode, String email) {
         this.name = name;
         this.surname = surname;
         this.studentCode = studentCode;
         this.email = email;
+        this.availableLoans = 3;
+    }
+    
+    public int getAvailableLoans() {
+        return availableLoans;
+    }
+    
+    public void setAvailableLoans(int availableLoans) {
+        this.availableLoans = availableLoans;
     }
 
     public String getName() {
