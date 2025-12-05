@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import softeng.librarymanager.models.StudentRegister;
 
 /**
  *
@@ -30,12 +31,18 @@ public class StudentRegisterController implements Initializable{
     
     @FXML
     private SideBarController sideBarController;
+    
+    private StudentRegister studentRegister;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-    
+        
     }
     
-    public void searchStudent() {}
+    public void setRegistry(StudentRegister studentRegister) {
+        this.studentRegister = studentRegister;
+    }
+    
+    private void searchStudent() {}
     
 }

@@ -9,6 +9,7 @@ import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
+import softeng.librarymanager.models.LoanRegister;
 
 /**
  *
@@ -26,10 +27,16 @@ public class LoanRegisterController implements Initializable {
     private TableColumn<?, ?> endLoanDateClm;
     @FXML
     private TableColumn<?, ?> returnedClm;
+    
+    private LoanRegister loanRegister;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
     
+    }
+    
+    public void setRegistry(LoanRegister loanRegister) {
+        this.loanRegister = loanRegister;
     }
     
     // TODO (per la ricerca di un prestito)

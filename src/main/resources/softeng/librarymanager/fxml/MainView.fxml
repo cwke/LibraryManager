@@ -10,33 +10,30 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="480.0" minWidth="640.0" prefHeight="720.0"
-            prefWidth="1280.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" 
-            fx:controller="softeng.librarymanager.controllers.MainController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="480.0" minWidth="640.0" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="softeng.librarymanager.controllers.MainController">
     <children>
-        <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-              AnchorPane.topAnchor="0.0">
+        <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
                 <MenuBar>
                     <menus>
                         <Menu mnemonicParsing="false" text="File">
                             <items>
-                                <MenuItem mnemonicParsing="false" text="Apri..."/>
-                                <MenuItem mnemonicParsing="false" text="Close"/>
-                                <MenuItem mnemonicParsing="false" text="Salva"/>
-                                <MenuItem mnemonicParsing="false" text="Salva con nome..."/>
+                                <MenuItem mnemonicParsing="false" onAction="#openAction" text="Apri..." />
+                                <MenuItem mnemonicParsing="false" onAction="#closeAction" text="Close" />
+                                <MenuItem mnemonicParsing="false" onAction="#saveAction" text="Salva" />
+                                <MenuItem mnemonicParsing="false" onAction="#saveWithNameAction" text="Salva con nome..." />
                             </items>
                         </Menu>
                         <Menu mnemonicParsing="false" text="Edit">
                             <items>
-                                <MenuItem mnemonicParsing="false" text="Registra Libro"/>
-                                <MenuItem mnemonicParsing="false" text="Registra Utente"/>
-                                <MenuItem mnemonicParsing="false" text="Registra Prestito"/>
+                                <MenuItem mnemonicParsing="false" text="Registra Libro" />
+                                <MenuItem mnemonicParsing="false" text="Registra Utente" />
+                                <MenuItem mnemonicParsing="false" text="Registra Prestito" />
                             </items>
                         </Menu>
                         <Menu mnemonicParsing="false" text="Help">
                             <items>
-                                <MenuItem mnemonicParsing="false" text="About"/>
+                                <MenuItem mnemonicParsing="false" text="About" />
                             </items>
                         </Menu>
                     </menus>
@@ -45,36 +42,36 @@
                     <tabs>
                         <Tab text="Book Catalog">
                             <content>
-                                <fx:include source="BookCatalogView.fxml"/>
+                                <fx:include source="BookCatalogView.fxml" fx:id="bookCatalog" />
                             </content>
                             <graphic>
                                 <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
-                                        <Image url="@../assets/book.png"/>
+                                        <Image url="@../assets/book.png" />
                                     </image>
                                 </ImageView>
                             </graphic>
                         </Tab>
                         <Tab text="Student Register">
                             <content>
-                                <fx:include source="StudentRegisterView.fxml"/>
+                                <fx:include source="StudentRegisterView.fxml" fx:id="studentRegister" />
                             </content>
                             <graphic>
                                 <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
-                                        <Image url="@../assets/person.png"/>
+                                        <Image url="@../assets/person.png" />
                                     </image>
                                 </ImageView>
                             </graphic>
                         </Tab>
                         <Tab text="Loan Register">
                             <content>
-                                <fx:include source="LoanRegisterView.fxml"/>
+                                <fx:include source="LoanRegisterView.fxml" fx:id="loanRegister" />
                             </content>
                             <graphic>
                                 <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
-                                        <Image url="@../assets/assignment.png"/>
+                                        <Image url="@../assets/assignment.png" />
                                     </image>
                                 </ImageView>
                             </graphic>

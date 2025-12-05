@@ -35,4 +35,9 @@ public class Author implements Serializable {
         this.surname = surname;
     }
     
+    @Override
+    public String toString() {
+        return name + " " + surname;
+    }
+    
 }

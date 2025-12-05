@@ -5,6 +5,7 @@
 package softeng.librarymanager.models;
 
 import java.io.Serializable;
+import java.util.Iterator;
 import java.util.Objects;
 import java.util.Set;
 
@@ -12,21 +13,38 @@ import java.util.Set;
  *
  * @author Jakub
  */
-public class Book implements Comparable<Book>, Serializable{
+public class Book implements Comparable<Book>, Serializable {
     private String title;
     private int publishYear;
     private final String bookCode;
     private int availableCopies;
-    private Set<Author> authors; // Credo renderlo stringa semplificherebbe molto la progettazione
+    //private Set<Author> authors; // Credo renderlo stringa semplificherebbe molto la progettazione
+    private String authors;
 
-    public Book(String title, int publishYear, String bookCode, int availableCopies, Set<Author> authors) {
+    public Book(String title, int publishYear, String bookCode, int availableCopies, String authors) {
         this.title = title;
         this.publishYear = publishYear;
         this.bookCode = bookCode;
         this.availableCopies = availableCopies;
         this.authors = authors;
     }
+
+    public String getAuthors() {
+        return authors;
+    }
     
+    /*
+    // Orrendo dobbiamo capire cosa fare
+    public String getAuthorsString() {
+        String authorsString = "";
+        for (Author author : authors) {
+            authorsString += author.getName() + " " + author.getSurname() + ", ";
+        }
+        return authorsString;
+    }
+    */
+    
+
     public String getTitle() {
         return title;
     }
@@ -50,6 +68,12 @@ public class Book implements Comparable<Book>, Serializable{
     public void setPublishYear(int publishYear) {
         this.publishYear = publishYear;
     }
+
+    public void setAvailableCopies(int availableCopies) {
+        this.availableCopies = availableCopies;
+    }
+    
+    
 
     @Override
     public int hashCode() {
@@ -75,6 +99,7 @@ public class Book implements Comparable<Book>, Serializable{
 
     @Override
     public int compareTo(Book o) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from
+                                                                       // nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

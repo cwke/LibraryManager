@@ -8,13 +8,17 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 
 public class SideBarController {
 
     @FXML
     private Button addBtn;
+    @FXML
     private TextField searchBarTF;
+    @FXML
     private Button removeBtn;
+    @FXML
     private Button modifyBtn;
 
     public Button getAddBtn() {
