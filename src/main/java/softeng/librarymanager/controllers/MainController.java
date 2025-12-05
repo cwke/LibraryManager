@@ -4,13 +4,17 @@
  */
 package softeng.librarymanager.controllers;
 
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import softeng.librarymanager.models.Book;
-import softeng.librarymanager.models.BookRegister;
+import softeng.librarymanager.models.BookCatalog;
 import softeng.librarymanager.models.LoanRegister;
 import softeng.librarymanager.models.StudentRegister;
 
@@ -23,12 +27,12 @@ public class MainController implements Initializable {
     //@FXML
     //BookCatalogController bookCatalogController;
     
-    BookRegister bookRegister;
+    BookCatalog bookCatalog;
     StudentRegister studentRegister;
     LoanRegister loanRegister;
     
     @FXML
-    BookRegisterController bookRegisterController;
+    BookCatalogController bookCatalogController;
     @FXML
     StudentRegisterController studentRegisterController;
     @FXML
@@ -36,14 +40,14 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        bookRegister = new BookRegister();
+        bookCatalog = new BookCatalog();
 
         // codice di prova : va rimosso!
-        bookRegister.add(new Book("titolo", 2025, "1234567890000", 3, "nome1 cognome1, nome2 cognome2"));
-        bookRegister.add(new Book("superlibro", 2025, "1234567890111", 1, "nome1 cognome1, nome2 cognome2"));
+        bookCatalog.add(new Book("titolo", 2025, "1234567890000", 3, "nome1 cognome1, nome2 cognome2"));
+        bookCatalog.add(new Book("superlibro", 2025, "1234567890111", 1, "nome1 cognome1, nome2 cognome2"));
         // Fine codice di prova
         
-        bookRegisterController.setRegistry(bookRegister);
+        bookCatalogController.setRegistry(bookCatalog);
         studentRegisterController.setRegistry(studentRegister);
         loanRegisterController.setRegistry(loanRegister);
     }

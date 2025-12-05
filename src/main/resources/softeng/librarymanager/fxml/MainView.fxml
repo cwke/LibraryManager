@@ -42,7 +42,7 @@
                     <tabs>
                         <Tab text="Book Catalog">
                             <content>
-                                <fx:include source="BookCatalogView.fxml" fx:id="bookRegister" />
+                                <fx:include source="BookCatalogView.fxml" fx:id="bookCatalog" />
                             </content>
                             <graphic>
                                 <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
