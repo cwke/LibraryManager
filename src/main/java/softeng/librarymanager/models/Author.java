@@ -6,10 +6,6 @@ package softeng.librarymanager.models;
 
 import java.io.Serializable;
 
-/**
- *
- * @author Jakub
- */
 public class Author implements Serializable {
     private String name;
     private String surname;
@@ -34,10 +30,10 @@ public class Author implements Serializable {
     public void setSurname(String surname) {
         this.surname = surname;
     }
-    
+
     @Override
     public String toString() {
         return name + " " + surname;
     }
-    
+
 }

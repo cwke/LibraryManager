@@ -104,3 +104,7 @@ out/
 *.pdf
 *.dvi
 *.ps
+
+# Doxygen
+
+docs/doxygen
