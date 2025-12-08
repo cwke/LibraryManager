@@ -1,0 +1,81 @@
+/**
+ * @file SideBarController.java
+ * @brief Controller per il componente grafico della barra laterale (Sidebar).
+ * @author [Acerra Fabrizio, Affinita Natale, Cwiertka Jakub, Galluccio Hermann]
+ * @date Dicembre 2025
+ * @package softeng.librarymanager.controllers
+ */
+
+package softeng.librarymanager.controllers;
+
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+
+/**
+ * @class SideBarController
+ * @brief Classe controller che gestisce la vista della barra laterale.
+ * @details Questa classe si occupa di mantenere i riferimenti ai componenti grafici
+ *          comuni (pulsanti di aggiunta, rimozione, modifica e barra di ricerca).
+ *          Questi componenti vengono esposti tramite metodi getter per essere
+ *          utilizzati e gestiti dai controller principali (es. BookRegisterController).
+ */
+public class SideBarController {
+
+    /**
+     * @brief Bottone per l'aggiunta di una nuova entità.
+     */
+    @FXML
+    private Button addBtn;
+
+    /**
+     * @brief Campo di testo per la ricerca.
+     */
+    @FXML
+    private TextField searchBarTF;
+
+    /**
+     * @brief Bottone per la rimozione dell'entità selezionata.
+     */
+    @FXML
+    private Button removeBtn;
+
+    /**
+     * @brief Bottone per la modifica dell'entità selezionata.
+     */
+    @FXML
+    private Button modifyBtn;
+
+    /**
+     * @brief Restituisce il riferimento al bottone di aggiunta.
+     * @return Button Il bottone "Aggiungi".
+     */
+    public Button getAddBtn() {
+        return this.addBtn;
+    }
+
+    /**
+     * @brief Restituisce il riferimento al campo di testo per la ricerca.
+     * @return TextField La barra di ricerca.
+     */
+    public TextField getSearchBarTF() {
+        return this.searchBarTF;
+    }
+
+    /**
+     * @brief Restituisce il riferimento al bottone di rimozione.
+     * @return Button Il bottone "Rimuovi".
+     */
+    public Button getRemoveBtn() {
+        return this.removeBtn;
+    }
+
+    /**
+     * @brief Restituisce il riferimento al bottone di modifica.
+     * @return Button Il bottone "Modifica".
+     */
+    public Button getModifyBtn() {
+        return this.modifyBtn;
+    }
+
+}

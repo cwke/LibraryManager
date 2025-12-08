@@ -1,0 +1,13 @@
+@startuml
+left to right direction
+
+actor Admin as "Admin"
+
+usecase UC1 as "Salvataggio archivio"
+usecase UC2 as "Caricamento archivio"
+
+
+Admin --> UC1
+Admin --> UC2
+
+@enduml

@@ -1,0 +1,25 @@
+@startuml
+'DIAGRAMMA DI SEQUENZA DELLA MODIFICA DI UN LIBRO
+
+actor Admin
+
+participant SideBarController
+participant BookRegisterController
+participant BookModifyPopupController
+participant MainController
+participant BookRegister
+
+Admin -> BookRegisterController : "Selects a Book"
+Admin -> SideBarController : "Clicks "Modify" Button"
+SideBarController -> BookRegisterController : openModifyPopup()
+BookRegisterController --> Admin : "Shows Modify Popup"
+loop BookNotValid
+Admin -> BookModifyPopupController : "Inserts new Data"
+BookModifyPopupController -> BookRegister : isValid(new Book)
+BookModifyPopupController <-- BookRegister : result
+opt BookNotValid
+BookModifyPopupController --> Admin : "Data not correct, please retry"
+end
+end
+BookModifyPopupController -> BookRegister : modify(Book selected, new Book)
+@enduml

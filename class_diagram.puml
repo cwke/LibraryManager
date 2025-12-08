@@ -1,0 +1,198 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+package "softeng.librarymanager.models" {
+    class Author {
+        - String name
+        - String surname
+        + Author(String, String)
+        + String getName()
+        + String getSurname()
+        + void setName(String)
+        + void setSurname(String)
+        + String toString()
+    }
+
+    class Book {
+        - String title
+        - int publishYear
+        - String bookCode
+        - int availableCopies
+        - String authors
+        + Book(String, int, String, int, String)
+        + String getAuthors()
+        + String getTitle()
+        + int getPublishYear()
+        + String getBookCode()
+        + int getAvailableCopies()
+        + void setTitle(String)
+        + void setPublishYear(int)
+        + void setAvailableCopies(int)
+    }
+
+    class Student {
+        - String name
+        - String surname
+        - String studentCode
+        - String email
+        + Student(String, String, String, String)
+        + String getName()
+        + String getSurname()
+        + String getStudentCode()
+        + String getEmail()
+        + void setName(String)
+        + void setSurname(String)
+        + void setEmail(String)
+    }
+
+    class Loan {
+        - Student student
+        - Book book
+        - LocalDate loanStart
+        - LocalDate loanEnd
+        - boolean returned
+        + Loan(Student, Book, LocalDate)
+        + Loan(Student, Book)
+        + Student getStudent()
+        + Book getBook()
+        + LocalDate getLoanStart()
+        + LocalDate getLoanEnd()
+        + boolean isReturned()
+        + void setLoanEnd(LocalDate)
+        + void setReturned(boolean)
+    }
+
+    class BookCatalog {
+        - ObservableList<Book> books
+        + BookCatalog()
+        + void add(Book)
+        + void remove(Book)
+        + ObservableList<Book> getObservableList()
+        + boolean isValid(Book)
+    }
+
+    class StudentRegister {
+    }
+
+    class LoanRegister {
+    }
+}
+
+package "softeng.librarymanager.controllers" {
+    class MainController {
+        - BookCatalog bookCatalog
+        - StudentRegister studentRegister
+        - LoanRegister loanRegister
+        - BookCatalogController bookCatalogController
+        - StudentRegisterController studentRegisterController
+        - LoanRegisterController loanRegisterController
+        + void initialize(URL, ResourceBundle)
+    }
+
+    class BookCatalogController {
+        - TableView<Book> bookTable
+        - SideBarController sideBarController
+        - BookCatalog bookCatalog
+        + void initialize(URL, ResourceBundle)
+        + void setRegistry(BookCatalog)
+        - void openPopup()
+        - void remove()
+    }
+
+    class StudentRegisterController {
+        - TableView<?> studentTable
+        - SideBarController sideBarController
+        - StudentRegister studentRegister
+        + void initialize(URL, ResourceBundle)
+        + void setRegistry(StudentRegister)
+    }
+
+    class LoanRegisterController {
+        - LoanRegister loanRegister
+        + void initialize(URL, ResourceBundle)
+        + void setRegistry(LoanRegister)
+    }
+
+    class SideBarController {
+        - Button addBtn
+        - TextField searchBarTF
+        - Button removeBtn
+        - Button modifyBtn
+        + Button getAddBtn()
+        + TextField getSearchBarTF()
+        + Button getRemoveBtn()
+        + Button getModifyBtn()
+        + void setAddBtnOnAction(EventHandler<ActionEvent>)
+        + void setRemoveBtnOnAction(EventHandler<ActionEvent>)
+        + void setModifyBtnOnAction(EventHandler<ActionEvent>)
+    }
+
+    class BookPopupController {
+        - TextField titleTF
+        - TextField authorsTF
+        - TextField publishYearTF
+        - TextField bookCodeTF
+        - TextField copiesTF
+        - Button confirmBtn
+        - Button cancelBtn
+        - BookCatalog bookCatalog
+        - boolean editing
+        - Book editItem
+        + void initialize(URL, ResourceBundle)
+        + void setRegistry(BookCatalog)
+        + void setItemToEdit(Book)
+    }
+    
+    class StudentPopupController {
+        - TextField nameTF
+        - TextField surnameTF
+        - TextField codeTF
+        - TextField mailTF
+        - Button confirmBtn
+        - Button cancelBtn
+        + void initialize(URL, ResourceBundle)
+    }
+    
+    class LoanPopupController {
+        - ComboBox<?> studentCB
+        - ComboBox<?> bookCB
+        - DatePicker dateDP
+        - Button confirmBtn
+        - Button cancelBtn
+        + void initialize(URL, ResourceBundle)
+    }
+}
+
+package "softeng.librarymanager" {
+    class LibraryManager {
+        + {static} void main(String[])
+        + void start(Stage)
+    }
+}
+
+LibraryManager ..> MainController : loads
+
+MainController --> BookCatalog
+MainController --> StudentRegister
+MainController --> LoanRegister
+MainController --> BookCatalogController
+MainController --> StudentRegisterController
+MainController --> LoanRegisterController
+
+BookCatalog o-- Book
+Loan --> Student
+Loan --> Book
+
+BookCatalogController --> BookCatalog
+BookCatalogController --> SideBarController
+BookCatalogController ..> BookPopupController : creates
+
+StudentRegisterController --> StudentRegister
+StudentRegisterController --> SideBarController
+
+LoanRegisterController --> LoanRegister
+
+BookPopupController --> BookCatalog
+BookPopupController --> Book : edits
+
+@enduml

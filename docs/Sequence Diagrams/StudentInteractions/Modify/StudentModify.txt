@@ -1,0 +1,25 @@
+@startuml
+'DIAGRAMMA DI SEQUENZA DELLA MODIFICA DI UNO STUDENTE
+
+actor Admin
+
+participant SideBarController
+participant StudentRegisterController
+participant StudentModifyPopupController
+participant MainController
+participant StudentRegister
+
+Admin -> StudentRegisterController : "Selects a Student"
+Admin -> SideBarController : "Clicks "Modify" Button"
+SideBarController -> StudentRegisterController : openModifyPopup()
+StudentRegisterController --> Admin : "Shows Modify Popup"
+loop studentNotValid
+Admin -> StudentModifyPopupController : "Inserts new Data"
+StudentModifyPopupController -> StudentRegister : isValid(new Student)
+StudentModifyPopupController <-- StudentRegister : result
+opt studentNotValid
+StudentModifyPopupController --> Admin : "Data not correct, please retry"
+end
+end
+StudentModifyPopupController -> StudentRegister : modify(Student selected, new Student)
+@enduml

@@ -1,0 +1,25 @@
+@startuml
+'DIAGRAMMA DI SEQUENZA DELL'INSERIMENTO DI UNO STUDENTE
+
+actor Admin
+
+participant SideBarController
+participant StudentRegisterController
+participant StudentInsertPopupController
+participant MainController
+participant StudentRegister
+
+Admin -> SideBarController : "Clicks "Add" Button"
+SideBarController -> StudentRegisterController : openInsertPopup()
+StudentRegisterController --> Admin : "Shows Insert Popup"
+loop studentNotValid
+Admin -> StudentInsertPopupController : "Inserts Data"
+StudentInsertPopupController -> StudentRegister : isValid(Student inserted)
+StudentInsertPopupController <-- StudentRegister : result
+opt studentNotValid
+StudentInsertPopupController --> Admin : "Data not correct, please retry"
+end
+end
+StudentInsertPopupController -> StudentRegister : add(Student inserted)
+@enduml
+

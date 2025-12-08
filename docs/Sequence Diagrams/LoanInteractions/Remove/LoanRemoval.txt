@@ -1,0 +1,15 @@
+@startuml
+'DIAGRAMMA DI SEQUENZA DELLA RIMOZIONE DI UN LOAN 
+
+actor Admin
+
+participant SideBarController
+participant LoanRegisterController
+participant MainController
+participant LoanRegister
+
+Admin -> LoanRegisterController : "Selects a Loan"
+Admin -> SideBarController : "Clicks "Remove" Button"
+SideBarController -> LoanRegisterController : removeFromRegister()
+LoanRegisterController -> LoanRegister : remove(selected loan)
+@enduml

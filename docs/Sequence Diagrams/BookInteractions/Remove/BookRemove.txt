@@ -1,0 +1,15 @@
+@startuml
+'DIAGRAMMA DI SEQUENZA DELLA RIMOZIONE DI UN LIBRO
+
+actor Admin
+
+participant SideBarController
+participant BookRegisterController
+participant MainController
+participant BookRegister
+
+Admin -> BookRegisterController : "Selects a Book"
+Admin -> SideBarController : "Clicks "Remove" Button"
+SideBarController -> BookRegisterController : removeFromRegister()
+BookRegisterController -> BookRegister : remove(Selected Book)
+@enduml

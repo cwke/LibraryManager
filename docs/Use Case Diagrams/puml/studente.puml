@@ -1,0 +1,20 @@
+@startuml
+left to right direction
+
+actor Admin as "Admin"
+
+rectangle GestioneStudenti {
+    usecase UC1 as "Registrazione studente"
+    usecase UC2 as "Modifica studente"
+    usecase UC3 as "Rimozione studente"
+    usecase UC4 as "Visualizzazione studenti"
+    usecase UC5 as "Ricerca studente"
+}
+
+Admin --> UC1
+Admin --> UC2
+Admin --> UC3
+Admin --> UC4
+Admin --> UC5
+
+@enduml

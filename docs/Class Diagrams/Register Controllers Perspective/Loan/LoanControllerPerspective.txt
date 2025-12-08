@@ -1,0 +1,111 @@
+@startuml
+skinparam nodesep 50
+
+class LoanRegisterController{
++initialize() : void
+-loanTable : TableView<Loan>
+-studentClm : TableColumn<Loan, String>
+-bookClm : TableColumn<Loan, String>
+-loanEndClm : TableColumn<Loan, LocalDate>
+-returnedClm : TableColumn<Loan, String>
+-library : Library
+-sideBarController : SideBarController
+-loanInsertPopupController : LoanInsertPopupController
+-loanModifyPopupController : LoanModifyPopupController
+-openInsertPopup() : void
+-openModifyPopup() : void
+-removeFromRegister() : void
++setLibrary(in library : Library) : void
+}
+
+class SideBarController{
+-addBtn : Button
+-searchBarTF : TextField
+-removeBtn : Button
+-modifyBtn : Button
+
++getAddBtn() : Button
++getSearchBarTF() : TextField
++getRemoveBtn() : Button
++getModifyBtn() : Button
+}
+
+class LoanInsertPopupController{
++initialize() : void
+-loanRegisterAdder : RegisterAdder<Loan>
++setBookRegisterObtainer(in bookRegisterObtainer : RegisterObtainer<Book>) : void
++setStudentRegisterObtainer(in studentRegisterObtainer : RegisterObtainer<Student>) : void
++setLoanRegisterAdder(in loanRegisterAdder : RegisterAdder<Loan>) : void
++setLoanRegisterValidator(in loanRegisterValidator : RegisterValidator<Loan>) : void
+-bookRegisterObtainer : RegisterObtainer<Book>
+-studentRegisterObtainer : RegisterObtainer<Student>
+-loanRegisterValidator : RegisterValidator<Loan>
+
+
+}
+
+
+
+class LoanModifyPopupController{
++initialize() : void
++setLoanToModify(in loanToModify : Loan) : void
+-loanRegisterModifier : RegisterModifier<Loan>
+-loanRegisterValidator : RegisterValidator<Loan>
+-loanToModify: Loan
++setLoanRegisterModifier(in loanRegisterModifier : RegisterModifier<Loan>) : void
++setLoanRegisterValidator(in loanRegisterValidator : RegisterValidator<Loan>) : void
+}
+
+
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''INIZIO INTERFACCE
+
+  interface RegisterAdder<T>{
+add(in toAdd  : T) : boolean
+}
+
+interface RegisterModifier<T>{
+modify(in old : T, in new : T) : boolean
+}
+
+
+interface RegisterValidator<T>{
+isValid(in toVerify : T) : boolean
+}
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+abstract class LoanPopupController{
+#studentCB : ComboBox<Student>
+#bookCB : ComboBox<Book>
+#loanEndCB : TextField
+#confirmBtn : Button
+#cancelBtn : Button
+
+#confirmBtnAction(in event : ActionEvent) : void
+#cancelBtnAction(in event : ActionEvent) : void
+}
+
+
+LoanInsertPopupController ---|> LoanPopupController
+LoanModifyPopupController ---|> LoanPopupController
+
+
+LoanInsertPopupController -d-> RegisterValidator
+LoanInsertPopupController --> RegisterAdder
+
+LoanModifyPopupController -d-> RegisterValidator
+LoanModifyPopupController --> RegisterModifier
+
+
+
+LoanRegisterController "1" -r-> "1" SideBarController
+LoanRegisterController "1" -d-> "1" LoanInsertPopupController
+LoanRegisterController "1" -d-> "1" LoanModifyPopupController
+
+''' LINEA NASCOSTA PER MIGLIORARE LA VISUALIZZAZIONE
+RegisterAdder -[hidden]right- RegisterValidator
+'''
+
+
+@enduml

@@ -1,0 +1,24 @@
+@startuml
+'DIAGRAMMA DI SEQUENZA DELL'INSERIMENTO DI UN LIBRO
+
+actor Admin
+
+participant SideBarController
+participant BookRegisterController
+participant BookInsertPopupController
+participant MainController
+participant BookRegister
+
+Admin -> SideBarController : "Clicks "Add" Button"
+SideBarController -> BookRegisterController : openInsertPopup()
+BookRegisterController --> Admin : "Shows Insert Popup"
+loop BookNotValid
+Admin -> BookInsertPopupController : "Inserts Data"
+BookInsertPopupController -> BookRegister : isValid(Book inserted)
+BookInsertPopupController <-- BookRegister : result
+opt BookNotValid
+BookInsertPopupController --> Admin : "Data not correct, please retry"
+end
+end
+BookInsertPopupController -> BookRegister : add(Book inserted)
+@enduml

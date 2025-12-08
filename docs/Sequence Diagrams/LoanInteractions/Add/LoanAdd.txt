@@ -1,0 +1,24 @@
+@startuml
+'DIAGRAMMA DI SEQUENZA DELL'INSERIMENTO DI UN LOAN
+
+actor Admin
+
+participant SideBarController
+participant LoanRegisterController
+participant LoanInsertPopupController
+participant MainController
+participant LoanRegister
+
+Admin -> SideBarController : "Clicks "Add" Button"
+SideBarController -> LoanRegisterController : openInsertPopup()
+LoanRegisterController --> Admin : "Shows Insert Popup"
+loop LoanNotValid
+Admin -> LoanInsertPopupController : "Inserts Data"
+LoanInsertPopupController -> LoanRegister : isValid(Loan inserted)
+LoanInsertPopupController <-- LoanRegister : result
+opt loanNotValid
+LoanInsertPopupController --> Admin : "Data not correct, please retry"
+end
+end
+LoanInsertPopupController -> LoanRegister : add(Loan inserted)
+@enduml
