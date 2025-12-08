@@ -1,133 +1,151 @@
 /**
  * @file Student.java
- * @brief Implementa la classe Student.
+ * @brief Definizione della classe modello che rappresenta uno studente.
+ * @author [Acerra Fabrizio, Affinita Natale, Cwiertka Jakub, Galluccio Hermann]
+ * @date Dicembre 2025
+ * @package softeng.librarymanager.models
  */
 
 package softeng.librarymanager.models;
 
-import java.io.Serializable;
-import java.util.Objects;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
 /**
- * @brief Rappresenta uno studente.
+ * @class Student
+ * @brief Classe modello che rappresenta uno studente.
  * @details Questa classe modella un'entità studente, contenente dettagli come
  *          il nome, cognome, matricola, email, e numero di prestiti disponibili.
- *          Implementa {@link Comparable} per l'ordinamento e {@link Serializable}
+ *          Implementa {@link Comparable} per l'ordinamento e {@link Externalizable}
  *          per l'IO su file.
- *
  */
-public class Student implements Comparable<Student>, Serializable {
-    private String name; ///< Il nome dello studente.
-
-    private String surname; ///< Il cognome dello studente.
-
-    private final String studentCode; ///< La matricola dello studente.
-
-    private String email; ///< L'email dello studente.
-
-    private int availableLoans; ///< Il numero di prestiti disponibili dello studente.
+public class Student implements Comparable<Student>, Externalizable{
 
     /**
-     * @brief Costruisce un nuovo Student. Un nuovo studente di default ha 3
-     *        prestiti disponibili.
-     * 
-     * @param name        Il nome dello studente.
-     * @param surname     Il cognome dello studente.
-     * @param studentCode La matricola dello studente.
-     * @param email       L'email dello studente.
+     * @brief Proprietà nome.
      */
-    public Student(String name, String surname, String studentCode, String email) {
-        this.name = name;
-        this.surname = surname;
-        this.studentCode = studentCode;
-        this.email = email;
-        this.availableLoans = 3;
+    private StringProperty name;
+
+    /**
+     * @brief Proprietà cognome.
+     */
+    private StringProperty surname;
+
+    /**
+     * @brief Proprietà matricola {readOnly}.
+     */
+    private StringProperty studentId;
+
+    /**
+     * @brief Proprietà email.
+     */
+    private StringProperty email;
+
+    /**
+     * @brief Lista prestiti attivi.
+     */
+    private ObservableList<Loan> activeLoans;
+
+    /**
+     * @brief Costruttore predefinito.
+     * @details Inizializza le proprietà con valori vuoti e crea la lista dei prestiti.
+     */
+    public Student() {
+        this.name = new SimpleStringProperty("");
+        this.surname = new SimpleStringProperty("");
+        this.studentId = new SimpleStringProperty("");
+        this.email = new SimpleStringProperty("");
+        this.activeLoans = FXCollections.observableArrayList();
     }
 
     /**
-     * @return Il numero di prestiti disponibili dello studente.
+     * @brief Restituisce la proprietà del nome per il binding.
+     * @return StringProperty Oggetto proprietà del nome.
      */
-    public int getAvailableLoans() {
-        return availableLoans;
+    public StringProperty nameProperty() {
+        return this.name;
     }
 
     /**
-     * @param availableLoans Il nuovo numero di prestiti disponibili dello studente.
+     * @brief Restituisce la proprietà del cognome per il binding.
+     * @return StringProperty Oggetto proprietà del cognome.
      */
-    public void setAvailableLoans(int availableLoans) {
-        this.availableLoans = availableLoans;
+    public StringProperty surnameProperty() {
+        return this.surname;
     }
 
     /**
-     * @return Il nome dello studente.
+     * @brief Restituisce la proprietà dell'ID studente (Matricola).
+     * @return StringProperty Oggetto proprietà dell'ID.
      */
-    public String getName() {
-        return name;
+    public StringProperty studentIdProperty() {
+        return this.studentId;
     }
 
     /**
-     * @return Il cognome dello studente.
+     * @brief Restituisce la proprietà dell'email per il binding.
+     * @return StringProperty Oggetto proprietà dell'email.
      */
-    public String getSurname() {
-        return surname;
+    public StringProperty emailProperty() {
+        return this.email;
     }
 
     /**
-     * @return La matricola dello studente.
+     * @brief Restituisce la lista dei prestiti attivi.
+     * @return ObservableList<Loan> Lista osservabile dei prestiti correnti.
      */
-    public String getStudentCode() {
-        return studentCode;
+    public ObservableList<Loan> getActiveLoans() {
+        return this.activeLoans;
     }
 
     /**
-     * @return L'email dello studente.
+     * @brief Aggiunge un prestito alla lista dei prestiti attivi dello studente.
+     * @details Verifica che lo studente non abbia già raggiunto il limite massimo
+     *          di 3 prestiti (vincolo 0...3 da UML).
+     * @param[in] loanToAdd L'oggetto Loan da aggiungere.
      */
-    public String getEmail() {
-        return email;
+    public void addActiveLoan(Loan loanToAdd) {
     }
 
     /**
-     * @param name Il nuovo nome dello studente.
+     * @brief Rimuove un prestito dalla lista dei prestiti attivi.
+     * @details Metodo chiamato quando un libro viene restituito.
+     * @param[in] loanToRemove L'oggetto Loan da rimuovere.
      */
-    public void setName(String name) {
-        this.name = name;
+    public void removeActiveLoan(Loan loanToRemove) {
     }
 
     /**
-     * @param surname Il nuovo cognome dello studente.
+     * @brief Confronta due studenti per l'ordinamento.
+     * @details L'ordinamento avviene prima per cognome, poi per nome, infine per ID.
+     * @param[in] other Lo studente con cui confrontare.
+     * @return int Un valore negativo, zero o positivo.
      */
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
-    /**
-     * @param email La nuova email dello studente.
-     */
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    /**
-     * @return Un booleano che indica se due studenti hanno lo stesso riferimento o
-     *         stessa matricola.
-     */
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Student other = (Student) obj;
-        return Objects.equals(this.studentCode, other.studentCode);
-    }
-
     @Override
     public int compareTo(Student o) {
         return 0;
     }
+
+    /**
+     * @brief Metodo personalizzato per serializzare l'oggetto.
+     * @details Estrae i valori "puri" dalle proprietà JavaFX e li scrive nello stream.
+     */
+    @Override
+    public void writeExternal(ObjectOutput out) throws IOException {
+    }
+
+    /**
+     * @brief Metodo personalizzato per deserializzare l'oggetto.
+     * @details Legge i valori dallo stream e ricostruisce le proprietà JavaFX.
+     */
+    @Override
+    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+    }
+
 }

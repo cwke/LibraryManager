@@ -1,14 +1,15 @@
+/**
+ * @file SideBarController.java
+ * @brief Questo file contine il controller del file SideBarView.fxml
+ */
+
 package softeng.librarymanager.controllers;
 
-import java.net.URL;
-import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.image.ImageView;
 
 public class SideBarController {
 
@@ -36,17 +37,4 @@ public class SideBarController {
     public Button getModifyBtn() {
         return modifyBtn;
     }
-
-    public void setAddBtnOnAction(EventHandler<ActionEvent> event) {
-        this.addBtn.setOnAction(event);
-    }
-
-    public void setRemoveBtnOnAction(EventHandler<ActionEvent> event) {
-        this.removeBtn.setOnAction(event);
-    }
-
-    public void setModifyBtnOnAction(EventHandler<ActionEvent> event) {
-        this.modifyBtn.setOnAction(event);
-    }
-
 }

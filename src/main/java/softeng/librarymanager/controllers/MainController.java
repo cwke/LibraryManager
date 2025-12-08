@@ -1,32 +1,16 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+/**
+ * @file MainController.java
+ * @brief Questo file contine il controller del file MainView.fxml
  */
 package softeng.librarymanager.controllers;
 
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import softeng.librarymanager.models.Book;
-import softeng.librarymanager.models.BookRegister;
-import softeng.librarymanager.models.LoanRegister;
-import softeng.librarymanager.models.StudentRegister;
 
-/**
- *
- * @author Jakub
- */
 public class MainController implements Initializable {
-    
-    BookRegister bookRegister;
-    StudentRegister studentRegister;
-    LoanRegister loanRegister;
     
     @FXML
     BookRegisterController bookRegisterController;
@@ -37,32 +21,33 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        bookRegister = new BookRegister();
-
-        // codice di prova : va rimosso!
-        bookRegister.add(new Book("titolo", 2025, "1234567890000", 3, "nome1 cognome1, nome2 cognome2"));
-        bookRegister.add(new Book("superlibro", 2025, "1234567890111", 1, "nome1 cognome1, nome2 cognome2"));
-        // Fine codice di prova
-        
-        bookRegisterController.setRegister(bookRegister);
-        studentRegisterController.setRegister(studentRegister);
-        loanRegisterController.setRegistry(loanRegister);
     }
 
+    /**
+     * @brief openFileAction è la funzione che apre il file
+     */
     @FXML
-    private void openAction(ActionEvent event) {
+    private void openFileAction(ActionEvent event) {
     }
 
+    /**
+     * @brief closeFileAction è la funzione che chiude il file
+     */
     @FXML
-    private void closeAction(ActionEvent event) {
+    private void closeFileAction(ActionEvent event) {
     }
 
+    /**
+     * @brief saveFileAction è la funzione che salva sul file
+     */
     @FXML
-    private void saveAction(ActionEvent event) {
+    private void saveFileAction(ActionEvent event) {
     }
 
+    /**
+     * @brief saveFileWithNameAction è la funzione che salva su un file
+     */
     @FXML
-    private void saveWithNameAction(ActionEvent event) {
+    private void saveFileWithNameAction(ActionEvent event) {
     }
-
 }

@@ -15,8 +15,7 @@
                             <columns>
                                 <TableColumn fx:id="studentClm" prefWidth="122.39999085664749" text="Studente" />
                                 <TableColumn fx:id="bookClm" prefWidth="107.20001220703125" text="Libro" />
-                                <TableColumn fx:id="startLoanDateClm" prefWidth="179.9999542236328" text="Data inizio prestito" />
-                                <TableColumn fx:id="endLoanDateClm" prefWidth="148.00006103515625" text="Data ultima restituzione" />
+                                <TableColumn fx:id="loanEndClm" prefWidth="179.9999542236328" text="Data fine prestito" />
                                 <TableColumn fx:id="returnedClm" prefWidth="214.39996337890625" text="Restituito" />
                             </columns>
                         </TableView>
