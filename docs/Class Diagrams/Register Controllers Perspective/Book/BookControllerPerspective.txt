@@ -1,0 +1,60 @@
+@startuml
+class BookRegisterController{
++initialize() : void
+-bookTable : TableView<Book>
+-titleClm : TableColumn<Book, String>
+-authorsClm : TableColumn<Book, String>
+-publishmentYearClm : TableColumn<Book, Integer>
+-bookIdClm : TableColumn<Book, String>
+-availableCopiesClm : TableColumn<Book, Integer>
+-bookRegister : Register<Book>
+-sideBarController : SideBarController
+-bookInsertPopupController : BookInsertPopupController
+-bookModifyPopupController : BookModifyPopupController
+-openInsertPopup() : void
+-openModifyPopup() : void
+-removeFromRegister() : void
++setBookRegister(in bookRegister : Register<Book>) : void
+}
+
+
+
+class SideBarController{
+-addBtn : Button
+-searchBarTF : TextField
+-removeBtn : Button
+-modifyBtn : Button
+
++getAddBtn() : Button
++getSearchBarTF() : TextField
++getRemoveBtn() : Button
++getModifyBtn() : Button
+}
+
+class BookInsertPopupController{
++initialize() : void
+-bookRegisterAdder : RegisterAdder<Book>
+-bookRegisterValidator : RegisterValidator<Book>
+
++setBookRegisterAdder(in bookRegisterAdder : RegisterAdder<Book>) : void
++setBookRegisterValidator(in bookRegisterValidator : RegisterValidator<Book>) : void
+}
+
+class BookModifyPopupController{
++initialize() : void
++setBookToModify(in bookToModify : Book) : void
+-bookRegisterModifier : RegisterModifier<Book>
+-bookRegisterValidator : RegisterValidator<Book>
+-bookToModify : Book
+
++setBookRegisterModifier(in bookRegisterModifier : RegisterModifier<Book>) : void
++setBookRegisterValidator(in bookRegisterValidator : RegisterValidator<Book>) : void
+}
+
+
+
+
+BookRegisterController "1" -r-> "1" SideBarController
+BookRegisterController "1" -d-> "1" BookInsertPopupController
+BookRegisterController "1" -d-> "1" BookModifyPopupController
+@enduml

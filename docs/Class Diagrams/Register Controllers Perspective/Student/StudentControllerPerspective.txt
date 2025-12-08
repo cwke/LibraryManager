@@ -1,0 +1,59 @@
+@startuml
+class StudentRegisterController{
++initialize() : void
+-studentTable : TableView<Student>
+-nameClm : TableColumn<Student, String>
+-surnameClm : TableColumn<Student, String>
+-studentIdClm : TableColumn<Student, String>
+-emailClm : TableColumn<Student, String>
+-studentRegister : Register<Student>
+-sideBarController : SideBarController
+-studentInsertPopupController : StudentInsertPopupController
+-studentModifyPopupController : StudentModifyPopupController
+
+-openInsertPopup() : void
+-openModifyPopup() : void
+-removeFromRegister() : void
++setStudentRegister(in studentRegister : Register<Student>) : void
+}
+
+
+
+class SideBarController{
+-addBtn : Button
+-searchBarTF : TextField
+-removeBtn : Button
+-modifyBtn : Button
+
++getAddBtn() : Button
++getSearchBarTF() : TextField
++getRemoveBtn() : Button
++getModifyBtn() : Button
+}
+
+class StudentInsertPopupController{
++initialize() : void
+-studentRegisterAdder : RegisterAdder<Student>
+-studentRegisterValidator : RegisterValidator<Student>
+
++setStudentRegisterAdder(in studentRegisterAdder : RegisterAdder<Student>) : void
++setStudentRegisterValidator(in studentRegisterValidator : RegisterValidator<Student>) : void
+}
+
+class StudentModifyPopupController{
++initialize() : void
++setStudentToModify(in studentToModify : Student) : void
+-studentRegisterModifier : RegisterModifier<Student>
+-studentRegisterValidator : RegisterValidator<Student>
+-studentToModify: Student
+
++setStudentRegisterModifier(in studentRegisterModifier : RegisterModifier<Student>) : void
++setStudentRegisterValidator(in studentRegisterValidator : RegisterValidator<Student>) : void
+}
+
+
+
+StudentRegisterController "1" -r-> "1" SideBarController
+StudentRegisterController "1" -d-> "1" StudentInsertPopupController
+StudentRegisterController "1" -d-> "1" StudentModifyPopupController
+@enduml
