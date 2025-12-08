@@ -8,7 +8,7 @@
 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="softeng.librarymanager.controllers.BookRegisterController">
     <children>
         <SplitPane dividerPositions="0.5" prefHeight="720.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-            <items>s
+            <items>
                 <AnchorPane minWidth="490.0" prefWidth="1130.0">
                     <children>
                         <TableView fx:id="bookTable" layoutX="-8.0" layoutY="14.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
