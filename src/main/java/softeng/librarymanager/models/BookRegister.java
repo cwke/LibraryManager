@@ -1,84 +1,90 @@
 /**
  * @file BookRegister.java
- * @brief Implementa la classe BookRegister.
+ * @brief Implementazione concreta del registro per la gestione del catalogo dei libri.
+ * @author [Acerra Fabrizio, Affinita Natale, Cwiertka Jakub, Galluccio Hermann]
+ * @date Dicembre 2025
+ * @package softeng.librarymanager.models
  */
 package softeng.librarymanager.models;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import softeng.librarymanager.interfaces.Register;
 
 /**
- * @brief Gestisce un registro di libri.
- * @details Implementa l'interfaccia {@link Register} per {@link Book}.
- *          Mantiene un elenco osservabile di libri e fornisce metodi per
- *          aggiungere, rimuovere e validare libri.
+ * @class BookRegister
+ * @brief Classe responsabile della gestione del catalogo dei libri.
+ * @details Questa classe implementa l'interfaccia generica Register tipizzata sulla classe Book.
  * @see Register
  * @see Book
  */
 public class BookRegister implements Register<Book> {
-    private final ObservableList<Book> books; ///< La lista osservabile dei libri registrati.
 
     /**
-     * @brief Costruisce un nuovo BookRegister vuoto.
-     * @details Inizializza la lista osservabile di libri.
+     * @brief Lista interna che memorizza gli oggetti Book.
+     * @details Utilizza ObservableList per permettere il binding con componenti grafici JavaFX.
+     */
+    private ObservableList<Book> bookRegister;
+
+    /**
+     * @brief Costruttore della classe BookRegister.
+     * @details Inizializza la lista osservabile vuota.
      */
     public BookRegister() {
-        this.books = FXCollections.observableArrayList();
+        this.bookRegister = FXCollections.observableArrayList();
     }
 
     /**
-     * @brief Aggiunge un libro al registro.
-     * 
-     * @pre Il libro deve essere valido. 
-     * @post Il libro viene aggiunto al registro.
-     * 
-     * @param book Il libro da aggiungere.
-     * @see isValid()
+     * @brief Aggiunge un nuovo libro al registro.
+     * @details Prima di aggiungere, verifica che il libro sia valido tramite il metodo isValid.
+     * @param[in] toAdd L'oggetto Book da aggiungere.
+     * @return boolean True se l'aggiunta ha avuto successo, False se l'oggetto non è valido o esiste già.
      */
     @Override
-    public void add(Book book) {
-        books.add(book);
+    public boolean add(Book toAdd) {
+        return false;
     }
 
     /**
-     * @brief Rimuove un libro dal registro.
-     * @param book Il libro da rimuovere.
+     * @brief Modifica uno libro esistente nel registro.
+     * @details Cerca l'oggetto 'old' e lo sostituisce con 'newObj'.
+     * @param[in] old L'oggetto Book originale da sostituire.
+     * @param[in] newObj Il nuovo oggetto Book che prenderà il posto del precedente.
+     * @return boolean True se la sostituzione è avvenuta, False se l'oggetto 'old' non è stato trovato.
      */
     @Override
-    public void remove(Book book) {
-        books.remove(book);
+    public boolean modify(Book old, Book newObj) {
+        return false;
     }
 
     /**
-     * @return La lista osservabile contenente tutti i libri registrati.
+     * @brief Rimuove un libro dal catalogo.
+     * * @param toRemove Il libro da rimuovere.
+     * @return boolean True se la rimozione ha avuto successo.
      */
     @Override
-    public ObservableList<Book> getObservableList() {
-        return this.books;
+    public boolean remove(Book toRemove) {
+        return false;
     }
 
     /**
-     * @brief Controlla se un libro è valido.
-     * @details Verifica se il codice del libro ha la lunghezza corretta (13) e se
-     *          è unico all'interno del registro (escludendo il libro stesso se si
-     *          tratta di una modifica).
-     * 
-     * @param book Il libro da controllare.
-     * @return True se il libro è valido, false altrimenti.
+     * @brief Verifica la validità di un oggetto Book.
+     * @details Controlla che l'oggetto non sia nullo (Scrivere qui gli ulteriori controlli, es. ISBN univoco)..
+     * @param[in] toVerify L'oggetto Book da verificare.
+     * @return boolean True se l'oggetto è valido, False altrimenti.
      */
     @Override
-    public boolean isValid(Book book) {
-        if (book.getBookCode().length() != 13)
-            return false;
-        for (Book b : books) {
-            if (b != book) { // Per la verifica in caso di modifica (non vogliamo confrontare il libro da
-                              // modificare con se stesso)
-                if (b.getBookCode().equals(book.getBookCode()))
-                    return false;
-            }
-
-        }
-        return true;
+    public boolean isValid(Book toVerify) {
+        // Implementazione di base: controlla che non sia null
+        return toVerify != null;
     }
+
+    /**
+     * @brief Restituisce la lista osservabile dei libri.
+     * @return ObservableList<Book> La lista contenente i libri.
+     */
+    @Override
+    public ObservableList<Book> getRegister() {
+        return this.bookRegister;
+    }
+
 }

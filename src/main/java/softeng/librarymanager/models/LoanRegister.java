@@ -1,78 +1,91 @@
 /**
  * @file LoanRegister.java
- * @brief Implementa la classe LoanRegister.
+ * @brief Implementazione concreta del registro dei prestiti.
+ * @author [Acerra Fabrizio, Affinita Natale, Cwiertka Jakub, Galluccio Hermann]
+ * @date Dicembre 2025
+ * @package softeng.librarymanager.models
  */
 
 package softeng.librarymanager.models;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import softeng.librarymanager.interfaces.Register;
 
 /**
- * @brief Gestisce un registro di prestiti.
- * @details Implementa l'interfaccia {@link Register} per {@link Loan}.
- *          Mantiene un elenco osservabile di prestiti e fornisce metodi per
- *          aggiungere, rimuovere e validare prestiti.
+ * @class LoanRegister
+ * @brief Classe responsabile della gestione della lista dei prestiti.
+ * @details Questa classe implementa l'interfaccia generica Register tipizzata sulla classe Loan.
  * @see Register
  * @see Loan
  */
 public class LoanRegister implements Register<Loan> {
-    private final ObservableList<Loan> loans; ///< La lista osservabile dei prestiti registrati.
 
     /**
-     * @brief Costruisce un nuovo registro di prestiti.
-     * @details Inizializza la lista osservabile di prestiti.
+     * @brief Lista interna che memorizza gli oggetti Loan.
+     * @details Utilizza ObservableList per permettere il binding con componenti grafici JavaFX.
+     */
+    private ObservableList<Loan> loanRegister;
+
+    /**
+     * @brief Costruttore della classe LoanRegister.
+     * @details Inizializza la lista osservabile vuota.
      */
     public LoanRegister() {
-        this.loans = FXCollections.observableArrayList();
+        this.loanRegister = FXCollections.observableArrayList();
+    }
+
+    /**
+     * @brief Aggiunge un nuovo prestito al registro.
+     * @details Prima di aggiungere, verifica che il prestito sia valido tramite il metodo isValid.
+     * @param[in] toAdd L'oggetto Loan da aggiungere.
+     * @return boolean True se l'aggiunta ha avuto successo, False se l'oggetto non è valido o esiste già.
+     */
+    @Override
+    public boolean add(Loan toAdd) {
+        return false;
+    }
+
+    /**
+     * @brief Modifica un prestito esistente nel registro.
+     * @details Cerca l'oggetto 'old' e lo sostituisce con 'newObj'.
+     * @param[in] old L'oggetto Loan originale da sostituire.
+     * @param[in] newObj Il nuovo oggetto Loan che prenderà il posto del precedente.
+     * @return boolean True se la sostituzione è avvenuta, False se l'oggetto 'old' non è stato trovato.
+     */
+    @Override
+    public boolean modify(Loan old, Loan newObj) {
+        return false;
     }
 
     /**
      * @brief Rimuove un prestito dal registro.
-     * @param item Il prestito da rimuovere.
+     * @param[in] toRemove L'oggetto Loan da rimuovere.
+     * @return boolean True se la rimozione ha avuto successo, False altrimenti.
      */
     @Override
-    public void remove(Loan item) {
-        loans.remove(item);
+    public boolean remove(Loan toRemove) {
+        return false;
     }
 
     /**
-     * @return La lista osservabile contenente tutti i prestiti registrati.
+     * @brief Verifica la validità di un oggetto Loan.
+     * @details Controlla che l'oggetto non sia nullo (Scrivere qui gli ulteriori controlli, es. coerenza date, esistenza libro, ecc...).
+     * @param[in] toVerify L'oggetto Loan da verificare.
+     * @return boolean True se l'oggetto è valido, False altrimenti.
      */
     @Override
-    public ObservableList<Loan> getObservableList() {
-        return this.loans;
+    public boolean isValid(Loan toVerify) {
+        // Implementazione di base: controlla che non sia null
+        return toVerify != null;
     }
 
     /**
-     * @brief Aggiunge un prestito al registro.
-     * 
-     * @pre Il prestito deve essere valido. 
-     * @post Il prestito viene aggiunto al registro.
-     * 
-     * @param item Il prestito da aggiungere.
-     * @see isValid()
+     * @brief Restituisce la lista osservabile dei prestiti.
+     * @return ObservableList<Loan> La lista contenente i prestiti.
      */
     @Override
-    public void add(Loan item) {
-        // TODO: gestire un eventuale incremento di availableLoans
-        loans.add(item);
+    public ObservableList<Loan> getRegister() {
+        return this.loanRegister;
     }
 
-    /**
-     * @brief Controlla se un prestito è valido.
-     * @details Verifica se il prestito è valido in base ai seguenti criteri:
-     *          - ci sono copie disponbili del libro
-     *          - lo studente ha availableLoans >= 1
-     *          - lo studente non ha già in prestito lo stesso libro
-     * @param item Il prestito da controllare.
-     * @return True se il prestito è valido, false altrimenti.
-     */
-    @Override
-    public boolean isValid(Loan item) {
-
-        // TODO: da implementare
-        return true;
-    }
 }

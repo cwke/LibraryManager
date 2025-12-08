@@ -54,7 +54,7 @@ public class Student implements Comparable<Student>, Externalizable{
 
     /**
      * @brief Costruttore predefinito.
-     * @details Inizializza le proprietà con valori vuoti e crea la lista dei prestiti.
+     * @details Inizializza le proprietà con valori di default e crea la lista dei prestiti.
      */
     public Student() {
         this.name = new SimpleStringProperty("");

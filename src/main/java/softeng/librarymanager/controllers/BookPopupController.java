@@ -5,11 +5,7 @@
 package softeng.librarymanager.controllers;
 
 import java.net.URL;
-import java.util.HashSet;
 import java.util.ResourceBundle;
-import java.util.Set;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -18,10 +14,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import softeng.librarymanager.models.Author;
 import softeng.librarymanager.models.Book;
-import softeng.librarymanager.models.BookRegister;
-import softeng.librarymanager.interfaces.ItemAcceptor;
 
 /**
  * FXML Controller class

@@ -1,6 +1,6 @@
 /**
  * @file StudentRegister.java
- * @brief Implementazione concreta del registro per la gestione degli studenti.
+ * @brief Implementazione concreta del registro per la gestione del registro degli studenti.
  * @author [Acerra Fabrizio, Affinita Natale, Cwiertka Jakub, Galluccio Hermann]
  * @date Dicembre 2025
  * @package softeng.librarymanager.models
@@ -42,9 +42,6 @@ public class StudentRegister implements Register<Student> {
      */
     @Override
     public boolean add(Student toAdd) {
-        if (isValid(toAdd)) {
-            return this.studentRegister.add(toAdd);
-        }
         return false;
     }
 
@@ -57,15 +54,6 @@ public class StudentRegister implements Register<Student> {
      */
     @Override
     public boolean modify(Student old, Student newObj) {
-        if (!isValid(newObj)) {
-            return false;
-        }
-
-        int index = this.studentRegister.indexOf(old);
-        if (index >= 0) {
-            this.studentRegister.set(index, newObj);
-            return true;
-        }
         return false;
     }
 
@@ -76,7 +64,7 @@ public class StudentRegister implements Register<Student> {
      */
     @Override
     public boolean remove(Student toRemove) {
-        return this.studentRegister.remove(toRemove);
+        return false;
     }
 
     /**

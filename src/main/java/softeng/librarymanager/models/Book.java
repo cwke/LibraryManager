@@ -1,132 +1,134 @@
 /**
  * @file Book.java
- * @brief Implementa la classe Book.
+ * @brief Definizione della classe modello che rappresenta un libro.
+ * @author [Acerra Fabrizio, Affinita Natale, Cwiertka Jakub, Galluccio Hermann]
+ * @date Dicembre 2025
+ * @package softeng.librarymanager.models
  */
 package softeng.librarymanager.models;
 
-import java.io.Serializable;
-import java.util.Objects;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
 /**
- * @brief Rappresenta un libro.
- * @details Questa classe modella un'entità libro, contenente dettagli come il
- *          titolo, l'anno di pubblicazione, l'identificatore unico, la
- *          disponibilità e gli autori. Implementa {@link Comparable} per
- *          l'ordinamento e {@link Serializable} per l'IO su file.
- *
+ * @class Book
+ * @brief Classe modello che rappresenta un libro.
+ * @details Questa classe modella un'entità libro all'interno del catalogo, contenente
+ *          dettagli come titolo, anno di pubblicazione, autori, ID univoco
+ *          e numero di copie disponibili.
+ *          Implementa {@link Comparable} per l'ordinamento e {@link Externalizable}
+ *          per l'IO su file.
  */
-public class Book implements Comparable<Book>, Serializable {
-    private String title; ///< Il titolo del libro.
-
-    private int publishYear; ///< L'anno di pubblicazione del libro.
-
-    private final String bookCode; ///< Il codice identificativo del libro (ISBN).
-
-    private int availableCopies; ///< Il numero di copie attualmente disponibili.
-
-    private String authors; ///< Gli autori del libro.
+public class Book implements Comparable<Book>, Externalizable {
 
     /**
-     * @brief Costruisce un nuovo Book.
-     * 
-     * @param[in] title Il titolo del libro.
-     * @param[in] publishYear L'anno di pubblicazione del libro.
-     * @param[in] bookCode Il codice identificativo del libro (ISBN).
-     * @param[in] availableCopies Il numero di copie attualmente disponibili.
-     * @param[in] authors Gli autori del libro.
+     * @brief Proprietà titolo.
      */
-    public Book(String title, int publishYear, String bookCode, int availableCopies, String authors) {
-        this.title = title;
-        this.publishYear = publishYear;
-        this.bookCode = bookCode;
-        this.availableCopies = availableCopies;
-        this.authors = authors;
+    private StringProperty title;
+
+    /**
+     * @brief Proprietà anno di pubblicazione.
+     */
+    private IntegerProperty publishmentYear;
+
+    /**
+     * @brief Proprietà autori.
+     */
+    private StringProperty authors;
+
+    /**
+     * @brief Proprietà identificativo libro (ISBN) {readOnly}.
+     */
+    private StringProperty bookId;
+
+    /**
+     * @brief Proprietà numero di copie disponibili.
+     */
+    private IntegerProperty availableCopies;
+
+    /**
+     * @brief Costruttore predefinito.
+     * @details Inizializza le proprietà con valori di default.
+     */
+    public Book() {
+        this.title = new SimpleStringProperty("");
+        this.publishmentYear = new SimpleIntegerProperty(0);
+        this.authors = new SimpleStringProperty("");
+        this.bookId = new SimpleStringProperty("");
+        this.availableCopies = new SimpleIntegerProperty(1); //Qui inizializzo con una copia perchè sto creando il libro
     }
 
     /**
-     * @return Gli autori del libro.
+     * @brief Restituisce la proprietà del titolo per il binding.
+     * @return StringProperty Oggetto proprietà del titolo.
      */
-    public String getAuthors() {
-        return authors;
+    public StringProperty titleProperty() {
+        return this.title;
     }
 
     /**
-     * @return Il titolo del libro.
+     * @brief Restituisce la proprietà dell'anno di pubblicazione per il binding.
+     * @return IntegerProperty Oggetto proprietà dell'anno.
      */
-    public String getTitle() {
-        return title;
+    public IntegerProperty publishmentYearProperty() {
+        return this.publishmentYear;
     }
 
     /**
-     * @return L'anno di pubblicazione del libro.
+     * @brief Restituisce la proprietà degli autori per il binding.
+     * @return StringProperty Oggetto proprietà degli autori.
      */
-    public int getPublishYear() {
-        return publishYear;
+    public StringProperty authorsProperty() {
+        return this.authors;
     }
 
     /**
-     * @return Il codice identificativo del libro (ISBN).
+     * @brief Restituisce la proprietà dell'ID libro (ISBN).
+     * @return StringProperty Oggetto proprietà dell'ID.
      */
-    public String getBookCode() {
-        return bookCode;
+    public StringProperty bookIdProperty() {
+        return this.bookId;
     }
 
     /**
-     * @return Il numero di copie attualmente disponibili.
+     * @brief Restituisce la proprietà delle copie disponibili.
+     * @return IntegerProperty Oggetto proprietà delle copie.
      */
-    public int getAvailableCopies() {
-        return availableCopies;
+    public IntegerProperty availableCopiesProperty() {
+        return this.availableCopies;
     }
 
     /**
-     * @param[in] title Il nuovo titolo da impostare.
-     */
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    /**
-     * @param[in] publishYear Il nuovo anno di pubblicazione da impostare.
-     */
-    public void setPublishYear(int publishYear) {
-        this.publishYear = publishYear;
-    }
-
-    /**
-     * @param availableCopies Il nuovo numero di copie disponibili da impostare.
-     */
-    public void setAvailableCopies(int availableCopies) {
-        this.availableCopies = availableCopies;
-    }
-
-    /**
-     * @param[in] obj L'oggetto con cui confrontare.
-     * @return True se gli oggetti hanno lo stesso riferimento o lo stesso codice ISBN;
-     *         false altrimenti.
-     */
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Book other = (Book) obj;
-        return Objects.equals(this.bookCode, other.bookCode);
-    }
-
-    /**
-     * @param[in] other L'altro libro con cui confrontare.
-     * @return Un numero negativo, zero o positivo se questo oggetto è inferiore,
-     *         uguale o superiore all'oggetto specificato.
+     * @brief Confronta due libri per l'ordinamento.
+     * @details L'ordinamento avviene prima per titolo (alfabetico), poi per autori, e infine per ID.
+     * @param[in] other Il libro con cui confrontare.
+     * @return int Un valore negativo, zero o positivo.
      */
     @Override
     public int compareTo(Book other) {
-        // TODO: da implementare
         return 0;
     }
+
+    /**
+     * @brief Metodo personalizzato per serializzare l'oggetto.
+     * @details Estrae i valori "puri" dalle proprietà JavaFX e li scrive nello stream.
+     */
+    @Override
+    public void writeExternal(ObjectOutput out) throws IOException {
+    }
+
+    /**
+     * @brief Metodo personalizzato per deserializzare l'oggetto.
+     * @details Legge i valori dallo stream e ricostruisce le proprietà JavaFX.
+     */
+    @Override
+    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+    }
+
 }
