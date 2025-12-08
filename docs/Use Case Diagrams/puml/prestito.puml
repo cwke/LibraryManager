@@ -1,0 +1,20 @@
+@startuml
+left to right direction
+
+actor Admin as "Admin"
+
+usecase UC1 as "Registrazione prestito"
+usecase UC2 as "Modifica prestito"
+usecase UC3 as "Rimozione prestito"
+usecase UC4 as "Visualizzazione prestiti"
+usecase UC5 as "Ricerca prestito"
+usecase UC6 as "Estinzione prestito"
+
+
+Admin --> UC1
+Admin --> UC2
+Admin --> UC3
+Admin --> UC4
+Admin --> UC5
+Admin --> UC6
+@enduml

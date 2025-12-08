@@ -1,4 +1,6 @@
 @startuml
+skinparam nodesep 50
+
 class BookRegisterController{
 +initialize() : void
 -bookTable : TableView<Book>
@@ -16,8 +18,6 @@ class BookRegisterController{
 -removeFromRegister() : void
 +setBookRegister(in bookRegister : Register<Book>) : void
 }
-
-
 
 class SideBarController{
 -addBtn : Button
@@ -52,9 +52,57 @@ class BookModifyPopupController{
 }
 
 
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''INIZIO INTERFACCE
+
+  interface RegisterAdder<T>{
+add(in toAdd  : T) : boolean
+}
+
+interface RegisterModifier<T>{
+modify(in old : T, in new : T) : boolean
+}
+
+
+interface RegisterValidator<T>{
+isValid(in toVerify : T) : boolean
+}
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+abstract class BookPopupController{
+#titleTF : TextField
+#authorsTF : TextField
+#publishmentYearTF : TextField
+#availableCopiesTF : TextField
+#bookIdTF : TextField
+#confirmBtn : Button
+#cancelBtn : Button
+
+#confirmBtnAction(in event : ActionEvent) : void
+#cancelBtnAction(in event : ActionEvent) : void
+
+}
+
+
+BookInsertPopupController ---|> BookPopupController
+BookModifyPopupController ---|> BookPopupController
+
+
+BookInsertPopupController -d-> RegisterValidator
+BookInsertPopupController --> RegisterAdder
+
+BookModifyPopupController -d-> RegisterValidator
+BookModifyPopupController --> RegisterModifier
+
 
 
 BookRegisterController "1" -r-> "1" SideBarController
 BookRegisterController "1" -d-> "1" BookInsertPopupController
 BookRegisterController "1" -d-> "1" BookModifyPopupController
+
+''' LINEA NASCOSTA PER MIGLIORARE LA VISUALIZZAZIONE
+RegisterAdder -[hidden]right- RegisterValidator
+'''
+
+
 @enduml

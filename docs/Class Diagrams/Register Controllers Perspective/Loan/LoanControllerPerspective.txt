@@ -1,4 +1,5 @@
 @startuml
+skinparam nodesep 50
 
 class LoanRegisterController{
 +initialize() : void
@@ -44,6 +45,7 @@ class LoanInsertPopupController{
 }
 
 
+
 class LoanModifyPopupController{
 +initialize() : void
 +setLoanToModify(in loanToModify : Loan) : void
@@ -54,7 +56,56 @@ class LoanModifyPopupController{
 +setLoanRegisterValidator(in loanRegisterValidator : RegisterValidator<Loan>) : void
 }
 
+
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''INIZIO INTERFACCE
+
+  interface RegisterAdder<T>{
+add(in toAdd  : T) : boolean
+}
+
+interface RegisterModifier<T>{
+modify(in old : T, in new : T) : boolean
+}
+
+
+interface RegisterValidator<T>{
+isValid(in toVerify : T) : boolean
+}
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+abstract class LoanPopupController{
+#studentCB : ComboBox<Student>
+#bookCB : ComboBox<Book>
+#loanEndCB : TextField
+#confirmBtn : Button
+#cancelBtn : Button
+
+#confirmBtnAction(in event : ActionEvent) : void
+#cancelBtnAction(in event : ActionEvent) : void
+}
+
+
+LoanInsertPopupController ---|> LoanPopupController
+LoanModifyPopupController ---|> LoanPopupController
+
+
+LoanInsertPopupController -d-> RegisterValidator
+LoanInsertPopupController --> RegisterAdder
+
+LoanModifyPopupController -d-> RegisterValidator
+LoanModifyPopupController --> RegisterModifier
+
+
+
 LoanRegisterController "1" -r-> "1" SideBarController
 LoanRegisterController "1" -d-> "1" LoanInsertPopupController
 LoanRegisterController "1" -d-> "1" LoanModifyPopupController
+
+''' LINEA NASCOSTA PER MIGLIORARE LA VISUALIZZAZIONE
+RegisterAdder -[hidden]right- RegisterValidator
+'''
+
+
 @enduml

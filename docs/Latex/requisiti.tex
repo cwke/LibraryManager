@@ -1,0 +1,240 @@
+\section{Requisiti Funzionali}\label{Requisitifunzionali}
+\subsection{Funzionalità individuali}
+\begin{enumerate}[label=\textbf{IF-\arabic*}, ref=IF-\arabic*]
+
+    % LIBRI ---
+    \item \textbf{Registrazione di un libro:} \\ Il sistema deve consentire la registrazione di un libro nel catalogo della biblioteca. Durante tale procedura, il sistema deve acquisire tutti i dati definiti nel requisito \ref{df:libro} e presentare all'admin l'interfaccia descritta nel requisito \ref{ui:inserimento}. \label{if1}
+
+    \item \textbf{Modifica dati di un libro registrato:} \\ Il sistema deve consentire la modifica dei dati associati ad un libro precedentemente registrato. Durante tale procedura, il sistema deve acquisire tutti i dati modificabili definiti nel requisito \ref{df:libro} e presentare all'admin l'interfaccia descritta nel requisito \ref{ui:modifica}. \label{if2}
+
+    \item \textbf{Rimozione di un libro:} \\ Il sistema deve consentire la rimozione di un libro precedentemente registrato dal catalogo libri. Durante tale procedura, il sistema deve presentare all'admin l'interfaccia descritta nel requisito \ref{ui:conferma}. \label{if3}
+
+    \item \textbf{Ordinamento libri:} \\ Il sistema deve ordinare lessicograficamente il catalogo dei libri in base al titolo e codice identificativo univoco (ISBN). \label{if4}
+
+    \item \textbf{Visualizzazione del catalogo libri:} \\ Il sistema deve consentire la visualizzazione del catalogo libri precedentemente registrati. Durante tale procedura, il sistema deve mostrare tutti i dati definiti nel requisito \ref{df:libro} e presentare all'admin l'interfaccia descritta nel requisito \ref{ui:principale}. \label{if5}
+
+    \item \textbf{Ricerca libro nel catalogo:} \\ Il sistema deve consentire la ricerca di un libro all'interno del catalogo libri sulla base di titolo, autore o codice identificativo univoco (ISBN). \label{if6}
+
+    \item \textbf{Unicità libro:} \\ Il sistema deve garantire che non siano presenti due libri identici (dunque, aventi lo stesso identificativo secondo \ref{df:libro}) nel catalogo libri. \label{if7}
+
+    \item \textbf{Verifica dati libro:} \\ Il sistema deve verificare che tutti i dati inseriti nei campi specificati nel requisito \ref{df:libro} siano conformi al formato previsto. Non deve essere consentita la presenza nel sistema di un libro i cui dati non rispettino tale formato. \label{if8}
+    % ---
+
+    %  Studenti ---
+    \item \textbf{Registrazione di uno studente:} \\ Il sistema deve consentire la registrazione di uno studente nel registro della biblioteca. Durante tale procedura, il sistema deve acquisire tutti i dati definiti nel requisito \ref{df:studente} e presentare all'admin l'interfaccia descritta nel requisito \ref{ui:inserimento}. \label{if9}
+
+    \item \textbf{Modifica di uno studente:} \\ Il sistema deve consentire la modifica dei dati associati ad uno studente precedentemente registrato. Durante tale procedura, il sistema deve acquisire tutti i dati modificabili definiti nel requisito \ref{df:studente} e presentare all'admin l'interfaccia descritta nel requisito \ref{ui:modifica}. \label{if10}
+
+    \item \textbf{Rimozione di uno studente:} \\ Il sistema deve consentire la rimozione di uno studente precedentemente registrato dal catalogo studenti. Durante tale procedura, il sistema deve presentare all'admin l'interfaccia descritta nel requisito \ref{ui:conferma}. \label{if11}
+
+    \item \textbf{Ordinamento studenti:} \\ Il sistema deve ordinare lessicograficamente il registro degli studenti in base a cognome, nome e matricola. \label{if12}
+
+    \item \textbf{Visualizzazione del registro studenti:} \\ Il sistema deve consentire la visualizzazione del registro studenti precedentemente registrati. Durante tale procedura, il sistema deve mostrare tutti i dati definiti nel requisito \ref{df:studente} e presentare all'admin l'interfaccia descritta nel requisito \ref{ui:principale}. \label{if13}
+
+    \item \textbf{Ricerca studente nel catalogo:} \\ Il sistema deve consentire la ricerca di uno studente all'interno del registro sulla base di nome, cognome o matricola \label{if14}
+
+    \item \textbf{Unicità studente:} \\ Il sistema deve garantire che non siano presenti due studenti identici (dunque, aventi lo stesso identificativo secondo \ref{df:studente}) nel registro studenti. \label{if15}
+
+    \item \textbf{Verifica dati studente:} \\ Il sistema deve verificare che tutti i dati inseriti nei campi specificati nel requisito \ref{df:studente} siano conformi al formato previsto. Non deve essere consentita la presenza nel sistema di uno studente i cui dati non rispettino tale formato. \label{if16}
+    % ----
+
+    % Prestiti ---
+    \item \textbf{Registrazione di un prestito:} \\ Il sistema deve consentire la registrazione di un prestito nel registro della biblioteca. Durante tale procedura, il sistema deve acquisire tutti i dati definiti nel requisito \ref{df:prestito} e presentare all'admin l'interfaccia descritta nel requisito \ref{ui:principale}. \label{if17}
+
+    \item \textbf{Modifica di un prestito:} \\ Il sistema deve consentire la modifica dei dati associati ad un prestito precedentemente registrato. Durante tale procedura, il sistema deve acquisire tutti i dati modificabili definiti nel requisito \ref{df:prestito} e presentare all'admin l'interfaccia descritta nel requisito \ref{ui:modifica}. \label{if18}
+
+    \item \textbf{Ordinamento prestiti:} \\ Il sistema deve ordinare cronologicamente l'elenco di prestiti in base alla data di ultima restituzione. \label{if19}
+
+    \item \textbf{Visualizzazione del catalogo prestiti:} \\ Il sistema deve consentire la visualizzazione del catalogo prestiti precedentemente registrati. Durante tale procedura, il sistema deve mostrare tutti i dati definiti nel requisito \ref{df:prestito} e presentare all'admin l'interfaccia descritta nel requisito \ref{ui:principale}. \label{if20}
+
+    \item \textbf{Registrazione della restituzione di un prestito:} \\ Il sistema deve consentire la registrazione della restituzione di un prestito precedentemente registrato. Durante tale procedura, il sistema deve presentare all'admin l'interfaccia descritta nel requisito \ref{ui:conferma}. \label{if21}
+
+    \item \textbf{Rimozione di un prestito: } \\ Il sistema deve consentire la rimozione di un prestito precedentemente registrato dal catalogo prestiti. Durante tale procedura, il sistema deve presentare all'admin l'interfaccia descritta nel requisito \ref{ui:conferma}. \label{if22}
+
+    \item \textbf{Verifica dati prestito:} \\ Il sistema deve verificare che tutti i dati inseriti nei campi specificati nel requisito \ref{df:prestito} siano conformi al formato previsto. Non deve essere consentita la presenza nel sistema di un prestito i cui dati non rispettino tale formato. \label{if23}
+
+    \item \textbf{Verifica limite massimo prestiti:} \\ Il sistema deve garantire che ad un determinato studente non possano essere associati più di 3 prestiti contemporaneamente. \label{if24}
+
+    \item \textbf{Verifica presenza libro:} \\ Il sistema non deve consentire la registrazione di un prestito il cui libro associato sia stato momentaneamente esaurito. \label{if25}
+
+    \item \textbf{Aggiornamento copie disponibili di un libro:} \\ Il sistema deve automaticamente decrementare di 1 il numero di copie di un libro nel momento in cui questo viene associato ad un prestito. Analogamente, il sistema deve incrementare di 1 il numero di copie di un libro precedentemente prestato nel momento in cui esso viene restituito. \label{if26}
+    % 
+
+    % Salvataggio --?
+    \item \textbf{Salvataggio archivio:} \\ Il sistema deve consentire il salvataggio su file dell'intero database della biblioteca, che comprende: catalogo dei libri, registro degli studenti e registro prestiti. \label{if27}
+
+    \item \textbf{Caricamento archivio:} \\ Il sistema deve consentire l'apertura di un file di salvataggio per caricare il catalogo dei libri, registro degli studenti e registro prestiti in esso contenuti. \label{if28} 
+
+    %Dimenticanza ---
+    \item \textbf{Evidenziazione prestiti in ritardo:} \\ Al momento della visualizzazione dei prestiti, il sistema deve evidenziare tutti i prestiti in ritardo per facilitarne l’individuazione da parte dell’admin. \label{if29} 
+    
+
+    
+\end{enumerate}
+
+\:
+
+\subsection{Esigenze di dati e informazioni}
+\begin{enumerate}[label=\textbf{DF-\arabic*}, ref=DF-\arabic*]
+    \item \textbf{Dati di un libro:} \label{df:libro} \\
+    Il sistema deve memorizzare, per ogni libro registrato, i seguenti dati: \label{df1}
+        \begin{itemize}
+            \item Titolo \textit{(modificabile)}.
+            \item Autori (nome e cognome) \textit{(modificabile)}.
+            \item Anno di pubblicazione \textit{(modificabile)}.
+            \item Codice identificativo univoco (ISBN) \textit{(identificativo)}.
+            \item Numero di copie disponibili \textit{(modificabile)}.
+        \end{itemize}
+
+        \item \textbf{Dati di uno studente;} \label{df:studente} \\ 
+        Il sistema deve memorizzare, per ogni studente registrato, i seguenti dati: \label{df2}
+        \begin{itemize}
+            \item Nome \textit{(modificabile)}.
+            \item Cognome \textit{(modificabile)}.
+            \item Matricola \textit{(identificativo)}.
+            \item E-Mail istituzionale (termina in @studenti.unisa.it) \textit{(modificabile)}.
+            \item Lista dei libri attualmente in prestito \textit{(modificabile)}.
+        \end{itemize}
+
+        \item \textbf{Dati di un prestito:} \label{df:prestito} \\ \label{df3}
+        Il sistema deve memorizzare, per ogni prestito registrato, i seguenti dati:
+        \begin{itemize}
+            \item Studente a cui è associato il prestito.
+            \item Libro preso in prestito.
+            \item Data ultima di restituzione \textit{(modificabile)}
+            \item Restituzione avvenuta o in attesa \textit{(modificabile)}
+        \end{itemize}
+
+\end{enumerate}
+
+\subsection{Interfacce con sistemi esterni}
+\begin{enumerate}[label=\textbf{IS-\arabic*}, ref=IS-\arabic*]
+    \item \textbf{Memorizzazione archivio su file:} \\ \label{is1}
+    Il sistema deve salvare su file tutte le informazioni circa:
+    \begin{itemize}
+        \item Catalogo dei libri.
+        \item Registro degli studenti.
+        \item Registro dei prestiti.
+    \end{itemize}
+\end{enumerate}
+
+\:
+
+\subsection{Interfaccia Utente}
+\begin{enumerate}[label=\textbf{UI-\arabic*}, ref=UI-\arabic*]
+    \item \textbf{Schermata principale.} Deve contenere: \label{ui:principale} \label{ui1}
+        \begin{itemize}
+            \item Un modo per cambiare la tipologia di informazioni da visualizzare.
+            \item Una visualizzazione delle informazioni in forma tabulare.
+            \item Un modo per salvare e caricare l'archivio.
+            \item Un modo per aggiungere le informazioni della tipologia selezionata \ref{ui:inserimento}.
+            \item Un modo per modificare le informazioni della tipologia selezionata\ref{ui:modifica}.
+            \item Un modo per eliminare le informazioni della tipologia selezionata\ref{ui:conferma}.
+            \item Un modo per cercare le informazioni della tipologia selezionata.
+        \end{itemize}
+
+    \item \textbf{Schermata di inserimento dati.} Deve contenere: \label{ui:inserimento} \label{ui2}
+        \begin{itemize}
+            \item Dei controlli per inserire i dati per la tipologia di informazione selezionata.
+            \item Un modo per annullare l'inserimento.
+            \item Un modo per confermare l'inserimento.
+        \end{itemize}
+
+    \item \textbf{Schermata di modifica dati.} Deve contenere: \label{ui:modifica} \label{ui3}
+        \begin{itemize}
+            \item Dei controlli per inserire i dati modificabili per la tipologia di informazione selezionata.
+            \item Dei controlli in sola lettura per le informazioni non modificabili per la tipologia di informazione selezionata.
+            \item Un modo per annullare la modifica.
+            \item Un modo per confermare la modifica.
+        \end{itemize}
+
+    \item \textbf{Pop-Up di notifica.} Deve contenere: \label{ui:notifica} \label{ui4}
+        \begin{itemize}
+            \item Un messaggio di notifica.
+            \item Un modo per confermare e chiudere la notifica.
+        \end{itemize}
+
+    \item \textbf{Pop-Up di conferma.} Deve contenere: \label{ui:conferma} \label{ui5}
+        \begin{itemize}
+            \item Un'avvertenza.
+            \item Un modo per confermare l'operazione.
+            \item Un modo per annullare l'operazione.
+        \end{itemize}
+    
+\end{enumerate}
+\:
+\section{Requisiti non funzionali}
+\begin{enumerate}[label=\textbf{FC-\arabic*}, ref=FC-\arabic*]
+    \item \textbf{Portabilità:} \\
+    Il software deve essere progettato per poter essere eseguito sui sistemi operativi Windows, MacOS e Linux. \label{fc1}
+
+    \item \textbf{Interfaccia responsive:} \\
+    Il software ha un'interfaccia che si adatta a varie dimensioni di schermo. \label{fc1}
+\end{enumerate}
+\clearpage
+
+\section{Tabella di categorizzazione dei requisiti}
+\begin{table}[!ht]
+\centering
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabularx}{\textwidth}{|>{\bfseries}l |X| >{\centering\arraybackslash}p{1.6cm} |X|}
+\rowcolor{headergray}\bfseries
+Prefisso & Requisito & Priorità & Categoria \\ \hline
+
+\ref{if1}  & Registrazione di un libro                              & \cellcolor{priorityAlta}Alta      & \cellcolor{catFunzInd}Funzionalità Individuale \\
+\ref{if2}  & Modifica dati di un libro                              & \cellcolor{priorityMedia}Media    & \cellcolor{catFunzInd}Funzionalità Individuale \\
+\ref{if3}  & Rimozione di un libro                                  & \cellcolor{priorityAlta}Alta      & \cellcolor{catFunzInd}Funzionalità Individuale \\
+\ref{if4}  & Ordinamento libri                                       & \cellcolor{priorityBassa}Bassa   & \cellcolor{catFunzInd}Funzionalità Individuale \\
+\ref{if5}  & Visualizzazione catalogo libri                         & \cellcolor{priorityAlta}Alta      & \cellcolor{catFunzInd}Funzionalità Individuale \\
+\ref{if6}  & Ricerca libro nel catalogo                             & \cellcolor{priorityMedia}Media    & \cellcolor{catFunzInd}Funzionalità Individuale \\
+\ref{if7}  & Unicità libro                                          & \cellcolor{priorityAlta}Alta & \cellcolor{catFunzInd}Funzionalità Individuale \\
+\ref{if8}  & Verifica dati libro                                    & \cellcolor{priorityAlta}Alta & \cellcolor{catFunzInd}Funzionalità Individuale \\
+\ref{if9}  & Registrazione di uno studente                          & \cellcolor{priorityAlta}Alta  & \cellcolor{catFunzInd}Funzionalità Individuale \\
+\ref{if10}  & Modifica di uno studente                              & \cellcolor{priorityMedia}Media & \cellcolor{catFunzInd}Funzionalità Individuale \\
+\ref{if11}  & Rimozione di uno studente                             & \cellcolor{priorityAlta}Alta  & \cellcolor{catFunzInd}Funzionalità Individuale \\
+\ref{if12} & Ordinamento studenti                                   & \cellcolor{priorityBassa}Bassa & \cellcolor{catFunzInd}Funzionalità Individuale \\
+\ref{if13} & Visualizzazione del registro studenti                  & \cellcolor{priorityAlta}Alta  & \cellcolor{catFunzInd}Funzionalità Individuale \\
+\ref{if14} & Ricerca studente nel catalogo                          & \cellcolor{priorityMedia}Media & \cellcolor{catFunzInd}Funzionalità Individuale \\
+\ref{if15} & Unicità studente                                       & \cellcolor{priorityAlta}Alta & \cellcolor{catFunzInd}Funzionalità Individuale \\
+\ref{if16} & Verifica dati studente                                 & \cellcolor{priorityAlta}Alta & \cellcolor{catFunzInd}Funzionalità Individuale \\
+\ref{if17} & Registrazione di un prestito                           & \cellcolor{priorityAlta}Alta  & \cellcolor{catFunzInd}Funzionalità Individuale \\
+\ref{if18} & Modifica di un prestito                                & \cellcolor{priorityMedia}Media & \cellcolor{catFunzInd}Funzionalità Individuale \\
+\ref{if19} & Ordinamento prestiti                                   & \cellcolor{priorityBassa}Bassa & \cellcolor{catFunzInd}Funzionalità Individuale \\
+\ref{if20} & Visualizzazione catalogo prestiti                      & \cellcolor{priorityAlta}Alta  & \cellcolor{catFunzInd}Funzionalità Individuale \\
+\ref{if21} & Registrazione della restituzione di un prestito        & \cellcolor{priorityMedia}Media & \cellcolor{catFunzInd}Funzionalità Individuale \\
+\ref{if22} & Rimozione di un prestito                               & \cellcolor{priorityBassa}Bassa & \cellcolor{catFunzInd}Funzionalità Individuale \\
+\ref{if23} & Verifica dati prestito                               & \cellcolor{priorityAlta}Alta & \cellcolor{catFunzInd}Funzionalità Individuale \\
+\ref{if24} & Verifica limite massimo prestiti                       & \cellcolor{priorityAlta}Alta & \cellcolor{catFunzInd}Funzionalità Individuale \\
+\ref{if25} & Verifica presenza libro                                & \cellcolor{priorityAlta}Alta & \cellcolor{catFunzInd}Funzionalità Individuale \\
+\ref{if26} & Aggiornamento copie disponibili                        & \cellcolor{priorityAlta}Alta & \cellcolor{catFunzInd}Funzionalità Individuale \\
+\ref{if27} & Salvataggio archivio                                   & \cellcolor{priorityMedia}Media & \cellcolor{catFunzInd}Funzionalità Individuale \\
+\ref{if28} & Caricamento archivio                                   & \cellcolor{priorityMedia}Media & \cellcolor{catFunzInd}Funzionalità Individuale \\ \hline
+\end{tabularx}
+\end{table}
+
+\begin{table}[!ht]
+\centering
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabularx}{\textwidth}{|>{\bfseries}l |X| >{\centering\arraybackslash}p{1.6cm} |X|}
+\rowcolor{headergray}\bfseries
+Prefisso & Requisito & Priorità & Categoria \\ \hline
+
+\ref{if29} & Evidenziazione prestiti in ritardo                     & \cellcolor{priorityMedia}Media & \cellcolor{catFunzInd}Funzionalità Individuale \\ \hline
+
+\ref{df1}  & Dati di un libro                                       & \cellcolor{priorityAlta}Alta  & \cellcolor{catDatiInfo}Esigenze dati e informazioni \\
+\ref{df2}  & Dati di uno studente                                      & \cellcolor{priorityAlta}Alta  & \cellcolor{catDatiInfo}Esigenze dati e informazioni \\
+\ref{df3}  & Dati di un prestito                                    & \cellcolor{priorityAlta}Alta  & \cellcolor{catDatiInfo}Esigenze dati e informazioni \\ \hline
+
+\ref{is1}  & Memorizzazione archivio su file                        & \cellcolor{priorityMedia}Media & \cellcolor{catInterfExt}Interfaccia con Sistemi esterni \\ \hline
+
+\ref{ui1}  & Schermata principale                                   & \cellcolor{priorityAlta}Alta  & \cellcolor{catInterfUt}Interfaccia Utente \\
+\ref{ui2}  & Schermata di inserimento dati                          & \cellcolor{priorityAlta}Alta  & \cellcolor{catInterfUt}Interfaccia Utente \\
+\ref{ui3}  & Schermata di modifica dati                             & \cellcolor{priorityMedia}Media  & \cellcolor{catInterfUt}Interfaccia Utente \\
+\ref{ui4}  & Pop-up di notifica                                     & \cellcolor{priorityBassa}Bassa & \cellcolor{catInterfUt}Interfaccia Utente \\
+\ref{ui5}  & Pop-up di conferma                                     & \cellcolor{priorityBassa}Bassa & \cellcolor{catInterfUt}Interfaccia Utente \\ \hline
+\ref{fc1}  & Portabilità                                            & \cellcolor{priorityAlta}Alta & \cellcolor{catInterfFc}Requisiti non funzionali \\ 
+\ref{fc1}  & Interfaccia responsive                                 & \cellcolor{priorityBassa}Bassa & \cellcolor{catInterfFc}Requisiti non funzionali \\ \hline
+\end{tabularx}
+\end{table}

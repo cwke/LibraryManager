@@ -1,0 +1,103 @@
+\documentclass{scrreprt}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[utf8]{inputenc}
+\usepackage[italian]{babel}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage[T1]{fontenc}
+\usepackage[inkscapelatex=false]{svg}
+\usepackage{booktabs}
+\usepackage[table]{xcolor}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{geometry} 
+\usepackage{booktabs}
+\usepackage{float}
+\usepackage{makecell}
+\usepackage{plantuml}
+\usepackage{float}
+
+\usepackage{tikz}
+\usepackage{calc}
+\usepackage{chngpage}
+
+
+\hypersetup{
+    bookmarks=false,  
+    pdftitle={ProgettoLibreria},   
+    pdfauthor={Acerra Fabrizio, Affinita Natale, Cwiertka Jakub, Galluccio Hermann},
+    pdfsubject={},
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=black,
+    filecolor=black,
+    urlcolor=purple,
+    linktoc=page
+}%
+
+% Colori (palette Google Sheets)
+\definecolor{headergray}{HTML}{D9D9D9}
+\definecolor{priorityAlta}{HTML}{F4CCCC}   % rosso chiaro
+\definecolor{priorityMedia}{HTML}{FFF2CC}  % giallo chiaro
+\definecolor{priorityBassa}{HTML}{D9EAD3}  % verde chiaro
+
+\definecolor{catFunzInd}{HTML}{CFE2F3}     % azzurro chiaro
+\definecolor{catDatiInfo}{HTML}{FCE5CD}    % arancio chiarissimo
+\definecolor{catInterfExt}{HTML}{D9D2E9}   % viola chiaro
+\definecolor{catInterfUt}{HTML}{EAD1DC}    % magenta chiaro
+\definecolor{catInterfFc}{HTML}{95c4a8}    % non so come si chiami questo colore
+
+
+
+\begin{document}
+
+% Prima pagina
+\begin{flushright}
+    \rule{16cm}{5pt}\vskip1cm
+    \begin{bfseries}
+        \Huge{SOFTWARE\\BIBLIOTECA UNIVERSITARIA}\\
+        \vspace{1.5cm}
+        \vspace{1.5cm}
+        Acerra Fabrizio\\
+        Affinita Natale\\
+        Cwiertka Jakub\\
+        Galluccio Hermann\\
+        \vspace{1.5cm}
+        Novembre 2025\\
+    \end{bfseries}
+\end{flushright}
+
+% Indice contenuti
+\tableofcontents
+
+% --- SRS
+\chapter{Specifica dei Requisiti del Software - SRS}
+
+\input{Requisiti}
+
+\clearpage
+
+% --- Casi d'uso
+
+\section{Casi d'uso}
+
+\input{CasiDUso}
+
+
+%% --- Diagrammi casi d'uso
+
+\section{Diagrammi casi d'uso}
+
+\begin{center}
+	\includesvg[scale=0.43]{../Use Case Diagrams/svg/uml.svg}
+\end{center}
+
+%%% ------- DESIGN
+
+\chapter{Design}
+
+\input{design.tex}
+
+
+\end{document}

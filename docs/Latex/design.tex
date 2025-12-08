@@ -1,0 +1,250 @@
+\section{Diagrammi delle classi}
+	\subsection{Gerarchia dei modelli}
+	
+	\begin{figure}[H]
+		\begin{adjustwidth}{-\oddsidemargin-0.9in}{-\rightmargin}
+			\centering
+			\includesvg[width=0.98\paperwidth]{../Class Diagrams/Model hierarchy/ModelsHierarchy.svg}
+			\caption{Diagramma delle classi per la gerarchia dei modelli.}
+		\end{adjustwidth}
+	\end{figure}
+	
+	\clearpage
+	\subsection{Prospettiva del MainController}
+	\begin{figure}[H]
+		\begin{adjustwidth}{-\oddsidemargin-0.9in}{-\rightmargin}
+			\centering
+			\includesvg[width=0.98\paperwidth]{../Class Diagrams/Main Controller Perspective/MainControllerPerspective.svg}
+			\caption{Diagramma delle classi per il MainController}
+		\end{adjustwidth}
+	\end{figure}
+
+	
+	\clearpage
+	\subsection{Prospettiva dei RegisterController}
+	
+	\begin{figure}[!ht]
+		\begin{adjustwidth}{-\oddsidemargin-0.9in}{-\rightmargin}
+			\centering
+			\includesvg[width=0.98\paperwidth]{../Class Diagrams/Register Controllers Perspective/Book/BookControllerPerspective.svg}
+			\caption{Diagramma delle classi dalla prospettiva del BookRegisterController}
+		\end{adjustwidth}
+	\end{figure}
+	
+	\begin{figure}[!ht]
+		\begin{adjustwidth}{-\oddsidemargin-0.9in}{-\rightmargin}
+			\centering
+			\includesvg[width=0.98\paperwidth]{../Class Diagrams/Register Controllers Perspective/Student/StudentControllerPerspective.svg}
+			\caption{Diagramma delle classi dalla prospettiva del StudentRegisterController}
+		\end{adjustwidth}
+		
+	\end{figure}
+	
+	\begin{figure}[!ht]
+		\begin{adjustwidth}{-\oddsidemargin-0.9in}{-\rightmargin}
+			\centering
+			\includesvg[width=0.98\paperwidth]{../Class Diagrams/Register Controllers Perspective/Loan/LoanControllerPerspective.svg}
+			\caption{Diagramma delle classi dalla prospettiva del LoanRegisterController}
+		\end{adjustwidth}
+	\end{figure}
+	
+	
+	\clearpage
+
+\clearpage
+\section{Diagrammi di sequenza}
+
+% --- LIBRI ---
+\begin{figure}[h]
+	\centering
+	\includesvg[width=\linewidth]{../Sequence Diagrams/BookInteractions/Add/BookAdd.svg}
+	\caption{Diagramma di sequenza per la registrazione di un libro \ref{UC-1}}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includesvg[width=\linewidth]{../Sequence Diagrams/BookInteractions/Modify/BookModify.svg}
+	\caption{Diagramma di sequenza per la modifica di un libro \ref{UC-2}}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\includesvg[width=\linewidth]{../Sequence Diagrams/BookInteractions/Remove/BookRemove.svg}
+	\caption{Diagramma di sequenza per la rimozione di un libro \ref{UC-3}}
+\end{figure}
+% --------------
+
+% --- STUDENTI ----
+\begin{figure}[h]
+	\centering
+	\includesvg[width=\linewidth]{../Sequence Diagrams/StudentInteractions/Add/StudentAdd.svg}
+	\caption{Diagramma di sequenza per la registrazione di uno studente \ref{UC-6}}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\includesvg[width=\linewidth]{../Sequence Diagrams/StudentInteractions/Modify/StudentModify.svg}
+	\caption{Diagramma di sequenza per la modifica di uno studente \ref{UC-7}}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\includesvg[width=\linewidth]{../Sequence Diagrams/StudentInteractions/Remove/StudentRemoval.svg}
+	\caption{Diagramma di sequenza per la rimozione di uno studente \ref{UC-8}}
+\end{figure}
+% ---------------
+
+% --- PRESTITI ---
+\begin{figure}[h]
+	\centering
+	\includesvg[width=\linewidth]{../Sequence Diagrams/LoanInteractions/Add/LoanAdd.svg}
+	\caption{Diagramma di sequenza per la registrazione di un prestito \ref{UC-11}}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\includesvg[width=\linewidth]{../Sequence Diagrams/LoanInteractions/Modify/LoanModify.svg}
+	\caption{Diagramma di sequenza per la modifica di un prestito \ref{UC-12}}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\includesvg[width=\linewidth]{../Sequence Diagrams/LoanInteractions/Remove/LoanRemoval.svg}
+	\caption{Diagramma di sequenza per la rimozione di un prestito \ref{UC-13}}
+\end{figure}
+% -------------
+
+
+
+\clearpage
+\subsection{Livelli di coesione}
+% Tabella di coesione
+\begin{table}[H]
+	\centering
+	\renewcommand{\arraystretch}{1.5} % Aumenta lo spazio tra le righe per leggibilità
+	\begin{tabular}{|c|c|p{7cm}|}
+		\hline
+		\rowcolor{headergray}
+		\textbf{\textcolor{black}{Nome classe}} & 
+		\textbf{\textcolor{black}{Livello coesione}} & 
+		\textbf{\textcolor{black}{Note}} \\ \hline
+		
+		Library & 
+		\cellcolor{priorityBassa}Funzionale & 
+		La classe aggrega tutti i register per fornire un punto di accesso unico tramite le funzioni getter. \\ \hline
+		
+		Student, Book e Loan &
+		\cellcolor{priorityBassa}Funzionale & Contiene tutti gli attributi e metodi per la visione e gestione di una singola entità. \\ \hline
+		
+		\makecell{Student, Book e Loan \\Register} &
+		\cellcolor{priorityBassa}Funzionale &
+		Le classi implementano un registro del tipo specificato, e forniscono i metodi utili alla gestione di quest'ultimo. \\ \hline
+		
+		LibraryIOManager &
+		\cellcolor{priorityMedia}Comunicazionale & 
+		La classe implementa le funzionalità utili all'interfacciamento della biblioteca con un file esterno di memorizzazione.  \\ \hline
+		
+		MainController &
+		\cellcolor{catDatiInfo}Temporale &La classe implementa le funzionalità utili all'inizializzazione dei principali controller e del gestore IO. \\ \hline
+		
+		MenuBarController &
+		\cellcolor{priorityBassa}Funzionale &
+		La classe gestisce il menu bar fornendo l'accesso alle funzione di IO tramite la classe LibraryIOManager \\ \hline
+		
+		\makecell{Student, Book e Loan \\RegisterController} &
+		\cellcolor{priorityMedia}Comunicazionale &
+		Permette la visualizzazione dei dati in tabella, implementa le funzioni di ricerca e rimozione. Interfaccia il registro con i Popup di inserimento e modifica. \\ \hline
+		
+		\makecell{Student, Book e Loan \\InsertPopupController} &
+		\cellcolor{priorityBassa}Funzionale &
+		La classe implementa le funzionalità utili all'interfacciamento dell'admin con il registro al fine di consentire l'inserimento di un elemento del tipo specificato.\\ \hline
+		
+		\makecell{Student, Book e Loan \\ModifyPopupController} &
+		\cellcolor{priorityBassa}Funzionale &
+		La classe implementa le funzionalità utili all'interfacciamento dell'admin con il registro al fine di consentire la modifica di un elemento del tipo specificato. \\ \hline
+		
+		SideBarController &
+		\cellcolor{priorityMedia}Comunicazionale & La classe implementa le funzionalità utili per l'accesso alle funzionalità di gestione del registro e alla ricerca  \\ \hline
+	
+		
+	\end{tabular}
+\end{table}
+
+
+\clearpage
+\subsection{Livelli di accoppiamento}
+% Tabella di accoppiamento
+
+\begin{table}[h]
+	\centering
+	\renewcommand{\arraystretch}{1.5} % Aumenta lo spazio tra le righe per leggibilità
+	\begin{tabular}{|c|c|c|}
+		\hline
+		\rowcolor{headergray}
+		\textbf{Classe 1} & 
+		\textbf{Classe 2} & 
+		\textbf{Accoppiamento} \\ \hline
+		
+		Loan & Student &
+		\cellcolor{priorityBassa}Per dati \\ \hline
+		
+		Loan & Book &
+		\cellcolor{priorityBassa}Per dati \\ \hline
+		
+		Student & StudentRegister &
+		\cellcolor{priorityBassa}Per dati \\ \hline
+		
+		Book & BookRegister &
+		\cellcolor{priorityBassa}Per dati \\ \hline
+		
+		Loan & LoanRegister &
+		\cellcolor{priorityBassa}Per dati \\ \hline
+		
+		Library & Register &
+		\cellcolor{priorityBassa} Per dati  \\ \hline
+		
+		MainController & MenuBarController &
+		\cellcolor{priorityMedia}Per timbro \\ \hline
+		
+		*RegisterController & MainController &
+		\cellcolor{priorityBassa}Per dati  \\ \hline
+		
+		MenuBarController & LibraryIOManager &
+		\cellcolor{priorityMedia}Per timbro \\ \hline
+		
+		*RegisterController & SideBarController &
+		\cellcolor{priorityBassa}Per dati  \\ \hline
+		
+		*RegisterController & *InsertPopupController &
+		\cellcolor{priorityBassa}Per dati \\ \hline
+		
+		*RegisterController & *ModifyPopupController &
+		\cellcolor{priorityBassa}Per dati  \\ \hline
+		
+	\end{tabular}
+\end{table}
+
+
+%% \subsection{}
+
+\section{Principi di buona progettazione}
+
+\subsection{Principio della minima sorpresa}
+Nel design del sistema è stata data priorità alla chiarezza della nomenclatura. Sono stati prediletti identificatori per classi e metodi che, sebbene talvolta lunghi, risultano esplicativi del loro scopo e della loro responsabilità, minimizzando l'ambiguità. Inoltre, è stata mantenuta una rigida coerenza nelle convenzioni di denominazione (naming convention) lungo tutto il progetto: ad esempio, le classi di registro seguono lo schema EntitàRegister (es. StudentRegister) così come i relativi controller (es. StudentRegisterController).
+
+\subsection{Principio di segregazione delle interfacce}
+Questo principio trova specifica applicazione nella gestione dei Pop-up di modifica e inserimento. Attraverso l'utilizzo di interfacce funzionali, i controller dei Pop-up sono stati disaccoppiati dall'intera interfaccia Register. Ad essi vengono passati esclusivamente i riferimenti ai metodi strettamente necessari per l'operazione.
+
+\subsection{Privilegiare l'associazione all'ereditarietà}
+Si è scelto di limitare l'ereditarietà esclusivamente all'estensione di classi astratte per la condivisione di codice strutturale, preferendo la composizione per le interazioni tra componenti. 
+
+
+\subsection{Ortogonalità}
+L'indipendenza tra i componenti è stata perseguita su due livelli. Sull'asse orizzontale, la gestione della persistenza (LibraryIOManager) è stata isolata dalla logica di business: questo garantisce che eventuali modifiche alle modalità di salvataggio su file non generino effetti collaterali sul funzionamento dell'applicazione. Sull'asse verticale, i domini Book e Student operano come compartimenti isolati; è possibile evolvere la gestione anagrafica degli studenti senza alcun impatto sulla gestione dei libri. Tuttavia, l'ortogonalità del sistema non è assoluta a causa dell'entità Loan. Essendo per sua natura un'entità relazionale, il Prestito crea un punto di accoppiamento strutturale: modifiche sostanziali ai modelli Book o Student rischiano inevitabilmente di propagarsi alla logica di gestione dei prestiti, rendendo questa componente meno indipendente rispetto alle altre.
+
+
+\subsection{DRY - Don't Repeat Yourself}
+Per evitare la duplicazione del codice e favorire la manutenibilità, è stata definita una classe astratta per i Pop-Up contenente le definizioni di attributi e metodi comuni, evitando di ripeterli nelle implementazioni specifiche. Inoltre, l'adozione dell'interfaccia comune Register ha permesso di uniformare le operazioni sui diversi tipi di dati.
+
+\subsection{YANGI - You Ain't Gonna Need It}
+Lo sviluppo si è attenuto strettamente ai \ref{Requisitifunzionali} evitando l'introduzione di funzionalità speculative non richieste.

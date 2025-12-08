@@ -1,4 +1,6 @@
 @startuml
+skinparam nodesep 50
+
 class StudentRegisterController{
 +initialize() : void
 -studentTable : TableView<Student>
@@ -51,9 +53,52 @@ class StudentModifyPopupController{
 +setStudentRegisterValidator(in studentRegisterValidator : RegisterValidator<Student>) : void
 }
 
+interface RegisterAdder<T>{
+add(in toAdd  : T) : boolean
+}
+
+interface RegisterModifier<T>{
+modify(in old : T, in new : T) : boolean
+}
+
+interface RegisterValidator<T>{
+isValid(in toVerify : T) : boolean
+}
+
+
+abstract class StudentPopupController{
+#nameTF : TextField
+#surnameTF : TextField
+#studentIdTF : TextField
+#emailTF : TextField
+#confirmBtn : Button
+#cancelBtn : Button
+
+#confirmBtnAction(in event : ActionEvent) : void
+#cancelBtnAction(in event : ActionEvent) : void
+}
+
+
+
+StudentInsertPopupController ---|> StudentPopupController
+StudentModifyPopupController ---|> StudentPopupController
+
+
+StudentInsertPopupController -d-> RegisterValidator
+StudentInsertPopupController --> RegisterAdder
+
+StudentModifyPopupController -d-> RegisterValidator
+StudentModifyPopupController --> RegisterModifier
+
 
 
 StudentRegisterController "1" -r-> "1" SideBarController
 StudentRegisterController "1" -d-> "1" StudentInsertPopupController
 StudentRegisterController "1" -d-> "1" StudentModifyPopupController
+
+''' LINEA NASCOSTA PER MIGLIORARE LA VISUALIZZAZIONE
+RegisterAdder -[hidden]right- RegisterValidator
+'''
+
+
 @enduml

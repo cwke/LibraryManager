@@ -104,6 +104,9 @@ out/
 *.pdf
 *.dvi
 *.ps
+*.pytxcode
+*-plantuml.txt
+docs/Latex/svg-inkscape
 
 # Doxygen
 

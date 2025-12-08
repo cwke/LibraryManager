@@ -1,14 +1,6 @@
 @startuml
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''MENUBAR
-class MenuBarController{
--libraryIOManager : LibraryIOManager
--library : Library
 
-+setLibrary(in library : Library)
--openFile(in event : ActionEvent) : void
--closeFile(in event : ActionEvent) : void
--saveFile(in event : ActionEvent) : void
-}
+skinparam nodesep 50
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''MAIN
 class MainController{
 +initialize() : void
@@ -31,7 +23,7 @@ class BookRegisterController{
 -sideBarController : SideBarController
 -bookInsertPopupController : BookInsertPopupController
 -bookModifyPopupController : BookModifyPopupController
--openInsertPopup() : void
+  -openInsertPopup() : void
 -openModifyPopup() : void
 -removeFromRegister() : void
 +setBookRegister(in bookRegister : Register<Book>) : void
@@ -73,10 +65,27 @@ class StudentRegisterController{
 -removeFromRegister() : void
 +setStudentRegister(in studentRegister : Register<Student>) : void
 }
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''MENUBAR
+class MenuBarController{
+-libraryIOManager : LibraryIOManager
+-library : Library
 
++setLibrary(in library : Library)
+-openFile(in event : ActionEvent) : void
+-closeFile(in event : ActionEvent) : void
+-saveFile(in event : ActionEvent) : void
+}
+''''''''''''''''''''''''''''''''
+class LibraryIOManager{
++saveLibrary(in libraryToSave : Library, in filePath : String) : void 
++loadLibrary(in filePath : String): Library 
+}
 
-MainController "1" -r-> "1" MenuBarController
+MainController -r-> Library
+MainController "1" -u-> "1" MenuBarController
 MainController "1" -d-> "1" LoanRegisterController
 MainController "1" -d-> "1" BookRegisterController
 MainController "1" -d-> "1" StudentRegisterController
+MenuBarController "1" -l-> "1" LibraryIOManager
+
 @enduml
