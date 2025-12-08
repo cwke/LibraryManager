@@ -1,53 +1,68 @@
 /**
  * @file MainController.java
- * @brief Questo file contine il controller del file MainView.fxml
+ * @brief Controller principale dell'applicazione (Root Controller).
+ * @author [Acerra Fabrizio, Affinita Natale, Cwiertka Jakub, Galluccio Hermann]
+ * @date Dicembre 2025
+ * @package softeng.librarymanager.controllers
  */
+
 package softeng.librarymanager.controllers;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
+import softeng.librarymanager.models.Library;
 
-public class MainController implements Initializable {
-    
-    @FXML
-    BookRegisterController bookRegisterController;
-    @FXML
-    StudentRegisterController studentRegisterController;
-    @FXML
-    LoanRegisterController loanRegisterController;
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-    }
+/**
+ * @class MainController
+ * @brief Classe controller principale che coordina l'intera interfaccia utente.
+ * @details Questa classe funge da punto di ingresso per la logica della GUI.
+ *          È responsabile dell'inizializzazione dell'istanza principale di {@link Library}
+ *          e della propagazione di tale istanza ai sotto-controller (Studenti, Libri, Prestiti, MenuBar)
+ *          per garantire che tutti lavorino sugli stessi dati condivisi.
+ */
+public class MainController {
 
     /**
-     * @brief openFileAction è la funzione che apre il file
+     * @brief Istanza del modello dati principale (Facade).
      */
-    @FXML
-    private void openFileAction(ActionEvent event) {
-    }
+    private Library library;
 
     /**
-     * @brief closeFileAction è la funzione che chiude il file
+     * @brief Controller innestato per la gestione del registro studenti.
+     * @details Iniettato automaticamente tramite tag <fx:include> nell'FXML.
      */
     @FXML
-    private void closeFileAction(ActionEvent event) {
-    }
+    private StudentRegisterController studentRegisterController;
 
     /**
-     * @brief saveFileAction è la funzione che salva sul file
+     * @brief Controller innestato per la gestione del registro libri.
+     * @details Iniettato automaticamente tramite tag <fx:include> nell'FXML.
      */
     @FXML
-    private void saveFileAction(ActionEvent event) {
-    }
+    private BookRegisterController bookRegisterController;
 
     /**
-     * @brief saveFileWithNameAction è la funzione che salva su un file
+     * @brief Controller innestato per la gestione del registro prestiti.
+     * @details Iniettato automaticamente tramite tag <fx:include> nell'FXML.
      */
     @FXML
-    private void saveFileWithNameAction(ActionEvent event) {
+    private LoanRegisterController loanRegisterController;
+
+    /**
+     * @brief Controller innestato per la barra dei menu superiore.
+     * @details Iniettato automaticamente tramite tag <fx:include> nell'FXML.
+     */
+    @FXML
+    private MenuBarController menuBarController;
+
+    /**
+     * @brief Metodo di inizializzazione del controller principale.
+     * @details Viene chiamato automaticamente da JavaFX dopo il caricamento dell'FXML.
+     *          Si occupa di istanziare la classe {@link Library} e di passarne il riferimento
+     *          ai sotto-controller tramite i loro metodi setter specifici.
+     */
+    @FXML
+    public void initialize() {
+        // Logica di inizializzazione e propagazione dell'istanza Library
     }
+
 }

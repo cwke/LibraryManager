@@ -1,114 +1,92 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
+/**
+ * @file BookPopupController.java
+ * @brief Controller astratto base per i popup di gestione libri.
+ * @author [Acerra Fabrizio, Affinita Natale, Cwiertka Jakub, Galluccio Hermann]
+ * @date Dicembre 2025
+ * @package softeng.librarymanager.controllers
  */
+
 package softeng.librarymanager.controllers;
 
-import java.net.URL;
-import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 import softeng.librarymanager.models.Book;
 
 /**
- * FXML Controller class
- *
- * @author Jakub
+ * @class BookPopupController
+ * @brief Classe base astratta per i controller dei popup (Inserimento e Modifica).
+ * @details Raccoglie i componenti grafici comuni (TextField, Button) definiti nel diagramma
+ *          e gestisce la logica di base condivisa dalle finestre popup di dialogo dei libri.
  */
-public class BookPopupController implements Initializable {
-
-    @FXML
-    private TextField titleTF;
-    @FXML
-    private TextField authorsTF;
-    @FXML
-    private TextField publishYearTF;
-    @FXML
-    private TextField bookCodeTF;
-    @FXML
-    private TextField copiesTF;
-    @FXML
-    private Button confirmBtn;
-    @FXML
-    private Button cancelBtn;
-
-    private ItemAcceptor<Book> itemAcceptor;
-
-    private boolean editing = false;
-    private Book editItem;
+public abstract class BookPopupController {
 
     /**
-     * Initializes the controller class.
+     * @brief Campo di testo per il titolo del libro.
      */
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        // Tutti i campi devono essere riempiti per poter abilitare il pulsante Conferma
-        // Andrebbe reso più leggibile
-        confirmBtn.disableProperty().bind(
-                titleTF.textProperty().isEmpty().or(authorsTF.textProperty().isEmpty().or(publishYearTF.textProperty()
-                        .isEmpty().or(bookCodeTF.textProperty().isEmpty().or(copiesTF.textProperty().isEmpty())))));
-
-        
-        // Si potrebbe fare tramite binding il controllo se annopubblicazione e
-        // numerocopie sono numeri (credo)
-
-    }
-
     @FXML
-    private void confirmAction(ActionEvent event) {
-        if (this.editing == false) {
-            Book newBook = new Book(titleTF.getText(), Integer.parseInt(publishYearTF.getText()), bookCodeTF.getText(),
-                    Integer.parseInt(publishYearTF.getText()), authorsTF.getText());
-            // ----- Parte da cambiare in base alla ui e la modifica degli autori
+    protected TextField titleTF;
 
-            if (itemAcceptor != null && !itemAcceptor.isValid(newBook)) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Errore inserimento dati");
-                alert.setHeaderText("Il codice identificativo del libro è già presente nel catalogo o non è valido");
-                alert.showAndWait();
-            } else {
-                if (itemAcceptor != null) {
-                    itemAcceptor.add(newBook);
-                }
-                ((Stage) ((Node) event.getSource()).getScene().getWindow()).close();
-            }
-        } else {
-            editItem.setTitle(titleTF.getText());
-            editItem.setPublishYear(Integer.parseInt(publishYearTF.getText()));
-            editItem.setAvailableCopies(Integer.parseInt(copiesTF.getText()));
-            ((Stage) ((Node) event.getSource()).getScene().getWindow()).close();
-        }
-
-    }
-
-    
+    /**
+     * @brief Campo di testo per gli autori del libro.
+     */
     @FXML
-    private void cancelAction(ActionEvent event) {
-        ((Stage) ((Node) event.getSource()).getScene().getWindow()).close();
+    protected TextField authorsTF;
+
+    /**
+     * @brief Campo di testo per l'anno di pubblicazione.
+     */
+    @FXML
+    protected TextField publishmentYearTF;
+
+    /**
+     * @brief Campo di testo per il numero di copie disponibili.
+     */
+    @FXML
+    protected TextField availableCopiesTF;
+
+    /**
+     * @brief Campo di testo per l'ID (ISBN) del libro.
+     */
+    @FXML
+    protected TextField bookIdTF;
+
+    /**
+     * @brief Bottone di conferma (Salva/Aggiungi).
+     */
+    @FXML
+    protected Button confirmBtn;
+
+    /**
+     * @brief Bottone di annullamento.
+     */
+    @FXML
+    protected Button cancelBtn;
+
+    /**
+     * @brief Inizializzazione base del controller.
+     * @details Metodo chiamato automaticamente da JavaFX dopo il caricamento dell'FXML.
+     */
+    @FXML
+    public void initialize() {
     }
 
+    /**
+     * @brief Gestisce l'evento di click sul bottone di conferma.
+     * @details Metodo astratto o base da implementare nelle sottoclassi per definire
+     *          la logica specifica (Inserimento o Modifica).
+     * @param[in] event L'evento generato dal click.
+     */
+    @FXML
+    public abstract void confirmBtnAction(ActionEvent event);
 
-    public void setItemAdder(ItemAcceptor itemAdder) {
-        this.itemAcceptor = itemAdder;
+    /**
+     * @brief Gestisce l'evento di click sul bottone di annullamento.
+     * @details Chiude la finestra corrente senza salvare le modifiche.
+     * @param[in] event L'evento generato dal click.
+     */
+    @FXML
+    public void cancelBtnAction(ActionEvent event) {
     }
-
-    public void setItemToEdit(Book editItem) {
-        this.editing = true;
-        this.editItem = editItem;
-
-        bookCodeTF.setDisable(true);
-
-        titleTF.setText(this.editItem.getTitle());
-        publishYearTF.setText("" + this.editItem.getPublishYear());
-        bookCodeTF.setText(this.editItem.getBookCode());
-        authorsTF.setText(this.editItem.getAuthors()); // TODO: autori
-        copiesTF.setText("" + this.editItem.getAvailableCopies());
-    }
-
 }

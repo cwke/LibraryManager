@@ -58,7 +58,7 @@ public class BookRegister implements Register<Book> {
 
     /**
      * @brief Rimuove un libro dal catalogo.
-     * * @param toRemove Il libro da rimuovere.
+     * @param[in] toRemove Il libro da rimuovere.
      * @return boolean True se la rimozione ha avuto successo.
      */
     @Override
