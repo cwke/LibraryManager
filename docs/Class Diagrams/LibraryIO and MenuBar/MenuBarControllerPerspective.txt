@@ -1,0 +1,20 @@
+@startuml
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''MENUBAR
+class MenuBarController{
+-libraryIOManager : LibraryIOManager
+-library : Library
+
++setLibrary(in library : Library)
+-openFile(in event : ActionEvent) : void
+-closeFile(in event : ActionEvent) : void
+-saveFile(in event : ActionEvent) : void
+}
+
+
+class LibraryIOManager{
++saveLibrary(in libraryToSave : Library, in filePath : String) : void 
++loadLibrary(in filePath : String): Library 
+}
+
+MenuBarController "1" --> "1" LibraryIOManager
+@enduml

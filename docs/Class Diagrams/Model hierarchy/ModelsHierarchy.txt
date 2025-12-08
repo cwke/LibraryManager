@@ -1,0 +1,105 @@
+@startuml
+interface Register<T>{
+add(in toAdd  : T) : boolean
+modify(in old : T, in new : T) : boolean
+remove(in toRemove : T) : boolean
+isValid(in toVerify : T) : boolean
+getRegister() : ObservableList<T>
+}
+
+together {
+
+class StudentRegister{
+-studentRegister : ObservableList<Student>
++StudentRegister()
+}
+
+class BookRegister{
+-bookRegister : ObservableList<Book>
++BookRegister()
+}
+
+class LoanRegister{
+-loanRegister : ObservableList<Loan>
++LoanRegister()
+}
+
+}
+
+together{
+
+class Student{
+-name : StringProperty
+-surname : StringProperty
+-studentId : StringProperty {readOnly}
+-email : StringProperty
+-activeLoans : ObservableList<Loan>
+
++Student()
++nameProperty() : StringProperty
++surnameProperty() : StringProperty
++studentIdProperty() : StringProperty
++emailProperty() : StringProperty
++getActiveLoans() : ObservableList<Loan>
++addActiveLoan(in loanToAdd : Loan) : void
++removeActiveLoan(in loanToRemove : Loan) : void
+}
+
+class Book{
+-title : StringProperty
+-publishmentYear : IntegerProperty
+-authors : StringProperty
+-bookId : StringProperty {readOnly}
+-availableCopies : IntegerProperty
+
++Book()
++titleProperty() : StringProperty
++publishmentYearProperty() : IntegerProperty
++authorsProperty() : StringProperty
++bookIdProperty() : StringProperty
++availableCopiesProperty() : IntegerProperty
+}
+
+class Loan{
+-student : Student {readOnly}
+-book : Book {readOnly}
+-loanEnd : ObjectProperty<LocalDate>
+-returned : BooleanProperty
+
++getStudent() : Student
++getBook() : Book
++loanEndProperty() : ObjectProperty<LocalDate>
++returnedProperty() : BooleanProperty
+}
+
+}
+
+
+
+
+StudentRegister .u.|> Register
+StudentRegister "1" -d-> "*" Student
+
+BookRegister .u.|> Register
+BookRegister "1" -d-> "*" Book
+
+LoanRegister .u.|> Register
+LoanRegister "1" -d-> "*" Loan
+
+Loan "*" -l-> "1" Book
+Loan "0...3" -r- "1" Student
+
+class Library{
+-studentRegister : Register<Student>
+-loanRegister : Register<Loan>
+-bookRegister : Register<Book>
+
++Library()
++getStudentRegister() : Register<Student>
++getBookRegister() : Register<Book>
++getLoanRegister() : Register<Loan>
+
+}
+
+Library "1" --> "3" Register
+@enduml
