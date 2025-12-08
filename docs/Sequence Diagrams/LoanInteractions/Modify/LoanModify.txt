@@ -1,0 +1,25 @@
+@startuml
+'DIAGRAMMA DI SEQUENZA DELLA MODIFICA DI UNO LOAN
+
+actor Admin
+
+participant SideBarController
+participant LoanRegisterController
+participant LoanModifyPopupController
+participant MainController
+participant LoanRegister
+
+Admin -> LoanRegisterController : "Selects a Loan"
+Admin -> SideBarController : "Clicks "Modify" Button"
+SideBarController -> LoanRegisterController : openModifyPopup()
+LoanRegisterController --> Admin : "Shows Modify Popup"
+loop loanNotValid
+Admin -> LoanModifyPopupController : "Inserts new Data"
+LoanModifyPopupController -> LoanRegister : isValid(new Loan)
+LoanModifyPopupController <-- LoanRegister : result
+opt loanNotValid
+LoanModifyPopupController --> Admin : "Data not correct, please retry"
+end
+end
+LoanModifyPopupController -> LoanRegister : modify(Loan selected, new Loan)
+@enduml
