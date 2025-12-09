@@ -106,6 +106,7 @@ out/
 *.pytxcode
 *-plantuml.txt
 docs/Latex/svg-inkscape
+docs/Latex/*.pdf
 
 # Doxygen
 

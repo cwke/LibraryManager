@@ -9,7 +9,6 @@
 		\end{adjustwidth}
 	\end{figure}
 	
-	\clearpage
 	\subsection{Prospettiva del MainController}
 	\begin{figure}[H]
 		\begin{adjustwidth}{-\oddsidemargin-0.9in}{-\rightmargin}
@@ -236,15 +235,16 @@ Nel design del sistema è stata data priorità alla chiarezza della nomenclatura
 Questo principio trova specifica applicazione nella gestione dei Pop-up di modifica e inserimento. Attraverso l'utilizzo di interfacce funzionali, i controller dei Pop-up sono stati disaccoppiati dall'intera interfaccia Register. Ad essi vengono passati esclusivamente i riferimenti ai metodi strettamente necessari per l'operazione.
 
 \subsection{Privilegiare l'associazione all'ereditarietà}
-Si è scelto di limitare l'ereditarietà esclusivamente all'estensione di classi astratte per la condivisione di codice strutturale, preferendo la composizione per le interazioni tra componenti. 
+Si è scelto di limitare l’ereditarietà esclusivamente all’estensione di classi astratte per la condivisione di codice strutturale, preferendo l'associazione per le interazioni tra i vari moduli.
 
 
 \subsection{Ortogonalità}
-L'indipendenza tra i componenti è stata perseguita su due livelli. Sull'asse orizzontale, la gestione della persistenza (LibraryIOManager) è stata isolata dalla logica di business: questo garantisce che eventuali modifiche alle modalità di salvataggio su file non generino effetti collaterali sul funzionamento dell'applicazione. Sull'asse verticale, i domini Book e Student operano come compartimenti isolati; è possibile evolvere la gestione anagrafica degli studenti senza alcun impatto sulla gestione dei libri. Tuttavia, l'ortogonalità del sistema non è assoluta a causa dell'entità Loan. Essendo per sua natura un'entità relazionale, il Prestito crea un punto di accoppiamento strutturale: modifiche sostanziali ai modelli Book o Student rischiano inevitabilmente di propagarsi alla logica di gestione dei prestiti, rendendo questa componente meno indipendente rispetto alle altre.
+Le funzionalità di Input/Output e la logica di gestione dei Registri sono mantenute completamente separate, consentendo di modificare l'una senza effetti collaterali sull'altra. Inoltre, è stato garantito l'isolamento tra tutti i componenti che gestiscono l'entità Book e quelli che gestiscono l'entità Student (modelli, controller di registro e controller di pop-up).
+
 
 
 \subsection{DRY - Don't Repeat Yourself}
 Per evitare la duplicazione del codice e favorire la manutenibilità, è stata definita una classe astratta per i Pop-Up contenente le definizioni di attributi e metodi comuni, evitando di ripeterli nelle implementazioni specifiche. Inoltre, l'adozione dell'interfaccia comune Register ha permesso di uniformare le operazioni sui diversi tipi di dati.
 
 \subsection{YANGI - You Ain't Gonna Need It}
-Lo sviluppo si è attenuto strettamente ai \ref{Requisitifunzionali} evitando l'introduzione di funzionalità speculative non richieste.
+Lo sviluppo si è attenuto strettamente ai \hyperref[reqFun]{Requisiti Funzionali} evitando l’introduzione di funzionalità aggiuntive non richieste.
