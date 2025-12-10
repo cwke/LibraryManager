@@ -1,0 +1,309 @@
+/* Premium Modern Theme */
+.root {
+    /* Color Palette */
+    -fx-base: #f4f7fa;
+    /* Soft cool grey background */
+    -fx-background: #f4f7fa;
+
+    /* Brand Colors - Indigo/Blue Violet */
+    -fx-accent: #6366f1;
+    -fx-accent-gradient: linear-gradient(to bottom right, #6366f1, #8b5cf6);
+    -fx-accent-hover: linear-gradient(to bottom right, #4f46e5, #7c3aed);
+
+    /* Text */
+    -fx-text-base: #1e293b;
+    /* Slate 800 */
+    -fx-text-muted: #64748b;
+    /* Slate 500 */
+    -fx-text-light: #ffffff;
+
+    /* Components */
+    -fx-card-bg: #ffffff;
+    -fx-input-bg: #ffffff;
+    -fx-border-color: #e2e8f0;
+    /* Slate 200 */
+
+    /* Global Font */
+    -fx-font-family: "Segoe UI Semibold", "Segoe UI", sans-serif;
+    -fx-font-size: 14px;
+
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+
+    -fx-background-color: #f4f7fa;
+}
+
+/* Typography */
+.label,
+.text {
+    -fx-text-fill: #1e293b;
+}
+
+/* MenuBar - Float and Clean */
+.menu-bar {
+    -fx-background-color: #ffffff;
+    -fx-padding: 8 15;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.05), 10, 0, 0, 5);
+    -fx-border-color: #e2e8f0;
+    -fx-border-width: 0 0 1 0;
+}
+
+.menu-item {
+    -fx-padding: 8 12;
+}
+
+.menu-item:focused {
+    -fx-background-color: #f1f5f9;
+    -fx-background-radius: 4;
+}
+
+.menu-bar .menu-button:hover,
+.menu-bar .menu-button:focused,
+.menu-bar .menu-button:showing {
+    -fx-background-color: rgba(99, 102, 241, 0.1);
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+}
+
+.menu-bar .menu-button:hover .label,
+.menu-bar .menu-button:focused .label,
+.menu-bar .menu-button:showing .label {
+    -fx-text-fill: #6366f1;
+}
+
+/* Menu Dropdown (Context Menu) */
+.context-menu {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-border-color: #e2e8f0;
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 10, 0, 0, 5);
+    -fx-padding: 4 0;
+}
+
+.menu-item {
+    -fx-padding: 8 15;
+    -fx-background-color: transparent;
+}
+
+.menu-item:focused {
+    -fx-background-color: rgba(99, 102, 241, 0.1);
+    /* Light indigo */
+    -fx-background-radius: 4;
+}
+
+.menu-item:focused .label {
+    -fx-text-fill: #6366f1;
+    /* Indigo text on hover */
+}
+
+/* TabPane - Modern Pill/Underline Hybrid */
+.tab-pane .tab-header-area {
+    -fx-padding: 10 20 0 0;
+    -fx-background-color: transparent;
+}
+
+.tab-pane .tab-header-background {
+    -fx-background-color: transparent;
+}
+
+.tab-pane .tab {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-padding: 8 20;
+    -fx-border-width: 1.5;
+    -fx-border-color: transparent;
+    -fx-border-radius: 8;
+    -fx-cursor: hand;
+}
+
+.tab-pane .tab:selected {
+    -fx-border-color: #6366f1;
+    -fx-border-radius: 8;
+}
+
+.tab-pane .tab .tab-label {
+    -fx-text-fill: #64748b;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+}
+
+.tab-pane .tab:selected .tab-label {
+    -fx-text-fill: #6366f1;
+}
+
+.tab-pane .tab:hover {
+    -fx-background-color: rgba(99, 102, 241, 0.04);
+    -fx-background-radius: 8;
+}
+
+/* TableView - Card Style */
+.table-view {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 8;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.03), 8, 0, 0, 4);
+    -fx-padding: 5;
+    -fx-border-color: #e2e8f0;
+    -fx-border-radius: 8;
+    -fx-table-cell-border-color: transparent;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: transparent;
+    -fx-border-width: 0 0 1 0;
+    -fx-border-color: #e2e8f0;
+}
+
+.table-view .column-header {
+    -fx-background-color: transparent;
+    -fx-size: 45px;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: #64748b;
+    /* Muted header text */
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+    -fx-text-transform: uppercase;
+}
+
+.table-row-cell {
+    -fx-background-color: transparent;
+    -fx-border-width: 0 0 1 0;
+    -fx-border-color: #f1f5f9;
+    /* Subtle separator */
+}
+
+/* Striped rows effect manually with odd/even if needed, for now clean white */
+.table-row-cell:odd {
+    -fx-background-color: #f8fafc;
+}
+
+.table-row-cell:filled:hover {
+    -fx-background-color: #f1f5f9;
+    -fx-cursor: hand;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #eef2ff;
+    /* Very light indigo */
+    -fx-background-insets: 2 4 2 4;
+    -fx-background-radius: 4;
+}
+
+.table-row-cell:selected .text {
+    -fx-fill: #4f46e5;
+}
+
+/* Buttons - Modern Gradient Pills */
+.button {
+    -fx-background-color: linear-gradient(to right, #6366f1, #8b5cf6);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-padding: 10 20;
+    -fx-background-radius: 20;
+    /* Pill shape */
+    -fx-effect: dropshadow(three-pass-box, rgba(99, 102, 241, 0.3), 10, 0, 0, 4);
+    -fx-cursor: hand;
+    -fx-border-width: 0;
+}
+
+.button:hover {
+    -fx-background-color: linear-gradient(to right, #4f46e5, #7c3aed);
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+    -fx-effect: dropshadow(three-pass-box, rgba(99, 102, 241, 0.4), 12, 0, 0, 5);
+}
+
+.button:pressed {
+    -fx-background-color: #4338ca;
+    -fx-scale-x: 0.98;
+    -fx-scale-y: 0.98;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 5, 0, 0, 1);
+}
+
+/* Sidebar Specific Buttons - Clean Icons */
+#addBtn,
+#removeBtn,
+#modifyBtn {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #1e293b;
+    -fx-background-radius: 8;
+    /* Rounded rects, not pills */
+    -fx-border-color: #e2e8f0;
+    -fx-border-radius: 8;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.02), 4, 0, 0, 2);
+    -fx-alignment: CENTER_LEFT;
+}
+
+#addBtn:hover,
+#removeBtn:hover,
+#modifyBtn:hover {
+    -fx-background-color: #f8fafc;
+    -fx-border-color: #6366f1;
+    /* Highlight border */
+    -fx-text-fill: #6366f1;
+}
+
+/* TextFields - Clean & Modern */
+.text-field {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #1e293b;
+    -fx-prompt-text-fill: #94a3b8;
+    -fx-background-radius: 8;
+    -fx-border-color: #e2e8f0;
+    -fx-border-radius: 8;
+    -fx-border-width: 1.5;
+    -fx-padding: 10 12;
+}
+
+.text-field:focused {
+    -fx-border-color: #6366f1;
+    -fx-effect: dropshadow(three-pass-box, rgba(99, 102, 241, 0.1), 5, 0, 0, 0);
+}
+
+/* SplitPane */
+.split-pane {
+    -fx-background-color: transparent;
+}
+
+.split-pane .split-pane-divider {
+    -fx-background-color: transparent;
+    -fx-padding: 0 5 0 5;
+    /* More space between panes */
+}
+
+/* ScrollBar - Modern & Slim */
+.scroll-bar {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar:vertical {
+    -fx-pref-width: 10;
+}
+
+.scroll-bar:horizontal {
+    -fx-pref-height: 10;
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: #cbd5e1;
+    -fx-background-radius: 5;
+}
+
+.scroll-bar .thumb:hover {
+    -fx-background-color: #94a3b8;
+}
+
+.scroll-bar .track {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar .increment-button,
+.scroll-bar .decrement-button {
+    -fx-pref-height: 0;
+    -fx-pref-width: 0;
+    -fx-opacity: 0;
+}

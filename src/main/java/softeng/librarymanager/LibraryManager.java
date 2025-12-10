@@ -38,6 +38,8 @@ public class LibraryManager extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         scene = new Scene(loadFXML("MainView"), 1280, 720);
+        String cssPath = getClass().getResource("style.css").toExternalForm();
+        scene.getStylesheets().add(cssPath);
         stage.setScene(scene);
         stage.setMinWidth(620);
         stage.setMinHeight(480);
