@@ -1,4 +1,4 @@
-\documentclass{scrreprt}
+\documentclass[open=any]{scrreprt}
 \usepackage{amsmath}
 \usepackage{graphicx}
 \usepackage[utf8]{inputenc}
@@ -87,11 +87,41 @@
 
 %% --- Diagrammi casi d'uso
 
-\section{Diagrammi casi d'uso}
+\clearpage
 
-\begin{center}
-	\includesvg[scale=0.43]{../Use Case Diagrams/svg/uml.svg}
-\end{center}
+\section{Diagrammi dei casi d'uso}
+
+\begin{figure}[!ht]
+	\begin{adjustwidth}{-\oddsidemargin-0.9in}{-\rightmargin}
+		\centering
+		\includesvg[width=0.98\paperwidth]{../Use Case Diagrams/svg/BookDiagram.svg}
+		\caption{Diagramma dei casi d'uso: gestione dei libri.}
+	\end{adjustwidth}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{adjustwidth}{-\oddsidemargin-0.9in}{-\rightmargin}
+		\centering
+		\includesvg[width=0.98\paperwidth]{../Use Case Diagrams/svg/StudentDiagram.svg}
+		\caption{Diagramma dei casi d'uso: gestione degli studenti.}
+	\end{adjustwidth}
+\end{figure}
+
+\begin{figure}[!ht]
+	\begin{adjustwidth}{-\oddsidemargin-0.9in}{-\rightmargin}
+		\centering
+		\includesvg[width=0.98\paperwidth]{../Use Case Diagrams/svg/LoanDiagram.svg}
+		\caption{Diagramma dei casi d'uso: gestione dei prestiti.}
+	\end{adjustwidth}
+\end{figure}
+
+\begin{figure}[h]
+		\centering
+		\includesvg[width=0.6\linewidth]{../Use Case Diagrams/svg/IODiagram.svg}
+		\caption{Diagramma dei casi d'uso: gestione dell'I/O.}
+\end{figure}
+
+
 
 %%% ------- DESIGN
 
