@@ -77,6 +77,15 @@ public class LoanRegisterController {
      * @brief Controller per il popup di modifica prestito.
      */
     private LoanModifyPopupController loanModifyPopupController;
+    
+    /**
+     * @brief Costruttore del controller.
+     * @param[in] library L'istanza principale della biblioteca.
+     */
+    public LoanRegisterController(Library library) {
+        this.library = library;
+    }
+
 
     /**
      * @brief Metodo di inizializzazione del controller JavaFX.
@@ -110,14 +119,5 @@ public class LoanRegisterController {
     private void removeFromRegister() {
     }
 
-    /**
-     * @brief Imposta l'istanza principale della Library.
-     * @details Metodo per l'iniezione della dipendenza. A differenza degli altri controller,
-     *          qui viene passata l'intera Library per permettere l'accesso ai registri
-     *          correlati (Studenti e Libri) necessari per creare/visualizzare i prestiti.
-     * @param[in] library L'istanza principale della biblioteca.
-     */
-    public void setLibrary(Library library) {
-    }
 
 }

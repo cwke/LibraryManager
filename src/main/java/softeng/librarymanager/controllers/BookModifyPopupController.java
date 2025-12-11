@@ -41,6 +41,14 @@ public class BookModifyPopupController extends BookPopupController {
      * @brief Inizializza il controller.
      * @details Richiama l'inizializzazione della superclasse.
      */
+    
+    
+    public BookModifyPopupController(RegisterModifier<Book> bookRegisterModifier, RegisterValidator<Book> bookRegisterValidator, Book bookToModify) {
+        this.bookRegisterModifier = bookRegisterModifier;
+        this.bookRegisterValidator = bookRegisterValidator;
+        this.bookToModify = bookToModify;
+    }
+
     @Override
     @FXML
     public void initialize() {

@@ -8,7 +8,9 @@
 
 package softeng.librarymanager.controllers;
 
+import java.io.IOException;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import softeng.librarymanager.models.Library;
 
 /**
@@ -24,28 +26,28 @@ public class MainController {
     /**
      * @brief Istanza del modello dati principale (Facade).
      */
+    /**
+     * @brief Istanza del modello dati principale (Facade).
+     */
     private Library library;
 
     /**
-     * @brief Controller innestato per la gestione del registro studenti.
-     * @details Iniettato automaticamente tramite tag <fx:include> nell'FXML.
+     * @brief Tab per il catalogo libri.
      */
     @FXML
-    private StudentRegisterController studentRegisterController;
+    private javafx.scene.control.Tab bookTab;
 
     /**
-     * @brief Controller innestato per la gestione del registro libri.
-     * @details Iniettato automaticamente tramite tag <fx:include> nell'FXML.
+     * @brief Tab per il registro studenti.
      */
     @FXML
-    private BookRegisterController bookRegisterController;
+    private javafx.scene.control.Tab studentTab;
 
     /**
-     * @brief Controller innestato per la gestione del registro prestiti.
-     * @details Iniettato automaticamente tramite tag <fx:include> nell'FXML.
+     * @brief Tab per il registro prestiti.
      */
     @FXML
-    private LoanRegisterController loanRegisterController;
+    private javafx.scene.control.Tab loanTab;
 
     /**
      * @brief Controller innestato per la barra dei menu superiore.
@@ -57,12 +59,31 @@ public class MainController {
     /**
      * @brief Metodo di inizializzazione del controller principale.
      * @details Viene chiamato automaticamente da JavaFX dopo il caricamento dell'FXML.
-     *          Si occupa di istanziare la classe {@link Library} e di passarne il riferimento
-     *          ai sotto-controller tramite i loro metodi setter specifici.
+     *          Si occupa di caricare le viste nei rispettivi tab iniettando le dipendenze
+     *          necessarie tramite ControllerFactory.
      */
     @FXML
     public void initialize() {
-        // Logica di inizializzazione e propagazione dell'istanza Library
+        library = new Library();
+        try {
+            // Carica la Book Tab
+            FXMLLoader bookLoader = new FXMLLoader(getClass().getResource("/softeng/librarymanager/fxml/BookRegisterView.fxml"));
+            bookLoader.setController(new BookRegisterController(library.getBookRegister()));
+            bookTab.setContent(bookLoader.load());
+
+            // Carica la Student Tab
+            FXMLLoader studentLoader = new FXMLLoader(getClass().getResource("/softeng/librarymanager/fxml/StudentRegisterView.fxml"));
+            studentLoader.setController(new StudentRegisterController(library.getStudentRegister()));
+            studentTab.setContent(studentLoader.load());
+
+            // Carica la Loan tab
+            FXMLLoader loanLoader = new FXMLLoader(getClass().getResource("/softeng/librarymanager/fxml/LoanRegisterView.fxml"));
+            loanLoader.setController(new LoanRegisterController(library));
+            loanTab.setContent(loanLoader.load());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

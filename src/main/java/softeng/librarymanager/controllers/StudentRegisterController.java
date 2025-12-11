@@ -74,6 +74,14 @@ public class StudentRegisterController {
      * @brief Controller per il popup di modifica studente.
      */
     private StudentModifyPopupController studentModifyPopupController;
+    
+    /**
+     * @brief Costruttore del controller.
+     * @param[in] studentRegister L'istanza del registro studenti.
+     */
+    public StudentRegisterController(Register<Student> studentRegister) {
+        this.studentRegister = studentRegister;
+    }
 
     /**
      * @brief Metodo di inizializzazione del controller JavaFX.
@@ -106,11 +114,6 @@ public class StudentRegisterController {
     private void removeFromRegister() {
     }
 
-    /**
-     * @brief Imposta il registro degli studenti da gestire.
-     * @param[in] studentRegister L'istanza del registro studenti.
-     */
-    public void setStudentRegister(Register<Student> studentRegister) {
-    }
+
 
 }

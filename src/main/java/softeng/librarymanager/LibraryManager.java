@@ -27,6 +27,7 @@ public class LibraryManager extends Application {
      * @brief Riferimento statico alla scena principale dell'applicazione.
      */
     private static Scene scene;
+    private static softeng.librarymanager.models.Library library;
 
     /**
      * @brief Metodo di avvio dell'applicazione JavaFX.
@@ -37,6 +38,7 @@ public class LibraryManager extends Application {
      */
     @Override
     public void start(Stage stage) throws IOException {
+        library = new softeng.librarymanager.models.Library();
         scene = new Scene(loadFXML("MainView"), 1280, 720);
         String cssPath = getClass().getResource("style.css").toExternalForm();
         scene.getStylesheets().add(cssPath);

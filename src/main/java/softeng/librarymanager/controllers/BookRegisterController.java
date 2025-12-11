@@ -81,6 +81,14 @@ public class BookRegisterController {
      * @brief Controller per il popup di modifica libro.
      */
     private BookModifyPopupController bookModifyPopupController;
+    
+    /**
+     * @brief Costruttore del controller.
+     * @param[in] bookRegister L'istanza del registro libri.
+     */
+    public BookRegisterController(Register<Book> bookRegister) {
+        this.bookRegister = bookRegister;
+    }
 
     /**
      * @brief Metodo di inizializzazione del controller JavaFX.
@@ -89,6 +97,22 @@ public class BookRegisterController {
      */
     @FXML
     public void initialize() {
+        bookTable.setItems(bookRegister.getRegister()); 
+        // Binding per la visualizzazione degli studenti nella tabella
+        
+        titleClm.setCellValueFactory(row -> row.getValue().titleProperty());
+        authorsClm.setCellValueFactory(row -> row.getValue().authorsProperty());
+        publishmentYearClm.setCellValueFactory(row -> row.getValue().publishmentYearProperty().asObject());
+        bookIdClm.setCellValueFactory(row -> row.getValue().bookIdProperty());
+        availableCopiesClm.setCellValueFactory(row -> row.getValue().availableCopiesProperty().asObject());
+        
+        // Sidebar
+        sideBarController.getAddBtn().setOnAction(event -> openInsertPopup());
+        sideBarController.getModifyBtn().setOnAction(event -> openModifyPopup());
+        sideBarController.getRemoveBtn().setOnAction(event -> removeFromRegister());
+        
+        // Binding per la disabilitazione del tasto rimuovi se non è selezionato nessun item
+        sideBarController.getRemoveBtn().disableProperty().bind(bookTable.getSelectionModel().selectedItemProperty().isNull());
     }
 
     /**
@@ -96,6 +120,7 @@ public class BookRegisterController {
      * @details Invocato alla pressione del tasto "Aggiungi" nella SideBar.
      */
     private void openInsertPopup() {
+        
     }
 
     /**
@@ -113,11 +138,6 @@ public class BookRegisterController {
     private void removeFromRegister() {
     }
 
-    /**
-     * @brief Imposta il registro dei libri da gestire.
-     * @param[in] bookRegister L'istanza del registro libri.
-     */
-    public void setBookRegister(Register<Book> bookRegister) {
-    }
+
 
 }

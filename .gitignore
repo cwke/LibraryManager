@@ -57,6 +57,7 @@ dist/
 nbdist/
 nbactions.xml
 nb-configuration.xml
+nbproject/*
 
 #
 # IntelliJ IDEA

@@ -12,9 +12,8 @@
                 <fx:include source="MenuView.fxml" />
                 <TabPane id="TabPane" tabClosingPolicy="UNAVAILABLE">
                     <tabs>
-                        <Tab text="Book Catalog">
+                        <Tab fx:id="bookTab" text="Book Catalog">
                             <content>
-                                <fx:include fx:id="bookRegister" source="BookRegisterView.fxml" />
                             </content>
                             <graphic>
                                 <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
@@ -24,9 +23,8 @@
                                 </ImageView>
                             </graphic>
                         </Tab>
-                        <Tab text="Student Register">
+                        <Tab fx:id="studentTab" text="Student Register">
                             <content>
-                                <fx:include fx:id="studentRegister" source="StudentRegisterView.fxml" />
                             </content>
                             <graphic>
                                 <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
@@ -36,9 +34,8 @@
                                 </ImageView>
                             </graphic>
                         </Tab>
-                        <Tab text="Loan Register">
+                        <Tab fx:id="loanTab" text="Loan Register">
                             <content>
-                                <fx:include fx:id="loanRegister" source="LoanRegisterView.fxml" />
                             </content>
                             <graphic>
                                 <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">

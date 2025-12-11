@@ -5,7 +5,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="softeng.librarymanager.controllers.BookRegisterController">
+<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" >
     <children>
         <SplitPane dividerPositions="0.5" prefHeight="720.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <items>
@@ -17,8 +17,8 @@
                             </columnResizePolicy>
                             <columns>
                                 <TableColumn fx:id="titleClm" minWidth="100.0" text="Titolo" />
-                                <TableColumn fx:id="authorClm" minWidth="100.0" text="Autori" />
-                                <TableColumn fx:id="publishYearClm" minWidth="70.0" text="Anno di pubblicazione" />
+                                <TableColumn fx:id="authorsClm" minWidth="100.0" text="Autori" />
+                                <TableColumn fx:id="publishmentYearClm" minWidth="70.0" text="Anno di pubblicazione" />
                                 <TableColumn fx:id="bookIdClm" minWidth="80.0" text="ISBN" />
                                 <TableColumn fx:id="availableCopiesClm" minWidth="50.0" text="Copie" />
                             </columns>

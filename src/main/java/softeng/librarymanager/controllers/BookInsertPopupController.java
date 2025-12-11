@@ -32,6 +32,11 @@ public class BookInsertPopupController extends BookPopupController {
      */
     private RegisterValidator<Book> bookRegisterValidator;
 
+    public BookInsertPopupController(RegisterAdder<Book> bookRegisterAdder, RegisterValidator<Book> bookRegisterValidator) {
+        this.bookRegisterAdder = bookRegisterAdder;
+        this.bookRegisterValidator = bookRegisterValidator;
+    }
+
     /**
      * @brief Inizializza il controller.
      * @details Richiama l'inizializzazione della superclasse.
