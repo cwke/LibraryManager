@@ -20,8 +20,7 @@ public interface RegisterAdder<T> {
     /**
      * @brief Esegue l'aggiunta di un elemento.
      * @param[in] toAdd L'oggetto da aggiungere.
-     * @return boolean True se l'operazione ha successo, False altrimenti.
      */
-    boolean add(T toAdd);
+    void add(T toAdd);
 
 }

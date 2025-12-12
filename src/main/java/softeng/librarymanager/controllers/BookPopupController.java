@@ -8,49 +8,47 @@
 
 package softeng.librarymanager.controllers;
 
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.beans.binding.Bindings;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import softeng.librarymanager.models.Book;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 /**
  * @class BookPopupController
- * @brief Classe base astratta per i controller dei popup (Inserimento e Modifica).
- * @details Raccoglie i componenti grafici comuni (TextField, Button) definiti nel diagramma
- *          e gestisce la logica di base condivisa dalle finestre popup di dialogo dei libri.
+ * @brief Classe base astratta per i controller dei popup (Inserimento e
+ *        Modifica).
+ * @details Raccoglie i componenti grafici comuni (TextField, Button) definiti
+ *          nel diagramma
+ *          e gestisce la logica di base condivisa dalle finestre popup di
+ *          dialogo dei libri.
  */
 public abstract class BookPopupController {
 
-    /**
-     * @brief Campo di testo per il titolo del libro.
-     */
     @FXML
     protected TextField titleTF;
 
-    /**
-     * @brief Campo di testo per gli autori del libro.
-     */
     @FXML
-    protected TextField authorsTF;
+    protected VBox authorsListVBox;
 
-    /**
-     * @brief Campo di testo per l'anno di pubblicazione.
-     */
     @FXML
-    protected TextField publishmentYearTF;
+    protected TextField Author1TF;
 
-    /**
-     * @brief Campo di testo per il numero di copie disponibili.
-     */
     @FXML
-    protected TextField availableCopiesTF;
+    protected TextField publishYearTF;
 
-    /**
-     * @brief Campo di testo per l'ID (ISBN) del libro.
-     */
     @FXML
-    protected TextField bookIdTF;
+    protected TextField copiesTF;
+
+    @FXML
+    protected TextField bookCodeTF;
 
     /**
      * @brief Bottone di conferma (Salva/Aggiungi).
@@ -64,20 +62,62 @@ public abstract class BookPopupController {
     @FXML
     protected Button cancelBtn;
 
+    @FXML
+    protected Button addAuthorsBtn;
+
     /**
      * @brief Inizializzazione base del controller.
-     * @details Metodo chiamato automaticamente da JavaFX dopo il caricamento dell'FXML.
+     * @details Metodo chiamato automaticamente da JavaFX dopo il caricamento
+     *          dell'FXML.
      */
     @FXML
     public void initialize() {
+        if (addAuthorsBtn != null) {
+            addAuthorsBtn.disableProperty().bind(Bindings.size(authorsListVBox.getChildren()).greaterThanOrEqualTo(3));
+        }
     }
 
-    /**
-     * @brief Gestisce l'evento di click sul bottone di conferma.
-     * @details Metodo astratto o base da implementare nelle sottoclassi per definire
-     *          la logica specifica (Inserimento o Modifica).
-     * @param[in] event L'evento generato dal click.
-     */
+    // PARTE DI CODICE PER AUTORI
+
+    protected final Image removeImg = new Image(
+            getClass().getResourceAsStream("/softeng/librarymanager/assets/remove.png"));
+
+    @FXML
+    protected HBox createAuthorRow(int authorNum) {
+        HBox row = new HBox();
+        row.setAlignment(javafx.geometry.Pos.CENTER);
+        row.setSpacing(20.0);
+
+        Label label = new Label("Autore " + authorNum + ":");
+        TextField tf = new TextField();
+
+        ImageView view = new ImageView(removeImg);
+        view.setFitHeight(16);
+        view.setPreserveRatio(true);
+
+        Button btn = new Button();
+        btn.setGraphic(view);
+        btn.setOnAction(e -> {
+            authorsListVBox.getChildren().remove(row);
+        });
+
+        btn.disableProperty().bind(Bindings.createBooleanBinding(() -> {
+            System.out.println("Dentro bindig: " + authorsListVBox.getChildren().size());
+            return authorsListVBox.getChildren().size() >= 3 && authorsListVBox.getChildren().indexOf(row) < 2;
+        }, authorsListVBox.getChildren()));
+
+        row.getChildren().addAll(label, tf, btn);
+        return row;
+    }
+
+    @FXML
+    public void addAuthors(ActionEvent event) {
+        int nextAuthorNum = authorsListVBox.getChildren().size() + 1;
+        authorsListVBox.getChildren().add(createAuthorRow(nextAuthorNum));
+    }
+
+    // FINE PARTE DI CODICE PER AUTORI
+
     @FXML
     public abstract void confirmBtnAction(ActionEvent event);
 
