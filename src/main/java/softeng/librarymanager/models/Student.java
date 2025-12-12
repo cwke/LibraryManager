@@ -1,116 +1,134 @@
 /**
  * @file Student.java
  * @brief Definizione della classe modello che rappresenta uno studente.
- * @author [Acerra Fabrizio, Affinita Natale, Cwiertka Jakub, Galluccio Hermann]
+ * @author Acerra Fabrizio, Affinita Natale, Cwiertka Jakub, Galluccio Hermann
  * @date Dicembre 2025
  * @package softeng.librarymanager.models
  */
 
 package softeng.librarymanager.models;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import java.io.Externalizable;
-import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectOutput;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * @class Student
  * @brief Classe modello che rappresenta uno studente.
  * @details Questa classe modella un'entità studente, contenente dettagli come
- *          il nome, cognome, matricola, email, e numero di prestiti disponibili.
- *          Implementa {@link Comparable} per l'ordinamento e {@link Externalizable}
- *          per l'IO su file.
+ * il nome, cognome, matricola, email, e numero di prestiti disponibili.
+ * Implementa {@link Comparable} per l'ordinamento.
  */
-public class Student implements Comparable<Student>, Externalizable{
+public class Student implements Comparable<Student> {
 
     /**
-     * @brief Proprietà nome.
+     * @brief Nome dello studente.
      */
-    private StringProperty name;
+    private String name;
 
     /**
-     * @brief Proprietà cognome.
+     * @brief Cognome dello studente.
      */
-    private StringProperty surname;
+    private String surname;
 
     /**
-     * @brief Proprietà matricola {readOnly}.
+     * @brief Matricola (ID studente) {readOnly}.
      */
-    private StringProperty studentId;
+    private final String studentId;
 
     /**
-     * @brief Proprietà email.
+     * @brief Email istituzionale o personale.
      */
-    private StringProperty email;
+    private String email;
 
     /**
-     * @brief Lista prestiti attivi.
+     * @brief Lista dei prestiti attualmente attivi.
      */
-    private ObservableList<Loan> activeLoans;
+    private final List<Loan> activeLoans;
 
     /**
-     * @brief Costruttore predefinito.
-     * @details Inizializza le proprietà con valori di default e crea la lista dei prestiti.
+     * @brief Costruttore parametrizzato.
+     * @details Inizializza le proprietà con i valori forniti e istanzia la lista dei prestiti.
+     * @param[in] name Nome dello studente.
+     * @param[in] surname Cognome dello studente.
+     * @param[in] studentId Matricola dello studente.
+     * @param[in] email Email dello studente.
      */
-    public Student() {
-        this.name = new SimpleStringProperty("");
-        this.surname = new SimpleStringProperty("");
-        this.studentId = new SimpleStringProperty("");
-        this.email = new SimpleStringProperty("");
-        this.activeLoans = FXCollections.observableArrayList();
+    public Student(String name, String surname, String studentId, String email) {
+        this.name = name;
+        this.surname = surname;
+        this.studentId = studentId;
+        this.email = email;
+        this.activeLoans = new ArrayList<>();
+        if(!this.isValid()) throw new IllegalArgumentException("Impossibile creare uno studente con i dati inseriti");
     }
 
     /**
-     * @brief Restituisce la proprietà del nome per il binding.
-     * @return StringProperty Oggetto proprietà del nome.
+     * @brief Restituisce il nome dello studente.
+     * @return String Il nome.
      */
-    public StringProperty nameProperty() {
+    public String getName() {
         return this.name;
     }
 
     /**
-     * @brief Restituisce la proprietà del cognome per il binding.
-     * @return StringProperty Oggetto proprietà del cognome.
+     * @brief Restituisce il cognome dello studente.
+     * @return String Il cognome.
      */
-    public StringProperty surnameProperty() {
+    public String getSurname() {
         return this.surname;
     }
 
     /**
-     * @brief Restituisce la proprietà dell'ID studente (Matricola).
-     * @return StringProperty Oggetto proprietà dell'ID.
+     * @brief Restituisce la matricola dello studente.
+     * @return String La matricola.
      */
-    public StringProperty studentIdProperty() {
+    public String getStudentId() {
         return this.studentId;
     }
 
     /**
-     * @brief Restituisce la proprietà dell'email per il binding.
-     * @return StringProperty Oggetto proprietà dell'email.
+     * @brief Restituisce l'email dello studente.
+     * @return String L'email.
      */
-    public StringProperty emailProperty() {
+    public String getEmail() {
         return this.email;
     }
 
     /**
      * @brief Restituisce la lista dei prestiti attivi.
-     * @return ObservableList<Loan> Lista osservabile dei prestiti correnti.
+     * @return List<Loan> La lista dei prestiti correnti.
      */
-    public ObservableList<Loan> getActiveLoans() {
+    public List<Loan> getActiveLoans() {
         return this.activeLoans;
     }
 
     /**
+     * @brief Copia i dati anagrafici da uno studente sorgente a uno studente da modificare.
+     * @param[in,out] toModify Lo studente i cui campi verranno aggiornati.
+     * @param[in] newData Lo studente da cui verranno prelevati i nuovi valori.
+     * @details Questo metodo sostituisce i tradizionali setter, permettendo di aggiornare
+     *          in un'unica chiamata i campi principali dello studente (nome, cognome, email).
+     */
+    public void copy(Student newData){
+        this.name = newData.getName();
+        this.surname = newData.getSurname();
+        this.email = newData.getEmail();
+    }
+
+
+    /**
      * @brief Aggiunge un prestito alla lista dei prestiti attivi dello studente.
      * @details Verifica che lo studente non abbia già raggiunto il limite massimo
-     *          di 3 prestiti (vincolo 0...3 da UML).
+     * di 3 prestiti.
      * @param[in] loanToAdd L'oggetto Loan da aggiungere.
+     * @throws IllegalStateException se lo studente ha già 3 prestiti attivi.
      */
     public void addActiveLoan(Loan loanToAdd) {
+        if (!isAvailableForLoan()) {
+            throw new IllegalStateException("Lo studente ha raggiunto il limite massimo di prestiti.");
+        }
+        this.activeLoans.add(loanToAdd);
     }
 
     /**
@@ -119,6 +137,7 @@ public class Student implements Comparable<Student>, Externalizable{
      * @param[in] loanToRemove L'oggetto Loan da rimuovere.
      */
     public void removeActiveLoan(Loan loanToRemove) {
+        this.activeLoans.remove(loanToRemove);
     }
 
     /**
@@ -128,24 +147,67 @@ public class Student implements Comparable<Student>, Externalizable{
      * @return int Un valore negativo, zero o positivo.
      */
     @Override
-    public int compareTo(Student o) {
-        return 0;
+    public int compareTo(Student other) {
+        if (other == null) return 1;
+
+        return this.studentId.compareTo(other.studentId);
     }
 
     /**
-     * @brief Metodo personalizzato per serializzare l'oggetto.
-     * @details Estrae i valori "puri" dalle proprietà JavaFX e li scrive nello stream.
+     * @brief Verifica la validità e completezza dei dati di uno studente.
+     * @details Controlla che nome, cognome, ID ed email siano validi secondo le invarianti.
+     * @return boolean True in caso di successo, altrimenti False.
      */
-    @Override
-    public void writeExternal(ObjectOutput out) throws IOException {
+    public boolean isValid(){
+        return name != null &&
+                surname != null &&
+                isStudentIdValid(studentId) &&
+                isEmailValid(email);
     }
 
     /**
-     * @brief Metodo personalizzato per deserializzare l'oggetto.
-     * @details Legge i valori dallo stream e ricostruisce le proprietà JavaFX.
+     * @brief Verifica la correttezza dell'identificativo di uno studente.
+     * @details La correttezza viene verificata relativamente alle invarianti (es. non nullo, formato specifico).
+     * @param[in] studentId L'identificativo da verificare.
+     * @return boolean True in caso di successo, altrimenti False.
      */
-    @Override
-    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+    private boolean isStudentIdValid(String studentId){
+        // Implementazione esempio: ID non nullo e non vuoto
+        return studentId != null && studentId.length() == 10;
     }
 
+    /**
+     * @brief Verifica la correttezza dell'email di uno studente.
+     * @details Verifica che l'email contenga il carattere '@' e non sia nulla.
+     * @param[in] email L'email da verificare.
+     * @return boolean True in caso di successo, altrimenti False.
+     */
+    private boolean isEmailValid(String email){
+        return email != null && email.endsWith("@studenti.unisa.it");
+    }
+
+    /**
+     * @brief Verifica se lo studente può richiedere nuovi prestiti.
+     * @details Uno studente è abilitato se ha meno di 3 prestiti attivi.
+     * @return boolean True se può richiedere prestiti, altrimenti False.
+     */
+    public boolean isAvailableForLoan(){
+        return this.activeLoans.size() < 3;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) return true;
+
+        if (other == null || getClass() != other.getClass()) return false;
+
+        Student otherStudent = (Student) other;
+
+        return studentId.equals(otherStudent.getStudentId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.studentId);
+    }
 }
