@@ -1,90 +1,103 @@
 /**
  * @file BookRegister.java
- * @brief Implementazione concreta del registro per la gestione del catalogo dei libri.
- * @author [Acerra Fabrizio, Affinita Natale, Cwiertka Jakub, Galluccio Hermann]
+ * @brief Implementazione del registro dei libri.
+ * @author Acerra Fabrizio
  * @date Dicembre 2025
- * @package softeng.librarymanager.models
  */
 package softeng.librarymanager.models;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import java.util.*;
+
 
 /**
- * @class BookRegister
- * @brief Classe responsabile della gestione del catalogo dei libri.
- * @details Questa classe implementa l'interfaccia generica Register tipizzata sulla classe Book.
+ * @brief Implementa un catalogo libri e le funzionalità per la sua gestione.
  * @see Register
  * @see Book
+ * @invariant bookRegister != null
  */
 public class BookRegister implements Register<Book> {
 
-    /**
-     * @brief Lista interna che memorizza gli oggetti Book.
-     * @details Utilizza ObservableList per permettere il binding con componenti grafici JavaFX.
-     */
-    private ObservableList<Book> bookRegister;
+    private Set<Book> bookRegister;
 
     /**
-     * @brief Costruttore della classe BookRegister.
-     * @details Inizializza la lista osservabile vuota.
+     * @post Il catalogo libri è correttamente inizializzato come un TreeSet vuoto.
      */
     public BookRegister() {
-        this.bookRegister = FXCollections.observableArrayList();
+        this.bookRegister = new TreeSet<>();
     }
 
     /**
-     * @brief Aggiunge un nuovo libro al registro.
-     * @details Prima di aggiungere, verifica che il libro sia valido tramite il metodo isValid.
-     * @param[in] toAdd L'oggetto Book da aggiungere.
-     * @return boolean True se l'aggiunta ha avuto successo, False se l'oggetto non è valido o esiste già.
+     * @brief Aggiunge un libro al catalogo.
+     * @param[in] toAdd Libro da aggiungere al catalogo.
+     * @pre toAdd != null
+     * @pre toAdd deve essere un libro valido secondo RegisterValidator
+     * @see RegisterValidator
+     * @post Il libro specificato è correttamente inserito nel catalogo.
      */
     @Override
-    public boolean add(Book toAdd) {
-        return false;
+    public void add(Book toAdd) {
+        bookRegister.add(toAdd);
     }
 
     /**
-     * @brief Modifica uno libro esistente nel registro.
-     * @details Cerca l'oggetto 'old' e lo sostituisce con 'newObj'.
-     * @param[in] old L'oggetto Book originale da sostituire.
-     * @param[in] newObj Il nuovo oggetto Book che prenderà il posto del precedente.
-     * @return boolean True se la sostituzione è avvenuta, False se l'oggetto 'old' non è stato trovato.
+     * @brief Modifica i dati di un libro esistente nel catalogo.
+     * @param[in] old Libro da modificare.
+     * @param[in] newObj Libro contenente i nuovi dati aggiornati.
+     * @pre newObj != null
+     * @pre 'old' deve essere già presente nel catalogo.
+     * @pre 'newObj' deve essere un libro valido secondo RegisterValidator
+     * @see RegisterValidator
+     * @post I dati del libro specificato sono aggiornati mantenendo invariato il riferimento (all'oggetto originale) presente nel catalogo.
      */
     @Override
-    public boolean modify(Book old, Book newObj) {
-        return false;
+    public void modify(Book old, Book newObj) {
+        /*
+         * Recuperiamo il riferimento all'oggetto Book memorizzato nel set.
+         * Poiché i Loan mantengono un riferimento diretto all'istanza
+         * del libro, non possiamo sostituire l'oggetto con una nuova istanza (per necessità di sincronizzazione).
+         * Procediamo quindi aggiornando i singoli campi dell'istanza esistente con i valori di 'newObj'.
+         */
+        for(Book book : bookRegister)
+            if(book.equals(old)){
+                book.copy(newObj);
+            }
     }
 
     /**
      * @brief Rimuove un libro dal catalogo.
-     * @param[in] toRemove Il libro da rimuovere.
-     * @return boolean True se la rimozione ha avuto successo.
+     * @param[in] toRemove Libro da rimuovere dal catalogo.
+     * @pre 'toRemove' è attualmente presente nel catalogo.
+     * @post Il libro specificato è rimosso dal catalogo.
      */
     @Override
-    public boolean remove(Book toRemove) {
-        return false;
+    public void remove(Book toRemove) {
+        bookRegister.remove(toRemove);
     }
 
     /**
-     * @brief Verifica la validità di un oggetto Book.
-     * @details Controlla che l'oggetto non sia nullo (Scrivere qui gli ulteriori controlli, es. ISBN univoco)..
-     * @param[in] toVerify L'oggetto Book da verificare.
-     * @return boolean True se l'oggetto è valido, False altrimenti.
+     * @brief Verifica la validità di un libro.
+     * @param[in] toVerify Libro la cui validità va verificata.
+     * @return true se il libro rispetta i criteri di validità, false altrimenti.
+     * @pre toVerify e i suoi attributi non devono essere null.
+     * @post Il valore restituito sarà "true" se il libro è valido, "false" altrimenti
      */
     @Override
     public boolean isValid(Book toVerify) {
-        // Implementazione di base: controlla che non sia null
-        return toVerify != null;
+        return !this.bookRegister.contains(toVerify);
     }
 
     /**
-     * @brief Restituisce la lista osservabile dei libri.
-     * @return ObservableList<Book> La lista contenente i libri.
+     * @brief Restituisce la lista di tutti i libri presenti nel catalogo.
+     * @return Una List contenente tutti i libri presenti nel catalogo
+     * @post Viene restituita una lista contenente i libri presenti nel catalogo
      */
     @Override
-    public ObservableList<Book> getRegister() {
-        return this.bookRegister;
+    public List<Book> getRegister() {
+        /*
+         * Creiamo una nuova ArrayList passando il Set al costruttore per restituire una lista ordinata.
+         */
+        List<Book> list = new ArrayList<>(bookRegister);
+        list.sort(Comparator.comparing(Book::getTitle));
+        return list;
     }
-
 }

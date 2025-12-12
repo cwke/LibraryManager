@@ -1,91 +1,110 @@
 /**
  * @file LoanRegister.java
- * @brief Implementazione concreta del registro dei prestiti.
+ * @brief Implementazione del registro dei prestiti.
  * @author [Acerra Fabrizio, Affinita Natale, Cwiertka Jakub, Galluccio Hermann]
  * @date Dicembre 2025
- * @package softeng.librarymanager.models
  */
 
 package softeng.librarymanager.models;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import java.util.*;
+
 
 /**
- * @class LoanRegister
- * @brief Classe responsabile della gestione della lista dei prestiti.
- * @details Questa classe implementa l'interfaccia generica Register tipizzata sulla classe Loan.
+ * @brief Implementa un catalogo prestiti e le funzionalità per la sua gestione.
  * @see Register
  * @see Loan
+ * @invariant loanRegister != null
  */
 public class LoanRegister implements Register<Loan> {
 
-    /**
-     * @brief Lista interna che memorizza gli oggetti Loan.
-     * @details Utilizza ObservableList per permettere il binding con componenti grafici JavaFX.
-     */
-    private ObservableList<Loan> loanRegister;
+    private Set<Loan> loanRegister;
 
     /**
-     * @brief Costruttore della classe LoanRegister.
-     * @details Inizializza la lista osservabile vuota.
+     * @post Il catalogo prestiti è correttamente inizializzato come un TreeSet vuoto.
      */
     public LoanRegister() {
-        this.loanRegister = FXCollections.observableArrayList();
+        this.loanRegister = new TreeSet<>();
     }
 
     /**
-     * @brief Aggiunge un nuovo prestito al registro.
-     * @details Prima di aggiungere, verifica che il prestito sia valido tramite il metodo isValid.
-     * @param[in] toAdd L'oggetto Loan da aggiungere.
-     * @return boolean True se l'aggiunta ha avuto successo, False se l'oggetto non è valido o esiste già.
+     * @brief Aggiunge un prestito al catalogo.
+     * @param[in] toAdd Prestito da aggiungere al catalogo.
+     * @pre toAdd != null
+     * @pre toAdd deve essere un prestito valido secondo RegisterValidator
+     * @see RegisterValidator
+     * @post Il prestito specificato è correttamente inserito nel catalogo.
      */
     @Override
-    public boolean add(Loan toAdd) {
-        return false;
+    public void add(Loan toAdd) {
+        loanRegister.add(toAdd);
     }
 
     /**
-     * @brief Modifica un prestito esistente nel registro.
-     * @details Cerca l'oggetto 'old' e lo sostituisce con 'newObj'.
-     * @param[in] old L'oggetto Loan originale da sostituire.
-     * @param[in] newObj Il nuovo oggetto Loan che prenderà il posto del precedente.
-     * @return boolean True se la sostituzione è avvenuta, False se l'oggetto 'old' non è stato trovato.
+     * @brief Modifica i dati di un prestito esistente nel catalogo.
+     * @param[in] old Prestito da modificare.
+     * @param[in] newObj Prestito contenente i nuovi dati aggiornati.
+     * @pre newObj != null
+     * @pre 'old' deve essere già presente nel catalogo.
+     * @pre 'newObj' deve essere un prestito valido secondo RegisterValidator
+     * @see RegisterValidator
+     * @post I dati del prestito specificato sono aggiornati mantenendo invariato il riferimento (all'oggetto originale) presente nel catalogo.
      */
     @Override
-    public boolean modify(Loan old, Loan newObj) {
-        return false;
+    public void modify(Loan old, Loan newObj) {
+        /*
+         * Recuperiamo il riferimento all'oggetto Loan memorizzato nel set.
+         * Iteriamo sugli elementi per trovare quello corrispondente a "old".
+         */
+        for(Loan loan : loanRegister)
+            if(loan.equals(old)){
+                loan.setLoanEnd(newObj.getLoanEnd());
+                if(newObj.isReturned())
+                    loan.returnLoan();
+            }
     }
 
     /**
-     * @brief Rimuove un prestito dal registro.
-     * @param[in] toRemove L'oggetto Loan da rimuovere.
-     * @return boolean True se la rimozione ha avuto successo, False altrimenti.
+     * @brief Rimuove un prestito dal catalogo.
+     * @param[in] toRemove Prestito da rimuovere dal catalogo.
+     * @pre 'toRemove' è attualmente presente nel catalogo.
+     * @post Il prestito specificato è rimosso dal catalogo.
      */
     @Override
-    public boolean remove(Loan toRemove) {
-        return false;
+    public void remove(Loan toRemove) {
+        loanRegister.remove(toRemove);
     }
 
     /**
-     * @brief Verifica la validità di un oggetto Loan.
-     * @details Controlla che l'oggetto non sia nullo (Scrivere qui gli ulteriori controlli, es. coerenza date, esistenza libro, ecc...).
-     * @param[in] toVerify L'oggetto Loan da verificare.
-     * @return boolean True se l'oggetto è valido, False altrimenti.
+     * @brief Verifica la validità di un loan.
+     * @param[in] toVerify Loan la cui validità va verificata.
+     * @return true se il prestito rispetta i criteri di validità, false altrimenti.
+     * @pre toVerify non deve essere null.
+     * @post Il valore restituito sarà "true" se il loan è valido, "false" altrimenti
      */
     @Override
     public boolean isValid(Loan toVerify) {
-        // Implementazione di base: controlla che non sia null
-        return toVerify != null;
+        for (Loan loan : loanRegister)
+            if(loan.getStudent().equals(toVerify.getStudent()) &&
+                    loan.getBook().equals(toVerify.getBook()) &&
+                    !loan.isReturned())
+                return false;
+        return true;
     }
 
     /**
-     * @brief Restituisce la lista osservabile dei prestiti.
-     * @return ObservableList<Loan> La lista contenente i prestiti.
+     * @brief Restituisce la lista di tutti i prestiti presenti nel catalogo.
+     * @return Una List contenente tutti i prestiti presenti nel catalogo, ordinati per loanId.
+     * @post Viene restituita una lista contenente i prestiti presenti nel catalogo, ordinata per loanId.
      */
     @Override
-    public ObservableList<Loan> getRegister() {
-        return this.loanRegister;
+    public List<Loan> getRegister() {
+        /*
+         * Creiamo una nuova ArrayList passando il Set al costruttore per restituire una lista ordinata.
+         */
+        List<Loan> list = new ArrayList<>(loanRegister);
+        list.sort(Comparator.comparing(Loan::getLoanEnd));
+        return list;
     }
 
 }

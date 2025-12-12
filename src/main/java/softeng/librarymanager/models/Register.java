@@ -10,6 +10,8 @@ package softeng.librarymanager.models;
 
 import javafx.collections.ObservableList;
 
+import java.util.List;
+
 /**
  * @brief Interfaccia generica per la gestione di un registro di elementi.
  *
@@ -26,7 +28,7 @@ public interface Register<T> {
      * @param[in] toAdd L'elemento di tipo T da aggiungere.
      * @return true se l'elemento è stato aggiunto con successo, false altrimenti.
      */
-    public boolean add(T toAdd);
+    public void add(T toAdd);
 
     /**
      * @brief Modifica un elemento esistente nel registro.
@@ -34,14 +36,14 @@ public interface Register<T> {
      * @param[in] newObj Il nuovo elemento che prenderà il posto del precedente.
      * @return true se la modifica è avvenuta con successo, false altrimenti.
      */
-    public boolean modify(T old, T newObj);
+    public void modify(T old, T newObj);
 
     /**
      * @brief Rimuove un elemento dal registro.
      * @param[in] toRemove L'elemento di tipo T da rimuovere.
      * @return true se l'elemento è stato trovato e rimosso, false se non era presente.
      */
-    public boolean remove(T toRemove);
+    public void remove(T toRemove);
 
     /**
      * @brief Verifica la validità di un elemento.
@@ -54,6 +56,6 @@ public interface Register<T> {
      * @brief Restituisce la lista osservabile degli elementi.
      * @return Una ObservableList contenente tutti gli elementi di tipo T presenti nel registro.
      */
-    public ObservableList<T> getRegister();
+    public List<T> getRegister();
 
 }
