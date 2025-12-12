@@ -20,6 +20,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 /**
  * @class BookPopupController
@@ -102,7 +103,6 @@ public abstract class BookPopupController {
         });
 
         btn.disableProperty().bind(Bindings.createBooleanBinding(() -> {
-            System.out.println("Dentro bindig: " + authorsListVBox.getChildren().size());
             return authorsListVBox.getChildren().size() >= 3 && authorsListVBox.getChildren().indexOf(row) < 2;
         }, authorsListVBox.getChildren()));
 
@@ -128,5 +128,13 @@ public abstract class BookPopupController {
      */
     @FXML
     public void cancelBtnAction(ActionEvent event) {
+        // 1. Recuperiamo il componente che ha scatenato l'evento (il pulsante)
+        Node source = (Node) event.getSource();
+
+        // 2. Dal pulsante, otteniamo la Scena, e dalla Scena otteniamo la Finestra (Stage)
+        Stage stage = (Stage) source.getScene().getWindow();
+
+        // 3. Chiudiamo la finestra
+        stage.close();
     }
 }
