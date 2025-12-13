@@ -69,7 +69,7 @@ public class LibraryIOManager {
 
             if(obj instanceof Library){
                 loadedLibrary = (Library) obj;
-                resultActions.success();
+//                resultActions.success();
             } else {
                 resultActions.failure();
             }

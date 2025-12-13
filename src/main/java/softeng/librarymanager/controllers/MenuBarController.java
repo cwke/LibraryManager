@@ -94,19 +94,21 @@ public class MenuBarController implements ResultActions {
 
     @Override
     public void failure() {
-        Alert alert = new Alert(AlertType.INFORMATION);
-        alert.setTitle("Esito operazione");
-        alert.setHeaderText("Operazione fallita.");
-        alert.setContentText("Da decidere");
-        alert.showAndWait();
+        showAlert(Alert.AlertType.INFORMATION,"Esito operazione", "Operazione fallita.", "Da decidere");
     }
 
     @Override
     public void success() {
-        Alert alert = new Alert(AlertType.INFORMATION);
-        alert.setTitle("Esito operazione");
-        alert.setHeaderText("Operazione completata con successo!");
-        alert.setContentText("La Libreria è stata correttamente salvata.");
+        showAlert(Alert.AlertType.INFORMATION,"Esito operazione", "Operazione completata con successo!", "La Libreria è stata correttamente salvata.");
+    }
+
+    private void showAlert(Alert.AlertType type, String title, String header, String content) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+        alert.setGraphic(null);
+        alert.getDialogPane().getStylesheets().add(getClass().getResource("/softeng/librarymanager/style.css").toExternalForm());
         alert.showAndWait();
     }
 }
