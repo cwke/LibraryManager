@@ -116,8 +116,8 @@ class BookRegisterTest {
     * */
     @Test
     void testGetValuesList() {
-        bookRegister.add(newBook);
         bookRegister.add(oldBook);
+        bookRegister.add(newBook);
         List<Book> list = bookRegister.getRegisterList();
         assertEquals(2, list.size());
         assertTrue(list.contains(newBook));
@@ -127,7 +127,7 @@ class BookRegisterTest {
         * Se il metodo funziona correttamente, per il rispetto dell'ordinamento alfabetico l'ordine
         * di oldBook e newBook nella List dev'essere invertito.
         * */
-        assertEquals(list.get(0), oldBook);
-        assertEquals(list.get(1), newBook);
+        assertEquals(list.get(0), newBook);
+        assertEquals(list.get(1), oldBook);
     }
 }

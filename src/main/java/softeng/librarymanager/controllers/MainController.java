@@ -8,6 +8,7 @@
 
 package softeng.librarymanager.controllers;
 
+import softeng.librarymanager.controllers.student.Refresh;
 import softeng.librarymanager.controllers.student.StudentRegisterController;
 import softeng.librarymanager.controllers.loan.LoanRegisterController;
 import softeng.librarymanager.controllers.book.BookRegisterController;
@@ -25,7 +26,7 @@ import softeng.librarymanager.models.Library;
  *          e della propagazione di tale istanza ai sotto-controller (Studenti, Libri, Prestiti, MenuBar)
  *          per garantire che tutti lavorino sugli stessi dati condivisi.
  */
-public class MainController {
+public class MainController implements Refresh {
 
     /**
      * @brief Istanza del modello dati principale (Facade).
@@ -68,27 +69,28 @@ public class MainController {
      */
     @FXML
     public void initialize() {
+        menuBarController.setMainRefresher(this); //non so se va spostata in un eventuale costruttore.
         library = new Library();
-        
+
         // CODICE DI TEST, RIMUOVERE PRIMA DEL COMMIT!! >>
-            for (int i = 0; i< 10; i++) {
-                softeng.librarymanager.models.Book b = new softeng.librarymanager.models.Book("Titolo " + i, java.util.Arrays.asList("Autore " + i, "Autore 2 "+i), String.format("%013d", i), 2000, 1);
-                softeng.librarymanager.models.Student s = new softeng.librarymanager.models.Student("Nome " + i, "Cognome " + i, String.format("%010d", i), i+"@studenti.unisa.it");
-                softeng.librarymanager.models.Loan l = new softeng.librarymanager.models.Loan(s, b, LocalDate.now().plusMonths(i));
-                library.getBookRegister().add(b);
-                library.getStudentRegister().add(s);
-                library.getLoanRegister().add(l);
-            }
+        for (int i = 0; i< 10; i++) {
+            softeng.librarymanager.models.Book b = new softeng.librarymanager.models.Book("Titolo " + i, java.util.Arrays.asList("Autore " + i, "Autore 2 "+i), String.format("%013d", i), 2000, 1);
+            softeng.librarymanager.models.Student s = new softeng.librarymanager.models.Student("Nome " + i, "Cognome " + i, String.format("%010d", i), i+"@studenti.unisa.it");
+            softeng.librarymanager.models.Loan l = new softeng.librarymanager.models.Loan(s, b, LocalDate.now().plusMonths(i));
+            library.getBookRegister().add(b);
+            library.getStudentRegister().add(s);
+            library.getLoanRegister().add(l);
+        }
         // <<
-        
+
         try {
             // Carica la Book Tab
             FXMLLoader bookLoader = new FXMLLoader(getClass().getResource("/softeng/librarymanager/fxml/BookRegisterView.fxml"));
             BookRegisterController bookRegisterController = new BookRegisterController(library.getBookRegister());
             bookLoader.setController(bookRegisterController);
-            
+
             bookTab.setContent(bookLoader.load());
-            
+
             bookTab.setOnSelectionChanged(event -> {
                 if (bookTab.isSelected()) {
                     bookRegisterController.updateTableView();
@@ -110,4 +112,8 @@ public class MainController {
         }
     }
 
+    @Override
+    public void refresh(Library newLibrary) {
+        //Da implementare
+    }
 }

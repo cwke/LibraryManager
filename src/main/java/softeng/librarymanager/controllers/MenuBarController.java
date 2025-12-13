@@ -1,72 +1,110 @@
 /**
  * @file MenuBarController.java
- * @brief Controller per la gestione della barra dei menu (File menu).
- * @author [Acerra Fabrizio, Affinita Natale, Cwiertka Jakub, Galluccio Hermann]
- * @date Dicembre 2025
- * @package softeng.librarymanager.controllers
+ * @brief Controller Menu Semplificato.
  */
-
 package softeng.librarymanager.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.MenuBar;
+import javafx.stage.FileChooser;
+import javafx.stage.Window;
+import softeng.librarymanager.controllers.student.Refresh;
+import softeng.librarymanager.controllers.student.ResultActions;
 import softeng.librarymanager.models.Library;
 import softeng.librarymanager.models.LibraryIOManager;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import java.io.File;
 
-/**
- * @class MenuBarController
- * @brief Classe controller per la gestione delle operazioni globali da menu.
- * @details Gestisce le azioni della barra dei menu, come il salvataggio su file,
- *          il caricamento di un file e la chiusura di un file, delegando
- *          le operazioni di I/O alla classe {@link LibraryIOManager}.
- */
-public class MenuBarController {
+public class MenuBarController implements ResultActions {
 
-    /**
-     * @brief Gestore delle operazioni di Input/Output.
-     */
+    @FXML
+    private MenuBar menuBar;
+
     private LibraryIOManager libraryIOManager;
-
-    /**
-     * @brief Riferimento al modello dati principale.
-     * @details Necessario per passare i dati da salvare o per aggiornare il modello
-     *          dopo un caricamento da file.
-     */
+    private String defaultSavePath;
+    private Refresh mainRefresher;
     private Library library;
 
-    /**
-     * @brief Imposta l'istanza della Library su cui operare.
-     * @param[in] library L'istanza della biblioteca.
-     */
+    @FXML
+    public void initialize() {
+        this.libraryIOManager = new LibraryIOManager();
+        this.libraryIOManager.setResultActions(this);
+    }
+
     public void setLibrary(Library library) {
         this.library = library;
     }
 
-    /**
-     * @brief Gestisce l'apertura di un file di dati esistente.
-     * @details Apre un FileChooser e delega il caricamento al LibraryIOManager.
-     * @param[in] event L'evento scatenato dal click sulla voce di menu "Open" (o simile).
-     */
+    public void setMainRefresher(Refresh mainRefresher){
+        this.mainRefresher = mainRefresher;
+    }
+
     @FXML
     public void openFile(ActionEvent event) {
+        File selectedFile = fileSelection();
+        if (selectedFile != null) {
+            this.defaultSavePath = selectedFile.getAbsolutePath();
+            Library loaded = libraryIOManager.loadLibrary(this.defaultSavePath);
+            if (loaded != null) {
+                this.library = loaded;
+                if (mainRefresher != null) mainRefresher.refresh(loaded);
+            }
+        }
     }
 
-    /**
-     * @brief Gestisce la chiusura del file in lettura.
-     * @details Includere controlli per salvare le modifiche non salvate prima di "scollegarsi".
-     * @param[in] event L'evento scatenato dal click sulla voce di menu "Close".
-     */
     @FXML
     public void closeFile(ActionEvent event) {
+        this.defaultSavePath = null;
+        this.library = new Library();
+        if (mainRefresher != null) mainRefresher.refresh(this.library);
     }
 
-    /**
-     * @brief Gestisce il salvataggio dello stato corrente su file.
-     * @details Delega la scrittura dei dati correnti della Library al LibraryIOManager.
-     * @param[in] event L'evento scatenato dal click sulla voce di menu "Save".
-     */
     @FXML
     public void saveFile(ActionEvent event) {
+        if (defaultSavePath == null) {
+            saveFileWithName(event);
+        } else {
+            if (library != null)
+                libraryIOManager.saveLibrary(library, defaultSavePath);
+        }
     }
 
+    @FXML
+    public void saveFileWithName(ActionEvent event) {
+        File selectedFile = fileSelection();
+        if (selectedFile != null) {
+            this.defaultSavePath = selectedFile.getAbsolutePath();
+            if (library != null) libraryIOManager.saveLibrary(library, this.defaultSavePath);
+        }
+    }
+
+    private File fileSelection() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Selezione file");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("File Libreria (*.obj)", "*.obj"));
+
+        Window window = (menuBar.getScene() != null) ? menuBar.getScene().getWindow() : null;
+
+        return fileChooser.showSaveDialog(window); //dovrebbero fare la stessa cosa showSaveDialog e showOpenDialog *per quello che interessa a noi*
+    }
+
+    @Override
+    public void failure() {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Esito operazione");
+        alert.setHeaderText("Operazione fallita.");
+        alert.setContentText("Da decidere");
+        alert.showAndWait();
+    }
+
+    @Override
+    public void success() {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Esito operazione");
+        alert.setHeaderText("Operazione completata con successo!");
+        alert.setContentText("La Libreria è stata correttamente salvata.");
+        alert.showAndWait();
+    }
 }

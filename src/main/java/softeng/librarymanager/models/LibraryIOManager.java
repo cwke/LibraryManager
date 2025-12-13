@@ -8,7 +8,12 @@
 
 package softeng.librarymanager.models;
 
-import java.io.IOException;
+
+import softeng.librarymanager.controllers.student.ResultActions;
+
+import java.io.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @class LibraryIOManager
@@ -19,21 +24,29 @@ import java.io.IOException;
  */
 public class LibraryIOManager {
 
+
+    private ResultActions resultActions;
     /**
      * @brief Costruttore predefinito.
      */
     public LibraryIOManager() {
-    }
+    } //da cambiare: spostiamo il setter del resultsAction nel costruttore
 
     /**
      * @brief Salva lo stato corrente della biblioteca su file.
      * @details Serializza l'oggetto Library passato come parametro e lo scrive nel percorso specificato.
      * @param[in] libraryToSave L'istanza della biblioteca contenente tutti i registri da salvare.
      * @param[in] filePath Il percorso del file (incluso nome ed estensione) su cui scrivere.
-     * @throws IOException Se si verifica un errore durante la scrittura del file.
      */
-    public void saveLibrary(Library libraryToSave, String filePath) throws IOException {
-        // Implementazione della serializzazione (ObjectOutputStream)
+    public void saveLibrary(Library libraryToSave, String filePath) {
+        File fileObj = new File(filePath);
+        try(ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(fileObj)))){
+            oos.writeObject(libraryToSave);
+            resultActions.success();
+        } catch (IOException ex) {
+            Logger.getLogger(LibraryIOManager.class.getName()).log(Level.SEVERE, null, ex);
+            resultActions.failure();
+        }
     }
 
     /**
@@ -41,12 +54,34 @@ public class LibraryIOManager {
      * @details Legge il file dal percorso specificato e deserializza l'oggetto Library.
      * @param[in] filePath Il percorso del file da cui leggere i dati.
      * @return Library L'istanza della biblioteca ripristinata con tutti i suoi dati.
-     * @throws IOException Se si verifica un errore durante la lettura del file.
-     * @throws ClassNotFoundException Se la classe serializzata non viene trovata.
      */
-    public Library loadLibrary(String filePath) throws IOException, ClassNotFoundException {
-        // Implementazione della deserializzazione (ObjectInputStream)
-        return null;
+    public Library loadLibrary(String filePath) {
+        File fileObj = new File(filePath);
+        Library loadedLibrary = null;
+
+        try (ObjectInputStream ois = new ObjectInputStream(
+                new BufferedInputStream(new FileInputStream(fileObj)))){
+
+            Object obj = ois.readObject();
+
+            if(obj instanceof Library){
+                loadedLibrary = (Library) obj;
+                resultActions.success();
+            } else {
+                resultActions.failure();
+            }
+
+        } catch (IOException ex){
+            resultActions.failure();
+        } catch (ClassNotFoundException ex) {
+            resultActions.failure();
+        }
+
+        return loadedLibrary;
+    }
+
+    public void setResultActions(ResultActions o){
+        this.resultActions = o;
     }
 
 }
