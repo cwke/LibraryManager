@@ -5,7 +5,7 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="480.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="softeng.librarymanager.controllers.LoanPopupController">
+<AnchorPane prefHeight="480.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -13,12 +13,14 @@
                <VBox.margin>
                   <Insets top="10.0" />
                </VBox.margin></Label>
-            <ComboBox fx:id="studentCB" editable="true" prefWidth="150.0" />
+            <TextField fx:id="studentSearchTF" promptText="Cerca studente..." />
+            <ListView fx:id="studentListView" prefHeight="100.0" prefWidth="150.0" />
              <Label text="Libro">
                <VBox.margin>
                   <Insets top="10.0" />
                </VBox.margin></Label>
-            <ComboBox fx:id="bookCB" editable="true" prefWidth="150.0" />
+            <TextField fx:id="bookSearchTF" promptText="Cerca libro..." />
+            <ListView fx:id="bookListView" prefHeight="100.0" prefWidth="150.0" />
              <Label text="Data ultima restituzione">
                <VBox.margin>
                   <Insets top="10.0" />

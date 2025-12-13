@@ -8,7 +8,10 @@
 
 package softeng.librarymanager.controllers.loan;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.stage.Stage;
 import softeng.librarymanager.models.Loan;
 import softeng.librarymanager.models.RegisterModifier;
 import softeng.librarymanager.models.RegisterValidator;
@@ -22,7 +25,7 @@ import softeng.librarymanager.models.RegisterValidator;
  */
 public class LoanModifyPopupController extends LoanPopupController {
 
-    private RegisterModifier<Loan> loanRegisterModifier;
+    private final RegisterModifier<Loan> loanRegisterModifier;
     private RegisterValidator<Loan> loanRegisterValidator;
     private Loan loanToModify;
 
@@ -38,39 +41,32 @@ public class LoanModifyPopupController extends LoanPopupController {
      */
     @FXML
     public void initialize() {
+        studentListView.setVisible(false);
+        studentSearchTF.setText(loanToModify.getStudent().getName() + " " + loanToModify.getStudent().getSurname() + " (" + loanToModify.getStudent().getStudentId() + ")");
+        studentSearchTF.setDisable(true);
+        
+        bookListView.setVisible(false);
+        bookSearchTF.setText(loanToModify.getBook().getTitle() + " (" + loanToModify.getBook().getBookId() + ")");
+        bookSearchTF.setDisable(true);
+        
+        dateDP.setValue(loanToModify.getLoanEnd());
     }
-
-    /**
-     * @brief Imposta il prestito da modificare e popola i campi della GUI.
-     * @param[in] loanToModify L'istanza del prestito da modificare.
-     */
-    public void setLoanToModify(Loan loanToModify) {
-        this.loanToModify = loanToModify;
-    }
-
-    /**
-     * @brief Imposta il delegato per la modifica.
-     * @param[in] loanRegisterModifier L'istanza che implementa RegisterModifier<Loan>.
-     */
-    public void setLoanRegisterModifier(RegisterModifier<Loan> loanRegisterModifier) {
-        this.loanRegisterModifier = loanRegisterModifier;
-    }
-
-    /**
-     * @brief Imposta il delegato per la validazione.
-     * @param[in] loanRegisterValidator L'istanza che implementa RegisterValidator<Loan>.
-     */
-    public void setLoanRegisterValidator(RegisterValidator<Loan> loanRegisterValidator) {
-        this.loanRegisterValidator = loanRegisterValidator;
-    }
-
     /**
      * @brief Gestisce l'azione di conferma per la modifica.
      * @details Raccoglie i dati modificati, valida l'oggetto e applica le modifiche.
      * @param[in] event L'evento click.
      */
     @Override
-    public void confirmBtnAction(javafx.event.ActionEvent event) {
-        // Implementazione specifica
+    public void confirmBtnAction(ActionEvent event) {
+        try {
+            Loan loanModified = new Loan(loanToModify.getStudent(), loanToModify.getBook(), dateDP.getValue());
+
+            loanRegisterModifier.modify(loanToModify, loanModified);
+            // Chiudi la finestra
+            Stage stage = (Stage) confirmBtn.getScene().getWindow();
+            stage.close();
+        } catch (IllegalArgumentException e) {
+            showAlert(Alert.AlertType.ERROR, "Errore", "Dati non validi", e.getMessage());
+        }
     }
 }

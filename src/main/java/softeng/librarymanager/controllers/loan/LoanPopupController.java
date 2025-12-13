@@ -10,8 +10,10 @@ package softeng.librarymanager.controllers.loan;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import softeng.librarymanager.models.Book;
 import softeng.librarymanager.models.Student;
@@ -24,36 +26,13 @@ import softeng.librarymanager.models.Student;
  */
 public abstract class LoanPopupController {
 
-    /**
-     * @brief ComboBox per la selezione dello studente.
-     */
-    @FXML
-    protected ComboBox<Student> studentCB;
-
-    /**
-     * @brief ComboBox per la selezione del libro.
-     */
-    @FXML
-    protected ComboBox<Book> bookCB;
-
-    /**
-     * @brief Campo di testo per la data di fine prestito.
-     * @details Nome variabile basato sul diagramma UML (loanEndCB).
-     */
-    @FXML
-    protected TextField loanEndCB;
-
-    /**
-     * @brief Bottone di conferma (Salva/Aggiungi).
-     */
-    @FXML
-    protected Button confirmBtn;
-
-    /**
-     * @brief Bottone di annullamento.
-     */
-    @FXML
-    protected Button cancelBtn;
+    @FXML protected TextField studentSearchTF;
+    @FXML protected ListView<Student> studentListView;
+    @FXML protected TextField bookSearchTF;
+    @FXML protected ListView<Book> bookListView;
+    @FXML protected javafx.scene.control.DatePicker dateDP;
+    @FXML protected Button confirmBtn;
+    @FXML protected Button cancelBtn;
 
     /**
      * @brief Inizializzazione base del controller.
@@ -80,5 +59,14 @@ public abstract class LoanPopupController {
     @FXML
     public void cancelBtnAction(ActionEvent event) {
     }
-
+    
+    protected void showAlert(Alert.AlertType type, String title, String header, String content) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+        alert.setGraphic(null);
+        alert.getDialogPane().getStylesheets().add(getClass().getResource("/softeng/librarymanager/style.css").toExternalForm());
+        alert.showAndWait();
+    }
 }

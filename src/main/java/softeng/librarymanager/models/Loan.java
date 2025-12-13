@@ -62,8 +62,6 @@ public class Loan implements Comparable<Loan>, Serializable{
         this.loanEnd = loanEnd;
         // this.returned viene inizializzato a false di default da Java
         if(!this.isValid()) throw new IllegalArgumentException("Impossibile creare un prestito con i seguenti valori");
-        student.addActiveLoan(this);
-        book.setAvailableCopies(book.getAvailableCopies()-1);
     }
 
     /**
@@ -124,6 +122,26 @@ public class Loan implements Comparable<Loan>, Serializable{
         student.removeActiveLoan(this);
         book.setAvailableCopies(book.getAvailableCopies()+1);
     }
+    
+    /**
+     * @brief Attiva il prestito.
+     * @details Attiva il presito aggiungendo il prestito alla lista dei prestiti attivi dello studente
+     *          e decrementando le copie disponibili del libro.
+     */
+    public void activateLoan() {
+        if (!isActivable()) throw new IllegalStateException("Non è possibile attivare questo prestito");
+        student.addActiveLoan(this);
+        book.setAvailableCopies(book.getAvailableCopies()-1);
+    }
+    
+    /**
+     * @brief Verifica se il prestito è attivabile.
+     * @return True se sia lo studente che il libro sono disponibili per il prestito, false altrimenti.
+     */
+    public boolean isActivable() {
+        return book.isAvailableForLoan() &&
+                student.isAvailableForLoan();
+    }
 
     /**
      * @brief Confronta due prestiti per l'ordinamento.
@@ -158,30 +176,12 @@ public class Loan implements Comparable<Loan>, Serializable{
      */
     private boolean isValid(){
         return loanEnd != null &&
-                isBookValid(book) &&
-                isStudentValid(student);
+                book != null &&
+                student != null;
+                
 
     }
 
-    /**
-     * @brief Verifica la validità dei dati di uno studente.
-     * @details Controlla che lo studente rispetti le regole di business (es. ID valido).
-     * @param[in] student Lo studente da verificare.
-     * @return boolean True in caso di successo, altrimenti False.
-     */
-    private boolean isStudentValid(Student student){
-        return student != null && student.isAvailableForLoan();
-    }
-
-    /**
-     * @brief Verifica la validità dei dati di un libro.
-     * @details Controlla che il libro sia in uno stato valido per il prestito.
-     * @param[in] book Il libro da verificare.
-     * @return boolean True in caso di successo, altrimenti False.
-     */
-    private boolean isBookValid(Book book){
-        return book != null && book.isAvailableForLoan();
-    }
 
     @Override
     public boolean equals(Object other) {

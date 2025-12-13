@@ -8,7 +8,16 @@
 
 package softeng.librarymanager.controllers.loan;
 
+import java.time.LocalDate;
+import javafx.beans.binding.BooleanBinding;
+import javafx.collections.FXCollections;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.cell.TextFieldListCell;
+import javafx.stage.Stage;
+import javafx.util.StringConverter;
 import softeng.librarymanager.models.Book;
 import softeng.librarymanager.models.Loan;
 import softeng.librarymanager.models.RegisterAdder;
@@ -43,40 +52,87 @@ public class LoanInsertPopupController extends LoanPopupController {
      */
     @FXML
     public void initialize() {
+        super.initialize();
+        setupStudentInsert();
+        setupBookInsert();
+        
+        // Inizializza la data di prestito come la data attuale + 1 mese.
+        dateDP.setValue(LocalDate.now().plusMonths(1));
+        
+        // Binding per la disabilitazione del pulsante di conferma se non sono selezionati un libro e uno studente.
+        BooleanBinding studentNotSelectedBinding = studentListView.getSelectionModel().selectedItemProperty().isNull();
+        BooleanBinding bookNotSelectedBinding = bookListView.getSelectionModel().selectedItemProperty().isNull();
+        
+        confirmBtn.disableProperty().bind(studentNotSelectedBinding.or(bookNotSelectedBinding));
     }
 
-    /**
-     * @brief Imposta il delegato per ottenere il registro dei libri.
-     * @param[in] bookRegisterObtainer L'istanza che implementa RegisterObtainer<Book>.
-     */
-    public void setBookRegisterObtainer(RegisterObtainer<Book> bookRegisterObtainer) {
-        this.bookRegisterObtainer = bookRegisterObtainer;
+    private void setupStudentInsert() {
+        FilteredList<Student> filteredStudents = new FilteredList<>(FXCollections.observableArrayList(studentRegisterObtainer.getRegister()), Student::isAvailableForLoan);
+        
+        studentSearchTF.textProperty().addListener( (observable, oldValue, newValue) -> {
+            filteredStudents.setPredicate(student -> {
+                if (newValue == null || newValue.isEmpty()) return true;
+                
+                // Escludo gli studenti che non sono disponibili per un prestito.
+                if (!student.isAvailableForLoan()) return false;
+                
+                // Ricerca per nome, cognome e matricola
+                String lowerCaseSearchText = newValue.toLowerCase();
+                return student.getName().toLowerCase().contains(lowerCaseSearchText) ||
+                        student.getSurname().toLowerCase().contains(lowerCaseSearchText) ||
+                        student.getStudentId().toLowerCase().contains(lowerCaseSearchText);
+            });
+        } );
+        
+        SortedList<Student> sortedStudents = new SortedList<>(filteredStudents);
+        studentListView.setItems(sortedStudents);
+        
+        studentListView.setCellFactory(TextFieldListCell.forListView(new StringConverter<Student>() {
+            @Override
+            public String toString(Student student) {
+                return student.getName() + " " + student.getSurname() + " (" + student.getStudentId() + ")";
+            }
+
+            @Override
+            public Student fromString(String string) {return null;}
+        
+        }));
     }
 
-    /**
-     * @brief Imposta il delegato per ottenere il registro degli studenti.
-     * @param[in] studentRegisterObtainer L'istanza che implementa RegisterObtainer<Student>.
-     */
-    public void setStudentRegisterObtainer(RegisterObtainer<Student> studentRegisterObtainer) {
-        this.studentRegisterObtainer = studentRegisterObtainer;
-    }
+    private void setupBookInsert() {
+        FilteredList<Book> filteredBook = new FilteredList<>(FXCollections.observableArrayList(bookRegisterObtainer.getRegister()), Book::isAvailableForLoan);
+        
+        bookSearchTF.textProperty().addListener( (observable, oldValue, newValue) -> {
+            filteredBook.setPredicate(book -> {
+                
+                
+                // Escludo i libri che non sono disponibili per un prestito.
+                if (! book.isAvailableForLoan() ) return false;
+                
+                //if (newValue == null || newValue.isEmpty()) return true;
+                
+                // Ricerca per nome, cognome e matricola
+                String lowerCaseSearchText = newValue.toLowerCase();
+                return book.getTitle().toLowerCase().contains(lowerCaseSearchText) ||
+                        book.getBookId().toLowerCase().contains(lowerCaseSearchText);
+            });
+        } );
+        
+        SortedList<Book> sortedBook = new SortedList<>(filteredBook);
+        bookListView.setItems(sortedBook);
+        
+        bookListView.setCellFactory(TextFieldListCell.forListView(new StringConverter<Book>() {
+            @Override
+            public String toString(Book book) {
+                return book.getTitle() + " (" + book.getBookId() + ")";
+            }
 
-    /**
-     * @brief Imposta il delegato per l'aggiunta del prestito.
-     * @param[in] loanRegisterAdder L'istanza che implementa RegisterAdder<Loan>.
-     */
-    public void setLoanRegisterAdder(RegisterAdder<Loan> loanRegisterAdder) {
-        this.loanRegisterAdder = loanRegisterAdder;
+            @Override
+            public Book fromString(String string) {return null;}
+        
+        }));
     }
-
-    /**
-     * @brief Imposta il delegato per la validazione.
-     * @param[in] loanRegisterValidator L'istanza che implementa RegisterValidator<Loan>.
-     */
-    public void setLoanRegisterValidator(RegisterValidator<Loan> loanRegisterValidator) {
-        this.loanRegisterValidator = loanRegisterValidator;
-    }
-
+    
     /**
      * @brief Gestisce l'azione di conferma per l'inserimento.
      * @details Crea un nuovo oggetto Loan associando Studente e Libro selezionati,
@@ -85,7 +141,25 @@ public class LoanInsertPopupController extends LoanPopupController {
      */
     @Override
     public void confirmBtnAction(javafx.event.ActionEvent event) {
-        // Implementazione specifica
+        Student selectedStudent = studentListView.getSelectionModel().getSelectedItem();
+        Book selectedBook = bookListView.getSelectionModel().getSelectedItem();
+        LocalDate selectedDate = dateDP.getValue();
+        
+        try {
+            Loan loanToADd = new Loan(selectedStudent, selectedBook, selectedDate);
+            if (loanRegisterValidator.isUnique(loanToADd)) {
+                loanToADd.activateLoan();
+                loanRegisterAdder.add(loanToADd);
+                Stage stage = (Stage) confirmBtn.getScene().getWindow();
+                stage.close();
+            } else {
+                showAlert(Alert.AlertType.ERROR, "Errore", "Dati non validi", "Lo studente ha già lo stesso libro in prestito.");
+            }
+            
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            showAlert(Alert.AlertType.ERROR, "Errore", "Dati non validi", e.getMessage());
+        }
+        
     }
 
 }
