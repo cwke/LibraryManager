@@ -7,6 +7,7 @@
  */
 package softeng.librarymanager.models;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -30,7 +31,7 @@ public class Book implements Comparable<Book> {
     /**
      * @brief Autori del libro.
      */
-    private String authors;
+    private List<String> authors;
 
     /**
      * @brief Identificativo univoco libro (ISBN) {readOnly}.
@@ -57,7 +58,7 @@ public class Book implements Comparable<Book> {
      * @param[in] availableCopies Il numero di copie disponibili iniziali.
      * @post Se le invarianti non sono rispettate viene lanciata una IllegalArgumentException.
      */
-    public Book(String title, String authors, String bookId, int publishmentYear, int availableCopies) {
+    public Book(String title, List<String> authors, String bookId, int publishmentYear, int availableCopies) {
         this.title = title;
         this.authors = authors;
         this.bookId = bookId;
@@ -78,7 +79,7 @@ public class Book implements Comparable<Book> {
      * @brief Restituisce gli autori del libro.
      * @return String La stringa contenente gli autori.
      */
-    public String getAuthors() {
+    public List<String> getAuthors() {
         return this.authors;
     }
 
@@ -118,7 +119,7 @@ public class Book implements Comparable<Book> {
      * @brief Imposta gli autori del libro.
      * @param[in] authors I nuovi autori da impostare.
      */
-    public void setAuthors(String authors) {
+    public void setAuthors(List<String> authors) {
         this.authors = authors;
     }
 

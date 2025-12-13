@@ -45,7 +45,6 @@ public class BookRegister implements Register<Book> {
      * @param[in] newObj Libro contenente i nuovi dati aggiornati.
      * @pre newObj != null
      * @pre 'old' deve essere già presente nel catalogo.
-     * @pre 'newObj' deve essere un libro valido secondo RegisterValidator
      * @see RegisterValidator
      * @post I dati del libro specificato sono aggiornati mantenendo invariato il riferimento (all'oggetto originale) presente nel catalogo.
      */
@@ -95,9 +94,12 @@ public class BookRegister implements Register<Book> {
     public List<Book> getRegisterList() {
         /*
          * Creiamo una nuova ArrayList passando il Set al costruttore per restituire una lista ordinata.
+         * Nota: avendo aggiornato "authors" da String a List<String>, non posso più utilizzare l'ordinamento naturale
+         * delle String. Di conseguenza, utilizzo il metodo String.join per concatenare i vari autori in un'unica Stringa.
+         * (Si noti che l'ordinamento rispetto agli autori, di conseguenza, da la priorità in base all'ordine di inserimento )
          */
         List<Book> list = new ArrayList<>(bookRegister);
-        list.sort(Comparator.comparing(Book::getTitle).thenComparing(Book::getAuthors));
+        list.sort(Comparator.comparing(Book::getTitle).thenComparing(book -> String.join(", ", book.getAuthors())));
         return list;
     }
 }
