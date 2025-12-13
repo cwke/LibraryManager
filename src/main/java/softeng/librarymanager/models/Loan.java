@@ -8,6 +8,7 @@
 
 package softeng.librarymanager.models;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -18,7 +19,7 @@ import java.util.Objects;
  * a un libro e tracciando la data di scadenza e lo stato di restituzione.
  * Implementa {@link Comparable} per l'ordinamento.
  */
-public class Loan implements Comparable<Loan> {
+public class Loan implements Comparable<Loan>, Serializable{
 
     private static int count;
 

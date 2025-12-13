@@ -8,6 +8,7 @@
 
 package softeng.librarymanager.models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -19,7 +20,7 @@ import java.util.Objects;
  * il nome, cognome, matricola, email, e numero di prestiti disponibili.
  * Implementa {@link Comparable} per l'ordinamento.
  */
-public class Student implements Comparable<Student> {
+public class Student implements Comparable<Student>, Serializable {
 
     /**
      * @brief Nome dello studente.

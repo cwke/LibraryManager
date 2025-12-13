@@ -7,6 +7,7 @@
 
 package softeng.librarymanager.models;
 
+import java.io.Serializable;
 import java.util.*;
 
 
@@ -16,7 +17,7 @@ import java.util.*;
  * @see Loan
  * @invariant loanRegister != null
  */
-public class LoanRegister implements Register<Loan> {
+public class LoanRegister implements Register<Loan>, Serializable {
 
     private Set<Loan> loanRegister;
 

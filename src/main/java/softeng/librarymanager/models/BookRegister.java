@@ -6,6 +6,7 @@
  */
 package softeng.librarymanager.models;
 
+import java.io.Serializable;
 import java.util.*;
 
 
@@ -15,7 +16,7 @@ import java.util.*;
  * @see Book
  * @invariant bookRegister != null
  */
-public class BookRegister implements Register<Book> {
+public class BookRegister implements Register<Book>, Serializable {
 
     private Set<Book> bookRegister;
 

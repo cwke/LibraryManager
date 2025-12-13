@@ -7,11 +7,13 @@
  */
 package softeng.librarymanager.models;
 
+import java.io.Serializable;
+
 /**
  * @class Library
  * @brief Classe principale che funge da contenitore per i registri della biblioteca.
  */
-public class Library {
+public class Library implements Serializable {
 
     /**
      * @brief Registro che gestisce l'inventario dei libri.

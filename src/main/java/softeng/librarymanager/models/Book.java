@@ -7,6 +7,7 @@
  */
 package softeng.librarymanager.models;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
@@ -21,7 +22,7 @@ import java.util.Objects;
  * @invariant bookId.length == 13
  * @invariant publishmentYear >= 0
  */
-public class Book implements Comparable<Book> {
+public class Book implements Comparable<Book>, Serializable {
 
     /**
      * @brief Titolo del libro.

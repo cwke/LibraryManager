@@ -43,7 +43,7 @@ class BookRegisterTest {
     * nel catalogo) il metodo add() deve garantire che, al termine dell'operazione, il libro sia stato
     * effettivamente inserito nel catalogo. Si noti che utilizzo il metodo getRegisterList() per quest'operazione e le seguenti
     * poiché il relativo caso di test mi garantisce la corrispondenza tra la List restituita da suddetto metodo ed il catalogo studenti
-    * (salvo ulteriori operazioni sul catalogo successivamente l'invocazione del metodo).
+    * (salvo ulteriori operazioni sul catalogo successive rispetto all'invocazione del metodo).
     * */
     @Test
     void testAdd() {
@@ -56,7 +56,7 @@ class BookRegisterTest {
     /*
     * Dato un ingresso "newBook" != null ed un libro "oldBook" già presente nel catalogo, modify() deve
     * garantire che al termine dell'operazione il riferimento al libro "oldBook" già presente resti invariato e che
-    * i suoi dati (non modificabili, quindi tutti tranne il bookId) risultino pari a quelli di newBook.
+    * i suoi dati (tranne i non modificabili, quindi tutti tranne il bookId) risultino pari a quelli di newBook.
     * Anche in questo metodo utilizzo il metodo getRegisterList() per i motivi citati nel commento del metodo di test precedente.
     * */
     @Test

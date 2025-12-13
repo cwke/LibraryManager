@@ -7,6 +7,7 @@
 
 package softeng.librarymanager.models;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -15,7 +16,7 @@ import java.util.*;
  * @see Student
  * @invariant studentRegister != null
  */
-public class StudentRegister implements Register<Student> {
+public class StudentRegister implements Register<Student>, Serializable {
 
     private Set<Student> studentRegister;
 
