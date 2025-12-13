@@ -35,9 +35,9 @@ import softeng.librarymanager.models.Register;
  * @class BookRegisterController
  * @brief Classe controller per la gestione dell'interfaccia utente del catalogo libri.
  * @details Questa classe gestisce la visualizzazione tabellare dei libri, l'interazione
- * con la barra laterale (SideBar) e coordina l'apertura dei popup per l'inserimento
- * e la modifica dei libri.
- * Si occupa inoltre di collegare la vista al modello dati {@link Register}<Book>.
+ *          con la barra laterale (SideBar) e coordina l'apertura dei popup per l'inserimento
+ *          e la modifica dei libri.
+ *          Si occupa inoltre di collegare la vista al modello dati {@link Register}<Book>.
  */
 public class BookRegisterController {
 

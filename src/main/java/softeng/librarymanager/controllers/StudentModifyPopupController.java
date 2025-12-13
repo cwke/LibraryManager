@@ -37,6 +37,12 @@ public class StudentModifyPopupController extends StudentPopupController {
      */
     private Student studentToModify;
 
+    public StudentModifyPopupController(RegisterModifier<Student> studentRegisterModifier, RegisterValidator<Student> studentRegisterValidator, Student studentToModify) {
+        this.studentRegisterModifier = studentRegisterModifier;
+        this.studentRegisterValidator = studentRegisterValidator;
+        this.studentToModify = studentToModify;
+    }
+
     /**
      * @brief Inizializza il controller.
      * @details Richiama l'inizializzazione della superclasse.
