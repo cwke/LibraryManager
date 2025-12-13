@@ -11,6 +11,7 @@ package softeng.librarymanager.models;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * @class Loan
@@ -21,12 +22,10 @@ import java.util.Objects;
  */
 public class Loan implements Comparable<Loan>, Serializable{
 
-    private transient static int count;
-
     /**
      * @brief Identificativo univoco del prestito {readOnly}
      */
-    private int loanId;
+    private UUID loanId;
 
     /**
      * @brief Riferimento allo studente che ha effettuato il prestito {readOnly}.
@@ -56,7 +55,7 @@ public class Loan implements Comparable<Loan>, Serializable{
      * @param[in] loanEnd La data di scadenza prevista.
      */
     public Loan(Student student, Book book, LocalDate loanEnd) {
-        this.loanId = count++;
+        this.loanId = UUID.randomUUID();
         this.student = student;
         this.book = book;
         this.loanEnd = loanEnd;
@@ -68,7 +67,7 @@ public class Loan implements Comparable<Loan>, Serializable{
      * @brief Restituisce l'identificativo del prestito.
      * @return int L'identificativo del prestito.
      */
-    public int getLoanId() {
+    public UUID getLoanId() {
         return this.loanId;
     }
 
@@ -152,7 +151,7 @@ public class Loan implements Comparable<Loan>, Serializable{
     @Override
     public int compareTo(Loan other) {
         if (other == null) return 1;
-        return Integer.compare(this.loanId, other.getLoanId());
+        return loanId.toString().compareTo(other.loanId.toString());
     }
 
     /**
@@ -191,12 +190,11 @@ public class Loan implements Comparable<Loan>, Serializable{
 
         Loan otherLoan = (Loan) other;
 
-        return this.loanId == otherLoan.getLoanId();
+        return loanId.equals(otherLoan.loanId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(loanId);
+        return loanId.hashCode();
     }
-
 }
