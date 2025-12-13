@@ -107,7 +107,7 @@ public class Loan implements Comparable<Loan> {
 
     /**
      * @brief Imposta una nuova data di fine prestito (proroga).
-     * @param loanEnd La nuova data di scadenza da impostare.
+     * @param[in] loanEnd La nuova data di scadenza da impostare.
      */
     public void setLoanEnd(LocalDate loanEnd) {
         this.loanEnd = loanEnd;

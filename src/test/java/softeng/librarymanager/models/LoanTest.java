@@ -2,91 +2,103 @@ package softeng.librarymanager.models;
 
 import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
+import java.time.Month;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class LoanTest {
 
-    private final Student validStudent = new Student()
-    private final Book validBook = new Book
-    private final String validBookId = "1234567890123";
-    private final int validPublishmentYear = 1880;
-    private final int validAvailableCopies = 10;
+    private final LocalDate validLoanEnd = LocalDate.of(2025, Month.MARCH, 18);
 
     //Test costruttore e di conseguenza dei getter e delle funzioni di validazione
     @Test
     void testLoan() {
+        Student validStudent = new Student("Mario", "Rossi", "1234567890", "m.rossi@studenti.unisa.it");
+        Book validBook = new Book("La roba", "Giovanni Verga", "1234567890123", 1880, 10);
         //Creazione valida
-        Book book = new Book(validTitle, validAuthors, validBookId, validPublishmentYear, validAvailableCopies);
+        Loan loan = new Loan(validStudent, validBook, validLoanEnd);
 
-        assertEquals(validTitle, book.getTitle());
-        assertEquals(validAuthors, book.getAuthors());
-        assertEquals(validBookId, book.getBookId());
-        assertEquals(validPublishmentYear, book.getPublishmentYear());
-        assertEquals(validAvailableCopies, book.getAvailableCopies());
+        assertEquals(validStudent, loan.getStudent());
+        assertEquals(validBook, loan.getBook());
+        assertEquals(validLoanEnd, loan.getLoanEnd());
+        assertEquals(loan, validStudent.getActiveLoans().get(0));
+        assertEquals(9, validBook.getAvailableCopies());
         
-        //Creazione invalida perché titolo null
-        assertThrows(IllegalArgumentException.class, () -> new Book(null, validAuthors, validBookId, validPublishmentYear, validAvailableCopies));
+        //Creazione invalida perché studente null
+        assertThrows(IllegalArgumentException.class, () -> new Loan(null, validBook, validLoanEnd));
         
-        //Creazione invalida perché autori null
-        assertThrows(IllegalArgumentException.class, () -> new Book(validTitle, null, validBookId, validPublishmentYear, validAvailableCopies));
+        //Creazione invalida perché studente non disponibile per prestito
+        validStudent.addActiveLoan(loan);
+        validStudent.addActiveLoan(loan);
+        assertThrows(IllegalArgumentException.class, () -> new Loan(validStudent, validBook, validLoanEnd));
         
-        //Creazione invalida perché identificativo libro null
-        assertThrows(IllegalArgumentException.class, () -> new Book(validTitle, validAuthors, null, validPublishmentYear, validAvailableCopies));
+        //Creazione invalida perché libro null
+        assertThrows(IllegalArgumentException.class, () -> new Loan(validStudent, null, validLoanEnd));
         
-        //Creazione invalida perché lunghezza identificativo libro diversa da 13
-        assertThrows(IllegalArgumentException.class, () -> new Book(validTitle, validAuthors, "12345", validPublishmentYear, validAvailableCopies));
+        //Creazione invalida perché libro non disponibile per prestito
+        assertThrows(IllegalArgumentException.class, () -> new Loan(validStudent, new Book("La roba", "Giovanni Verga", "1234567890123", 1880, 0), validLoanEnd));
         
-        //Creazione invalida perché anno di pubblicazione minore di 0
-        assertThrows(IllegalArgumentException.class, () -> new Book(validTitle, validAuthors, validBookId, -1, validAvailableCopies));
-        
-        //Creazione invalida perché numero di copie disponibili minore di 0
-        assertThrows(IllegalArgumentException.class, () -> new Book(validTitle, validAuthors, validBookId, validPublishmentYear, -1));
+        //Creazione invalida perché data ultima di restituzione null
+        assertThrows(IllegalArgumentException.class, () -> new Loan(validStudent, validBook, null));
     }
 
     @Test
-    void testReturnLoanRestoresState() {
-        Student s = new Student("Mario", "Rossi", "1234567890", "m.rossi@studenti.unisa.it");
-        Book b = new Book("T", "A", "1234567890123", 2020, 1);
-
-        Loan loan = new Loan(s, b, LocalDate.now().plusDays(10));
+    void testReturnLoan() {
+        Student validStudent = new Student("Mario", "Rossi", "1234567890", "m.rossi@studenti.unisa.it");
+        Book validBook = new Book("La roba", "Giovanni Verga", "1234567890123", 1880, 10);
+        Loan loan = new Loan(validStudent, validBook, validLoanEnd);
+        
+        //Verifica libro non restituito
+        assertFalse(loan.isReturned());
+        
+        //Verifica libro restituito
         loan.returnLoan();
-
         assertTrue(loan.isReturned());
-        assertEquals(1, b.getAvailableCopies());
-        assertEquals(0, s.getActiveLoans().size());
-    }
-
-    @Test
-    void testLoanInvalidIfBookUnavailable() {
-        Student s = new Student("Mario", "Rossi", "1234567890", "m.rossi@studenti.unisa.it");
-        Book b = new Book("T", "A", "1234567890123", 2020, 0);
-
-        assertThrows(IllegalArgumentException.class,
-                () -> new Loan(s, b, LocalDate.now().plusDays(7)));
+        assertTrue(validStudent.getActiveLoans().isEmpty());
+        assertEquals(10, validBook.getAvailableCopies());
     }
 
     @Test
     void testCompareTo() {
-        Student s = new Student("Mario", "Rossi", "1234567890", "m.rossi@studenti.unisa.it");
-        Book b = new Book("T", "A", "1234567890123", 2020, 10);
+        Student validStudent = new Student("Mario", "Rossi", "1234567890", "m.rossi@studenti.unisa.it");
+        Book validBook = new Book("La roba", "Giovanni Verga", "1234567890123", 1880, 10);
 
-        Loan l1 = new Loan(s, b, LocalDate.now().plusDays(10));
-        Loan l2 = new Loan(s, b, LocalDate.now().plusDays(20));
-
-        assertTrue(l1.compareTo(l2) < 0);
+        Loan l1 = new Loan(validStudent, validBook, validLoanEnd);
+        Loan l2 = new Loan(validStudent, validBook, validLoanEnd);
+        Loan l3 = new Loan(validStudent, validBook, validLoanEnd);
+        
+        //Verifica prestito minore
+        assertTrue(l2.compareTo(l3) < 0);
+        
+        //Verifica libro maggiore
+        assertTrue(l2.compareTo(l1) > 0);
     }
 
     @Test
-    void testEqualsAndHashCode() {
-        Student s = new Student("Mario", "Rossi", "1234567890", "m.rossi@studenti.unisa.it");
-        Book b = new Book("T", "A", "1234567890123", 2020, 10);
+    void testEquals() {
+        Student validStudent = new Student("Mario", "Rossi", "1234567890", "m.rossi@studenti.unisa.it");
+        Book validBook = new Book("La roba", "Giovanni Verga", "1234567890123", 1880, 10);
+        Loan loan = new Loan(validStudent, validBook, validLoanEnd);
+        
+        //Verifica prestiti uguali
+        assertEquals(loan, loan);
+        
+        //Verifica prestiti diversi
+        Loan loan2 = new Loan(validStudent, validBook, validLoanEnd);
+        assertFalse(loan.equals(loan2));
+    }
 
-        Loan l1 = new Loan(s, b, LocalDate.now().plusDays(10));
-        Loan l2 = new Loan(s, b, LocalDate.now().plusDays(20));
-
-        // Loan ID è incrementale, quindi l1 ≠ l2
-        assertNotEquals(l1, l2);
-        assertNotEquals(l1.hashCode(), l2.hashCode());
+    @Test
+    void testHashCode() {
+        Student validStudent = new Student("Mario", "Rossi", "1234567890", "m.rossi@studenti.unisa.it");
+        Book validBook = new Book("La roba", "Giovanni Verga", "1234567890123", 1880, 10);
+        Loan loan = new Loan(validStudent, validBook, validLoanEnd);
+        
+        //Verifica hashcode prestiti uguali
+        assertEquals(loan.hashCode(), loan.hashCode());
+        
+        //Verifica hashcode prestiti diversi
+        Loan loan2 = new Loan(validStudent, validBook, validLoanEnd);
+        assertFalse(loan.hashCode() == loan2.hashCode());
     }
 }
