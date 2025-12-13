@@ -1,6 +1,9 @@
 package softeng.librarymanager.models;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -10,6 +13,8 @@ class StudentTest {
     private final String validSurname = "Rossi";
     private final String validStudentId = "1234567890";
     private final String validEmail = "m.rossi@studenti.unisa.it";
+    
+    private final List<String> validAuthors = new ArrayList<>(Arrays.asList("Giovanni Verga"));
 
     //Test costruttore e di conseguenza dei getter e delle funzioni di validazione
     @Test
@@ -57,7 +62,7 @@ class StudentTest {
     @Test
     void testAddLoanLimit() {
         Student student = new Student(validName, validSurname, validStudentId, validEmail);
-        Book book = new Book("La roba", "Giovanni Verga", "1234567890123", 1880, 10);
+        Book book = new Book("La roba", validAuthors, "1234567890123", 1880, 10);
         //Altrimenti vengono aggiunti due volte i loan agli activeLoan
         Student s1 = new Student("Mario", "Rossi", "1234567891", "m.rossi@studenti.unisa.it");
 
@@ -125,7 +130,7 @@ class StudentTest {
         assertTrue(student.isAvailableForLoan());
         
         //Verifica studente non disponibile per il prestito
-        Book book = new Book("La roba", "Giovanni Verga", "1234567890123", 1880, 10);
+        Book book = new Book("La roba", validAuthors, "1234567890123", 1880, 10);
         Loan l1 = new Loan(student, book, LocalDate.now());
         Loan l2 = new Loan(student, book, LocalDate.now());
         Loan l3 = new Loan(student, book, LocalDate.now());

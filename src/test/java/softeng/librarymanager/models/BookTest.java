@@ -1,15 +1,20 @@
 package softeng.librarymanager.models;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class BookTest {
     
     private final String validTitle = "La roba";
-    private final String validAuthors = "Giovanni Verga";
+    private final List<String> validAuthors = new ArrayList<>(Arrays.asList("Giovanni Verga"));
     private final String validBookId = "1234567890123";
     private final int validPublishmentYear = 1880;
     private final int validAvailableCopies = 10;
+    
+    private final List<String> otherAuthors = new ArrayList<>(Arrays.asList("Dante Alighieri"));
 
     //Test costruttore e di conseguenza dei getter e delle funzioni di validazione
     @Test
@@ -45,7 +50,7 @@ class BookTest {
     @Test
     void testCopy() {
         Book book = new Book(validTitle, validAuthors, validBookId, validPublishmentYear, validAvailableCopies);
-        Book bookCopy = new Book("C", "D", "9876543210987", 2021, 9);
+        Book bookCopy = new Book("C", otherAuthors, "9876543210987", 2021, 9);
 
         book.copy(bookCopy);
 
@@ -61,15 +66,15 @@ class BookTest {
         Book book = new Book(validTitle, validAuthors, validBookId, validPublishmentYear, validAvailableCopies);
         
         //Verifica libro uguale
-        Book b1 = new Book("T", "A", validBookId, 2020, 1);
+        Book b1 = new Book("T", otherAuthors, validBookId, 2020, 1);
         assertTrue(book.compareTo(b1) == 0);
         
         //Verifica libro minore
-        Book b2 = new Book("T", "A", "2234567890123", 2020, 1);
+        Book b2 = new Book("T", otherAuthors, "2234567890123", 2020, 1);
         assertTrue(book.compareTo(b2) < 0);
         
         //Verifica libro maggiore
-        Book b3 = new Book("T", "A", "0234567890123", 2020, 1);
+        Book b3 = new Book("T", otherAuthors, "0234567890123", 2020, 1);
         assertTrue(book.compareTo(b3) > 0);
     }
 
@@ -78,7 +83,7 @@ class BookTest {
         Book book = new Book(validTitle, validAuthors, validBookId, validPublishmentYear, validAvailableCopies);
         
         //Verifica libri uguali
-        Book book1 = new Book("", "", validBookId, 2020, 9);
+        Book book1 = new Book("", otherAuthors, validBookId, 2020, 9);
         assertEquals(book, book1);
         
         //Verifica libri diversi
@@ -91,7 +96,7 @@ class BookTest {
         Book book = new Book(validTitle, validAuthors, validBookId, validPublishmentYear, validAvailableCopies);
         
         //Verifica hashcode libri uguali
-        Book book1 = new Book("", "", validBookId, 2020, 9);
+        Book book1 = new Book("", otherAuthors, validBookId, 2020, 9);
         assertEquals(book.hashCode(), book1.hashCode());
         
         //Verifica hashcode libri diversi

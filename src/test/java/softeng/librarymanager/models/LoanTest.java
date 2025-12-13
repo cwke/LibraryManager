@@ -3,18 +3,22 @@ package softeng.librarymanager.models;
 import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class LoanTest {
 
     private final LocalDate validLoanEnd = LocalDate.of(2025, Month.MARCH, 18);
+    private final List<String> validAuthors = new ArrayList<>(Arrays.asList("Giovanni Verga"));
 
     //Test costruttore e di conseguenza dei getter e delle funzioni di validazione
     @Test
     void testLoan() {
         Student validStudent = new Student("Mario", "Rossi", "1234567890", "m.rossi@studenti.unisa.it");
-        Book validBook = new Book("La roba", "Giovanni Verga", "1234567890123", 1880, 10);
+        Book validBook = new Book("La roba", validAuthors, "1234567890123", 1880, 10);
         //Creazione valida
         Loan loan = new Loan(validStudent, validBook, validLoanEnd);
 
@@ -36,7 +40,7 @@ class LoanTest {
         assertThrows(IllegalArgumentException.class, () -> new Loan(validStudent, null, validLoanEnd));
         
         //Creazione invalida perché libro non disponibile per prestito
-        assertThrows(IllegalArgumentException.class, () -> new Loan(validStudent, new Book("La roba", "Giovanni Verga", "1234567890123", 1880, 0), validLoanEnd));
+        assertThrows(IllegalArgumentException.class, () -> new Loan(validStudent, new Book("La roba", validAuthors, "1234567890123", 1880, 0), validLoanEnd));
         
         //Creazione invalida perché data ultima di restituzione null
         assertThrows(IllegalArgumentException.class, () -> new Loan(validStudent, validBook, null));
@@ -45,7 +49,7 @@ class LoanTest {
     @Test
     void testReturnLoan() {
         Student validStudent = new Student("Mario", "Rossi", "1234567890", "m.rossi@studenti.unisa.it");
-        Book validBook = new Book("La roba", "Giovanni Verga", "1234567890123", 1880, 10);
+        Book validBook = new Book("La roba", validAuthors, "1234567890123", 1880, 10);
         Loan loan = new Loan(validStudent, validBook, validLoanEnd);
         
         //Verifica libro non restituito
@@ -61,7 +65,7 @@ class LoanTest {
     @Test
     void testCompareTo() {
         Student validStudent = new Student("Mario", "Rossi", "1234567890", "m.rossi@studenti.unisa.it");
-        Book validBook = new Book("La roba", "Giovanni Verga", "1234567890123", 1880, 10);
+        Book validBook = new Book("La roba", validAuthors, "1234567890123", 1880, 10);
 
         Loan l1 = new Loan(validStudent, validBook, validLoanEnd);
         Loan l2 = new Loan(validStudent, validBook, validLoanEnd);
@@ -77,7 +81,7 @@ class LoanTest {
     @Test
     void testEquals() {
         Student validStudent = new Student("Mario", "Rossi", "1234567890", "m.rossi@studenti.unisa.it");
-        Book validBook = new Book("La roba", "Giovanni Verga", "1234567890123", 1880, 10);
+        Book validBook = new Book("La roba", validAuthors, "1234567890123", 1880, 10);
         Loan loan = new Loan(validStudent, validBook, validLoanEnd);
         
         //Verifica prestiti uguali
@@ -91,7 +95,7 @@ class LoanTest {
     @Test
     void testHashCode() {
         Student validStudent = new Student("Mario", "Rossi", "1234567890", "m.rossi@studenti.unisa.it");
-        Book validBook = new Book("La roba", "Giovanni Verga", "1234567890123", 1880, 10);
+        Book validBook = new Book("La roba", validAuthors, "1234567890123", 1880, 10);
         Loan loan = new Loan(validStudent, validBook, validLoanEnd);
         
         //Verifica hashcode prestiti uguali
