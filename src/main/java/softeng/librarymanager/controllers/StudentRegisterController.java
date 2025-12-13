@@ -11,6 +11,7 @@ package softeng.librarymanager.controllers;
 import javafx.beans.binding.Binding;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -26,6 +27,7 @@ import softeng.librarymanager.models.Register;
 import softeng.librarymanager.models.Student;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Optional;
 
 /**
@@ -48,9 +50,10 @@ public class StudentRegisterController {
 
     @FXML private SideBarController sideBarController;
 
+    // Controller per i popup (non strettamente necessari come campi se istanziati localmente, ma utili per debug)
     private StudentInsertPopupController studentInsertPopupController;
     private StudentModifyPopupController studentModifyPopupController;
-    
+
     /**
      * @brief Costruttore del controller.
      * @param[in] studentRegister L'istanza del registro studenti.
@@ -61,8 +64,6 @@ public class StudentRegisterController {
 
     /**
      * @brief Metodo di inizializzazione del controller JavaFX.
-     * @details Configura le colonne della tabella (binding con le proprietà di Student)
-     *          e associa i listener agli eventi dei bottoni della SideBar (Aggiungi, Modifica, Rimuovi).
      */
     @FXML
     public void initialize() {
@@ -70,15 +71,18 @@ public class StudentRegisterController {
         updateTableView();
 
         // Configurazione Colonne: Usa SimpleStringProperty per avvolgere i getter della classe POJO Book
-        nameClm.setCellValueFactory( row -> new SimpleStringProperty(row.getValue().getName()));
-        surnameClm.setCellValueFactory( row -> new SimpleStringProperty(row.getValue().getSurname()));
-        studentIdClm.setCellValueFactory( row -> new SimpleStringProperty(row.getValue().getStudentId()));
-        emailClm.setCellValueFactory( row -> new SimpleStringProperty(row.getValue().getEmail()));
+        nameClm.setCellValueFactory(row -> new SimpleStringProperty(row.getValue().getName()));
+        surnameClm.setCellValueFactory(row -> new SimpleStringProperty(row.getValue().getSurname()));
+        studentIdClm.setCellValueFactory(row -> new SimpleStringProperty(row.getValue().getStudentId()));
+        emailClm.setCellValueFactory(row -> new SimpleStringProperty(row.getValue().getEmail()));
 
         // Sidebar Event Listeners
         sideBarController.getAddBtn().setOnAction(event -> openInsertPopup());
         sideBarController.getModifyBtn().setOnAction(event -> openModifyPopup());
         sideBarController.getRemoveBtn().setOnAction(event -> removeFromRegister());
+
+        // Listener per la barra di ricerca
+        sideBarController.getSearchBarTF().textProperty().addListener((observable, oldValue, newValue) -> searchBook());
 
         // Binding: Disabilita i tasti Modifica e Rimuovi se non è selezionata una riga
         Binding<Boolean> noItemSelectedBinding = studentTable.getSelectionModel().selectedItemProperty().isNull();
@@ -88,18 +92,17 @@ public class StudentRegisterController {
 
     /**
      * @brief Apre il popup per l'inserimento di un nuovo studente.
-     * @details Invocato alla pressione del tasto "Aggiungi" nella SideBar.
      */
     private void openInsertPopup() {
         try {
             // Usa il percorso assoluto che avevi nella branch per sicurezza
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/softeng/librarymanager/fxml/StudentPopupView.fxml"));
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/softeng/librarymanager/fxml/StudentPopupView.fxml"));
 
             // Passa le lambda expression per le callback (add e isValid)
             loader.setController(new StudentInsertPopupController(
                     (Student toAdd) -> studentRegister.add(toAdd),
-                    (Student toVerify) -> studentRegister.isUnique(toVerify)
-            ));
+                    (Student toVerify) -> studentRegister.isUnique(toVerify)));
 
             Parent root = loader.load();
             Scene scene = new Scene(root, 480, 720);
@@ -122,10 +125,40 @@ public class StudentRegisterController {
 
     /**
      * @brief Apre il popup per la modifica dello studente selezionato.
-     * @details Invocato alla pressione del tasto "Modifica" nella SideBar.
-     *          Recupera l'elemento selezionato nella TableView e lo passa al popup.
      */
     private void openModifyPopup() {
+        Student selectedStudent = studentTable.getSelectionModel().getSelectedItem();
+        if (selectedStudent == null) return;
+
+        try {
+            // Usa il percorso assoluto che avevi nella branch per sicurezza
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/softeng/librarymanager/fxml/StudentPopupView.fxml"));
+
+            // Passa le callback per modify e isValid, più il libro selezionato
+            loader.setController(new StudentModifyPopupController(
+                    (Student old, Student newObj) -> studentRegister.modify(old, newObj),
+                    (Student toVerify) -> studentRegister.isUnique(toVerify),
+                    selectedStudent
+            ));
+
+            Parent root = loader.load();
+            Scene scene = new Scene(root, 480, 720);
+
+            // CSS
+            scene.getStylesheets().add(getClass().getResource("/softeng/librarymanager/style.css").toExternalForm());
+
+            Stage popup = new Stage();
+            popup.setTitle("Modifica Studente");
+            popup.initModality(Modality.APPLICATION_MODAL);
+            popup.setScene(scene);
+            popup.showAndWait();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // Aggiorna la tabella alla chiusura del popup
+        updateTableView();
     }
 
     /**
@@ -133,14 +166,17 @@ public class StudentRegisterController {
      */
     private void removeFromRegister() {
         Student selectedStudent = studentTable.getSelectionModel().getSelectedItem();
-        if (selectedStudent == null) return;
+        if (selectedStudent == null)
+            return;
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Conferma rimozione");
-        alert.setHeaderText("Sei sicuro di voler rimuovere lo studente '" + selectedStudent.getName() + " " + selectedStudent.getSurname() + "'?");
+        alert.setHeaderText("Sei sicuro di voler rimuovere lo studente '" + selectedStudent.getName() + " "
+                + selectedStudent.getSurname() + "'?");
         alert.setContentText("L'operazione è irreversibile.");
         alert.setGraphic(null);
-        alert.getDialogPane().getStylesheets().add(getClass().getResource("/softeng/librarymanager/style.css").toExternalForm());
+        alert.getDialogPane().getStylesheets()
+                .add(getClass().getResource("/softeng/librarymanager/style.css").toExternalForm());
 
         Optional<ButtonType> result = alert.showAndWait();
 
@@ -157,4 +193,29 @@ public class StudentRegisterController {
         studentTable.setItems(FXCollections.observableArrayList(studentRegister.getRegisterList()));
     }
 
+    private void searchBook() {
+        String searchText = sideBarController.getSearchBarTF().getText();
+
+        // Se la ricerca è vuota, mostra tutto
+        if (searchText == null || searchText.isEmpty()) {
+            updateTableView();
+            return;
+        }
+
+        ObservableList<Student> allStudents = FXCollections.observableArrayList(studentRegister.getRegisterList());
+        String lowerCaseSearchText = searchText.toLowerCase();
+        ObservableList<Student> filteredStudents = FXCollections.observableArrayList();
+
+        for (Student Student : allStudents) {
+            // Cerca per Nome, Cognome o Matricola
+            if (Student.getName().toLowerCase().contains(lowerCaseSearchText) ||
+                    Student.getSurname().toLowerCase().contains(lowerCaseSearchText) ||
+                    Student.getStudentId().toLowerCase().contains(lowerCaseSearchText)) {
+                filteredStudents.add(Student);
+            }
+        }
+
+        Collections.sort(filteredStudents);
+        studentTable.setItems(filteredStudents);
+    }
 }
