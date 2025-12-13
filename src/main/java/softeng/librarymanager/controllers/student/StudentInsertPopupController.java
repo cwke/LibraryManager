@@ -6,7 +6,7 @@
  * @package softeng.librarymanager.controllers
  */
 
-package softeng.librarymanager.controllers;
+package softeng.librarymanager.controllers.student;
 
 import javafx.fxml.FXML;
 import softeng.librarymanager.models.RegisterAdder;

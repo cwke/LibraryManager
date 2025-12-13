@@ -6,7 +6,7 @@
  * @package softeng.librarymanager.controllers
  */
 
-package softeng.librarymanager.controllers;
+package softeng.librarymanager.controllers.student;
 
 import javafx.beans.binding.Binding;
 import javafx.beans.property.SimpleStringProperty;
@@ -29,6 +29,7 @@ import softeng.librarymanager.models.Student;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Optional;
+import softeng.librarymanager.controllers.SideBarController;
 
 /**
  * @class StudentRegisterController

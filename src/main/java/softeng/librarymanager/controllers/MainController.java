@@ -8,6 +8,9 @@
 
 package softeng.librarymanager.controllers;
 
+import softeng.librarymanager.controllers.student.StudentRegisterController;
+import softeng.librarymanager.controllers.loan.LoanRegisterController;
+import softeng.librarymanager.controllers.book.BookRegisterController;
 import java.io.IOException;
 import java.time.LocalDate;
 import javafx.fxml.FXML;

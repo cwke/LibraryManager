@@ -6,8 +6,9 @@
  * @package softeng.librarymanager.controllers
  */
 
-package softeng.librarymanager.controllers;
+package softeng.librarymanager.controllers.book;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import softeng.librarymanager.models.Book;
 import softeng.librarymanager.models.RegisterAdder;
@@ -48,28 +49,12 @@ public class BookInsertPopupController extends BookPopupController {
     }
 
     /**
-     * @brief Imposta il delegato per l'aggiunta al registro.
-     * @param[in] bookRegisterAdder L'istanza che implementa RegisterAdder.
-     */
-    public void setBookRegisterAdder(RegisterAdder<Book> bookRegisterAdder) {
-        this.bookRegisterAdder = bookRegisterAdder;
-    }
-
-    /**
-     * @brief Imposta il delegato per la validazione.
-     * @param[in] bookRegisterValidator L'istanza che implementa RegisterValidator.
-     */
-    public void setBookRegisterValidator(RegisterValidator<Book> bookRegisterValidator) {
-        this.bookRegisterValidator = bookRegisterValidator;
-    }
-
-    /**
      * @brief Gestisce l'azione di conferma per l'inserimento.
      * @details Raccoglie i dati dai campi, valida il nuovo oggetto e lo aggiunge.
      * @param[in] event L'evento click.
      */
     @Override
-    public void confirmBtnAction(javafx.event.ActionEvent event) {
+    public void confirmBtnAction(ActionEvent event) {
         // Implementazione specifica per l'aggiunta
     }
 }

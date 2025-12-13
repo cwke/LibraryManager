@@ -6,7 +6,7 @@
  * @package softeng.librarymanager.controllers
  */
 
-package softeng.librarymanager.controllers;
+package softeng.librarymanager.controllers.loan;
 
 import java.io.IOException;
 import javafx.fxml.FXML;
@@ -30,6 +30,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import softeng.librarymanager.controllers.SideBarController;
 
 
 /**

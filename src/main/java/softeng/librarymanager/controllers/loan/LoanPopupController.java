@@ -6,7 +6,7 @@
  * @package softeng.librarymanager.controllers
  */
 
-package softeng.librarymanager.controllers;
+package softeng.librarymanager.controllers.loan;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

@@ -6,7 +6,7 @@
  * @package softeng.librarymanager.controllers
  */
 
-package softeng.librarymanager.controllers;
+package softeng.librarymanager.controllers.book;
 
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -33,38 +33,16 @@ import javafx.stage.Stage;
  */
 public abstract class BookPopupController {
 
-    @FXML
-    protected TextField titleTF;
+    @FXML protected TextField titleTF;
+    @FXML protected VBox authorsListVBox;
+    @FXML protected TextField Author1TF;
+    @FXML protected TextField publishYearTF;
+    @FXML protected TextField copiesTF;
+    @FXML protected TextField bookCodeTF;
 
-    @FXML
-    protected VBox authorsListVBox;
-
-    @FXML
-    protected TextField Author1TF;
-
-    @FXML
-    protected TextField publishYearTF;
-
-    @FXML
-    protected TextField copiesTF;
-
-    @FXML
-    protected TextField bookCodeTF;
-
-    /**
-     * @brief Bottone di conferma (Salva/Aggiungi).
-     */
-    @FXML
-    protected Button confirmBtn;
-
-    /**
-     * @brief Bottone di annullamento.
-     */
-    @FXML
-    protected Button cancelBtn;
-
-    @FXML
-    protected Button addAuthorsBtn;
+    @FXML protected Button confirmBtn;
+    @FXML protected Button cancelBtn;
+    @FXML protected Button addAuthorsBtn;
 
     /**
      * @brief Inizializzazione base del controller.

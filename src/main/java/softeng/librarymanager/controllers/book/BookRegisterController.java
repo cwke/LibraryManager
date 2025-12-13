@@ -6,7 +6,7 @@
  * @package softeng.librarymanager.controllers
  */
 
-package softeng.librarymanager.controllers;
+package softeng.librarymanager.controllers.book;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -28,6 +28,7 @@ import javafx.scene.control.TableView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.scene.layout.AnchorPane;
+import softeng.librarymanager.controllers.SideBarController;
 import softeng.librarymanager.models.Book;
 import softeng.librarymanager.models.Register;
 

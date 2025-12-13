@@ -6,7 +6,7 @@
  * @package softeng.librarymanager.controllers
  */
 
-package softeng.librarymanager.controllers;
+package softeng.librarymanager.controllers.loan;
 
 import javafx.fxml.FXML;
 import softeng.librarymanager.models.Book;
