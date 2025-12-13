@@ -69,7 +69,7 @@ public class MainController {
         
         // CODICE DI TEST, RIMUOVERE PRIMA DEL COMMIT!! >>
             for (int i = 0; i< 10; i++) {
-                softeng.librarymanager.models.Book b = new softeng.librarymanager.models.Book("Titolo " + i, "Autore " + i, String.format("%013d", i), 2000, 1);
+                softeng.librarymanager.models.Book b = new softeng.librarymanager.models.Book("Titolo " + i, java.util.Arrays.asList("Autore " + i, "Autore 2 "+i), String.format("%013d", i), 2000, 1);
                 softeng.librarymanager.models.Student s = new softeng.librarymanager.models.Student("Nome " + i, "Cognome " + i, String.format("%010d", i), i+"@studenti.unisa.it");
                 softeng.librarymanager.models.Loan l = new softeng.librarymanager.models.Loan(s, b, LocalDate.now().plusMonths(i));
                 library.getBookRegister().add(b);
@@ -82,6 +82,7 @@ public class MainController {
             // Carica la Book Tab
             FXMLLoader bookLoader = new FXMLLoader(getClass().getResource("/softeng/librarymanager/fxml/BookRegisterView.fxml"));
             bookLoader.setController(new BookRegisterController(library.getBookRegister()));
+            
             bookTab.setContent(bookLoader.load());
 
             // Carica la Student Tab
