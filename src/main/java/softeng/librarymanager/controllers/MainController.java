@@ -9,6 +9,7 @@
 package softeng.librarymanager.controllers;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import softeng.librarymanager.models.Library;
@@ -65,6 +66,18 @@ public class MainController {
     @FXML
     public void initialize() {
         library = new Library();
+        
+        // CODICE DI TEST, RIMUOVERE PRIMA DEL COMMIT!! >>
+            for (int i = 0; i< 10; i++) {
+                softeng.librarymanager.models.Book b = new softeng.librarymanager.models.Book("Titolo " + i, "Autore " + i, String.format("%013d", i), 2000, 1);
+                softeng.librarymanager.models.Student s = new softeng.librarymanager.models.Student("Nome " + i, "Cognome " + i, String.format("%010d", i), i+"@studenti.unisa.it");
+                softeng.librarymanager.models.Loan l = new softeng.librarymanager.models.Loan(s, b, LocalDate.now().plusMonths(i));
+                library.getBookRegister().add(b);
+                library.getStudentRegister().add(s);
+                library.getLoanRegister().add(l);
+            }
+        // <<
+        
         try {
             // Carica la Book Tab
             FXMLLoader bookLoader = new FXMLLoader(getClass().getResource("/softeng/librarymanager/fxml/BookRegisterView.fxml"));

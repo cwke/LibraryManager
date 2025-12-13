@@ -25,25 +25,17 @@ import softeng.librarymanager.models.Student;
  */
 public class LoanInsertPopupController extends LoanPopupController {
 
-    /**
-     * @brief Interfaccia funzionale per l'aggiunta del prestito al registro.
-     */
     private RegisterAdder<Loan> loanRegisterAdder;
-
-    /**
-     * @brief Interfaccia funzionale per ottenere la lista dei libri disponibili.
-     */
     private RegisterObtainer<Book> bookRegisterObtainer;
-
-    /**
-     * @brief Interfaccia funzionale per ottenere la lista degli studenti iscritti.
-     */
     private RegisterObtainer<Student> studentRegisterObtainer;
-
-    /**
-     * @brief Interfaccia funzionale per la validazione del prestito.
-     */
     private RegisterValidator<Loan> loanRegisterValidator;
+
+    public LoanInsertPopupController(RegisterAdder<Loan> loanRegisterAdder, RegisterObtainer<Book> bookRegisterObtainer, RegisterObtainer<Student> studentRegisterObtainer, RegisterValidator<Loan> loanRegisterValidator) {
+        this.loanRegisterAdder = loanRegisterAdder;
+        this.bookRegisterObtainer = bookRegisterObtainer;
+        this.studentRegisterObtainer = studentRegisterObtainer;
+        this.loanRegisterValidator = loanRegisterValidator;
+    }
 
     /**
      * @brief Inizializza il controller.

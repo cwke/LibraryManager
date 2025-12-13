@@ -8,7 +8,7 @@
 
 package softeng.librarymanager.models;
 
-import javafx.collections.ObservableList;
+import java.util.List;
 
 /**
  * @interface RegisterObtainer
@@ -24,5 +24,5 @@ public interface RegisterObtainer<T> {
      * @brief Restituisce la lista osservabile degli elementi del registro.
      * @return ObservableList<T> La lista degli elementi.
      */
-    ObservableList<T> getRegister();
+    List<T> getRegister();
 }

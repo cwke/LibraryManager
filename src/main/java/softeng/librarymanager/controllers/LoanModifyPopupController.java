@@ -22,20 +22,15 @@ import softeng.librarymanager.models.RegisterValidator;
  */
 public class LoanModifyPopupController extends LoanPopupController {
 
-    /**
-     * @brief Interfaccia funzionale per la modifica del prestito nel registro.
-     */
     private RegisterModifier<Loan> loanRegisterModifier;
-
-    /**
-     * @brief Interfaccia funzionale per la validazione del prestito modificato.
-     */
     private RegisterValidator<Loan> loanRegisterValidator;
-
-    /**
-     * @brief Riferimento all'ogetto Loan originale da modificare.
-     */
     private Loan loanToModify;
+
+    public LoanModifyPopupController(RegisterModifier<Loan> loanRegisterModifier, RegisterValidator<Loan> loanRegisterValidator, Loan loanToModify) {
+        this.loanRegisterModifier = loanRegisterModifier;
+        this.loanRegisterValidator = loanRegisterValidator;
+        this.loanToModify = loanToModify;
+    }
 
     /**
      * @brief Inizializza il controller.

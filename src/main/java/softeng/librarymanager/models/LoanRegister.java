@@ -72,6 +72,7 @@ public class LoanRegister implements Register<Loan> {
      */
     @Override
     public void remove(Loan toRemove) {
+        toRemove.returnLoan();
         loanRegister.remove(toRemove);
     }
 

@@ -22,6 +22,6 @@ public interface RegisterValidator<T> {
      * @param[in] toVerify L'oggetto da verificare.
      * @return boolean True se l'oggetto è valido, False altrimenti.
      */
-    boolean isValid(T toVerify);
+    boolean isUnique(T toVerify);
 
 }
