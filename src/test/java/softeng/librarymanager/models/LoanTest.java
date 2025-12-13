@@ -7,19 +7,41 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class LoanTest {
 
+    private final Student validStudent = new Student()
+    private final Book validBook = new Book
+    private final String validBookId = "1234567890123";
+    private final int validPublishmentYear = 1880;
+    private final int validAvailableCopies = 10;
+
+    //Test costruttore e di conseguenza dei getter e delle funzioni di validazione
     @Test
-    void testValidLoanCreation() {
-        Student s = new Student("Mario", "Rossi", "1234567890", "m.rossi@studenti.unisa.it");
-        Book b = new Book("T", "A", "1234567890123", 2020, 3);
+    void testLoan() {
+        //Creazione valida
+        Book book = new Book(validTitle, validAuthors, validBookId, validPublishmentYear, validAvailableCopies);
 
-        Loan loan = new Loan(s, b, LocalDate.now().plusDays(10));
-
-        assertNotNull(loan);
-        assertEquals(s, loan.getStudent());
-        assertEquals(b, loan.getBook());
-        assertFalse(loan.isReturned());
-        assertEquals(2, b.getAvailableCopies()); // decremento
-        assertEquals(1, s.getActiveLoans().size());
+        assertEquals(validTitle, book.getTitle());
+        assertEquals(validAuthors, book.getAuthors());
+        assertEquals(validBookId, book.getBookId());
+        assertEquals(validPublishmentYear, book.getPublishmentYear());
+        assertEquals(validAvailableCopies, book.getAvailableCopies());
+        
+        //Creazione invalida perché titolo null
+        assertThrows(IllegalArgumentException.class, () -> new Book(null, validAuthors, validBookId, validPublishmentYear, validAvailableCopies));
+        
+        //Creazione invalida perché autori null
+        assertThrows(IllegalArgumentException.class, () -> new Book(validTitle, null, validBookId, validPublishmentYear, validAvailableCopies));
+        
+        //Creazione invalida perché identificativo libro null
+        assertThrows(IllegalArgumentException.class, () -> new Book(validTitle, validAuthors, null, validPublishmentYear, validAvailableCopies));
+        
+        //Creazione invalida perché lunghezza identificativo libro diversa da 13
+        assertThrows(IllegalArgumentException.class, () -> new Book(validTitle, validAuthors, "12345", validPublishmentYear, validAvailableCopies));
+        
+        //Creazione invalida perché anno di pubblicazione minore di 0
+        assertThrows(IllegalArgumentException.class, () -> new Book(validTitle, validAuthors, validBookId, -1, validAvailableCopies));
+        
+        //Creazione invalida perché numero di copie disponibili minore di 0
+        assertThrows(IllegalArgumentException.class, () -> new Book(validTitle, validAuthors, validBookId, validPublishmentYear, -1));
     }
 
     @Test

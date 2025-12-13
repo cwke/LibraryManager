@@ -1,65 +1,137 @@
 package softeng.librarymanager.models;
 
+import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class StudentTest {
 
-    @Test
-    void testValidStudentCreation() {
-        Student s = new Student("Mario", "Rossi", "1234567890", "m.rossi@studenti.unisa.it");
+    private final String validName = "Mario";
+    private final String validSurname = "Rossi";
+    private final String validStudentId = "1234567890";
+    private final String validEmail = "m.rossi@studenti.unisa.it";
 
-        assertEquals("Mario", s.getName());
-        assertEquals("Rossi", s.getSurname());
-        assertEquals("1234567890", s.getStudentId());
-        assertEquals("m.rossi@studenti.unisa.it", s.getEmail());
-        assertTrue(s.getActiveLoans().isEmpty());
+    //Test costruttore e di conseguenza dei getter e delle funzioni di validazione
+    @Test
+    void testStudent() {
+        //Creazione valida
+        Student student = new Student(validName, validSurname, validStudentId, validEmail);
+
+        assertEquals(validName, student.getName());
+        assertEquals(validSurname, student.getSurname());
+        assertEquals(validStudentId, student.getStudentId());
+        assertEquals(validEmail, student.getEmail());
+        
+        //Creazione invalida perché nome null
+        assertThrows(IllegalArgumentException.class, () -> new Student(null, validSurname, validStudentId, validEmail));
+        
+        //Creazione invalida perché cognome null
+        assertThrows(IllegalArgumentException.class, () -> new Student(validName, null, validStudentId, validEmail));
+        
+        //Creazione invalida perché identificativo studente null
+        assertThrows(IllegalArgumentException.class, () -> new Student(validName, validSurname, null, validEmail));
+        
+        //Creazione invalida perché lunghezza identificativo studente diversa da 10
+        assertThrows(IllegalArgumentException.class, () -> new Student(validName, validSurname, "ABC", validEmail));
+        
+        //Creazione invalida perché email null
+        assertThrows(IllegalArgumentException.class, () -> new Student(validName, validSurname, validStudentId, null));
+        
+        //Creazione invalida perché email non terminante in @studenti.unisa.it
+        assertThrows(IllegalArgumentException.class, () -> new Student(validName, validSurname, validStudentId, "a@b"));
     }
 
     @Test
-    void testInvalidEmailThrows() {
-        assertThrows(IllegalArgumentException.class,
-                () -> new Student("Mario", "Rossi", "1234567890", "email@gmail.com"));
-    }
+    void testCopy() {
+        Student student = new Student(validName, validSurname, validStudentId, validEmail);
+        Student studentCopy = new Student("Luigi", "Verdi", "0987654321", "l.verdi@studenti.unisa.it");
 
-    @Test
-    void testCopyUpdatesFields() {
-        Student s1 = new Student("Mario", "Verdi", "0000000001", "m.verdi@studenti.unisa.it");
-        Student s2 = new Student("Luca", "Bianchi", "0000000002", "l.bianchi@studenti.unisa.it");
+        student.copy(studentCopy);
 
-        s1.copy(s2);
-
-        assertEquals("Luca", s1.getName());
-        assertEquals("Bianchi", s1.getSurname());
-        assertEquals("l.bianchi@studenti.unisa.it", s1.getEmail());
-        assertEquals("0000000001", s1.getStudentId()); // unchanged
+        assertEquals("Luigi", student.getName());
+        assertEquals("Verdi", student.getSurname());
+        assertEquals(validStudentId, student.getStudentId()); // non cambia
+        assertEquals("l.verdi@studenti.unisa.it", student.getEmail());
     }
 
     @Test
     void testAddLoanLimit() {
-        Student s = new Student("Mario", "Rossi", "1234567890", "m.rossi@studenti.unisa.it");
-        Book b = new Book("T", "A", "1234567890123", 2020, 10);
+        Student student = new Student(validName, validSurname, validStudentId, validEmail);
+        Book book = new Book("La roba", "Giovanni Verga", "1234567890123", 1880, 10);
         //Altrimenti vengono aggiunti due volte i loan agli activeLoan
         Student s1 = new Student("Mario", "Rossi", "1234567891", "m.rossi@studenti.unisa.it");
 
-        // Aggiungo tre prestiti
-        new Loan(s, b, java.time.LocalDate.now().plusDays(7));
-        new Loan(s, b, java.time.LocalDate.now().plusDays(7));
-        new Loan(s, b, java.time.LocalDate.now().plusDays(7));
+        //Verifica aggiunta
+        new Loan(student, book, java.time.LocalDate.now().plusDays(7));
+        assertEquals(1, student.getActiveLoans().size());
+        
+        new Loan(student, book, java.time.LocalDate.now().plusDays(7));
+        assertEquals(2, student.getActiveLoans().size());
+        
+        new Loan(student, book, java.time.LocalDate.now().plusDays(7));
+        assertEquals(3, student.getActiveLoans().size());
 
-        assertFalse(s.isAvailableForLoan());
-
-        // Il quarto deve fallire
-        assertThrows(IllegalStateException.class,
-                () -> s.addActiveLoan(new Loan(s1, b, java.time.LocalDate.now().plusDays(7))));
+        //Verifica aggiunta fallita
+        assertThrows(IllegalStateException.class, () -> student.addActiveLoan(new Loan(s1, book, java.time.LocalDate.now().plusDays(7))));
     }
 
     @Test
-    void testEqualsAndHashCode() {
-        Student s1 = new Student("A", "B", "1234567890", "a.b@studenti.unisa.it");
-        Student s2 = new Student("X", "Y", "1234567890", "x.y@studenti.unisa.it");
-
-        assertEquals(s1, s2);
-        assertEquals(s1.hashCode(), s2.hashCode());
+    void testCompareTo() {
+        Student student = new Student(validName, validSurname, validStudentId, validEmail);
+        
+        //Verifica studente uguale
+        Student s1 = new Student("Luigi", "Verdi", validStudentId, "l.verdi@studenti.unisa.it");
+        assertTrue(student.compareTo(s1) == 0);
+        
+        //Verifica studente minore
+        Student s2 = new Student("Luigi", "Verdi", "2345678901", "l.verdi@studenti.unisa.it");
+        assertTrue(student.compareTo(s2) < 0);
+        
+        //Verifica studente maggiore
+        Student s3 = new Student("Luigi", "Verdi", "0123456789", "l.verdi@studenti.unisa.it");
+        assertTrue(student.compareTo(s3) > 0);
     }
+
+    @Test
+    void testEquals() {
+        Student student = new Student(validName, validSurname, validStudentId, validEmail);
+        
+        //Verifica studenti uguali
+        Student s1 = new Student("", "", validStudentId, "@studenti.unisa.it");
+        assertEquals(student, s1);
+        
+        //Verifica studenti diversi
+        Student s2 = new Student(validName, validSurname, "1234554321", validEmail);
+        assertFalse(student.equals(s2));
+    }
+
+    @Test
+    void testHashCode() {
+        Student student = new Student(validName, validSurname, validStudentId, validEmail);
+        
+        //Verifica hashcode studenti uguali
+        Student s1 = new Student("", "", validStudentId, "@studenti.unisa.it");
+        assertEquals(student.hashCode(), s1.hashCode());
+        
+        //Verifica haschcode studenti diversi
+        Student s2 = new Student(validName, validSurname, "1234554321", validEmail);
+        assertFalse(student.hashCode() == s2.hashCode());
+    }
+
+    @Test
+    void testIsAvailableForLoan() {
+        //Verifica studente disponibile per il prestito
+        Student student = new Student(validName, validSurname, validStudentId, validEmail);
+        assertTrue(student.isAvailableForLoan());
+        
+        //Verifica studente non disponibile per il prestito
+        Book book = new Book("La roba", "Giovanni Verga", "1234567890123", 1880, 10);
+        Loan l1 = new Loan(student, book, LocalDate.now());
+        Loan l2 = new Loan(student, book, LocalDate.now());
+        Loan l3 = new Loan(student, book, LocalDate.now());
+                
+        assertFalse(student.isAvailableForLoan());
+    }
+    
+    
 }
