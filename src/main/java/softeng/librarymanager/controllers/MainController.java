@@ -82,7 +82,13 @@ public class MainController implements Refresh {
             library.getLoanRegister().add(l);
         }
         // <<
+        
+        initializeRegisterControllers(library);
 
+
+    }
+    
+    private void initializeRegisterControllers(Library library){
         try {
             // Carica la Book Tab
             FXMLLoader bookLoader = new FXMLLoader(getClass().getResource("/softeng/librarymanager/fxml/BookRegisterView.fxml"));
@@ -114,6 +120,6 @@ public class MainController implements Refresh {
 
     @Override
     public void refresh(Library newLibrary) {
-        //Da implementare
+        initializeRegisterControllers(newLibrary);
     }
 }

@@ -21,7 +21,7 @@ import java.util.Objects;
  */
 public class Loan implements Comparable<Loan>, Serializable{
 
-    private static int count;
+    private transient static int count;
 
     /**
      * @brief Identificativo univoco del prestito {readOnly}

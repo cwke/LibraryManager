@@ -29,7 +29,8 @@ public class LibraryIOManager {
     /**
      * @brief Costruttore predefinito.
      */
-    public LibraryIOManager() {
+    public LibraryIOManager(ResultActions actions) {
+        this.resultActions = actions;
     } //da cambiare: spostiamo il setter del resultsAction nel costruttore
 
     /**
@@ -42,6 +43,7 @@ public class LibraryIOManager {
         File fileObj = new File(filePath);
         try(ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(fileObj)))){
             oos.writeObject(libraryToSave);
+            System.out.println("...");
             resultActions.success();
         } catch (IOException ex) {
             Logger.getLogger(LibraryIOManager.class.getName()).log(Level.SEVERE, null, ex);
@@ -72,16 +74,13 @@ public class LibraryIOManager {
             }
 
         } catch (IOException ex){
+            System.out.println("IOException");
             resultActions.failure();
         } catch (ClassNotFoundException ex) {
+            System.out.println("ClassNotFoundException");
             resultActions.failure();
         }
 
         return loadedLibrary;
     }
-
-    public void setResultActions(ResultActions o){
-        this.resultActions = o;
-    }
-
 }

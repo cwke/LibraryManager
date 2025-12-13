@@ -29,8 +29,7 @@ public class MenuBarController implements ResultActions {
 
     @FXML
     public void initialize() {
-        this.libraryIOManager = new LibraryIOManager();
-        this.libraryIOManager.setResultActions(this);
+        this.libraryIOManager = new LibraryIOManager(this);
     }
 
     public void setLibrary(Library library) {
@@ -43,7 +42,7 @@ public class MenuBarController implements ResultActions {
 
     @FXML
     public void openFile(ActionEvent event) {
-        File selectedFile = fileSelection();
+        File selectedFile = fileSelection(true);
         if (selectedFile != null) {
             this.defaultSavePath = selectedFile.getAbsolutePath();
             Library loaded = libraryIOManager.loadLibrary(this.defaultSavePath);
@@ -68,26 +67,28 @@ public class MenuBarController implements ResultActions {
         } else {
             if (library != null)
                 libraryIOManager.saveLibrary(library, defaultSavePath);
+            else
+                failure();
         }
     }
 
     @FXML
     public void saveFileWithName(ActionEvent event) {
-        File selectedFile = fileSelection();
+        File selectedFile = fileSelection(false);
         if (selectedFile != null) {
             this.defaultSavePath = selectedFile.getAbsolutePath();
             if (library != null) libraryIOManager.saveLibrary(library, this.defaultSavePath);
         }
     }
 
-    private File fileSelection() {
+    private File fileSelection(boolean openFile) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Selezione file");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("File Libreria (*.obj)", "*.obj"));
 
         Window window = (menuBar.getScene() != null) ? menuBar.getScene().getWindow() : null;
 
-        return fileChooser.showSaveDialog(window); //dovrebbero fare la stessa cosa showSaveDialog e showOpenDialog *per quello che interessa a noi*
+        return openFile ? fileChooser.showOpenDialog(window) : fileChooser.showSaveDialog(window);
     }
 
     @Override
