@@ -8,8 +8,6 @@
 
 package softeng.librarymanager.models;
 
-import javafx.collections.ObservableList;
-
 import java.util.List;
 
 /**
@@ -50,12 +48,12 @@ public interface Register<T> {
      * @param[in] toVerify L'elemento da verificare.
      * @return true se l'elemento è valido, false altrimenti.
      */
-    public boolean isValid(T toVerify);
+    public boolean isUnique(T toVerify);
 
     /**
      * @brief Restituisce la lista osservabile degli elementi.
      * @return Una ObservableList contenente tutti gli elementi di tipo T presenti nel registro.
      */
-    public List<T> getRegister();
+    public List<T> getRegisterList();
 
 }

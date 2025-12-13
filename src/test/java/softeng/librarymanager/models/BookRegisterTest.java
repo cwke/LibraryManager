@@ -23,14 +23,14 @@ class BookRegisterTest {
     @Test
     void testBookRegister(){
         assertNotNull(bookRegister);
-        List<Book> list = bookRegister.getRegister();
+        List<Book> list = bookRegister.getRegisterList();
         assertTrue(list.isEmpty());
     }
 
     @Test
     void testAdd1() {
         bookRegister.add(newBook);
-        List<Book> list = bookRegister.getRegister();
+        List<Book> list = bookRegister.getRegisterList();
         assertEquals(1, list.size());
         assertTrue(list.contains(newBook));
     }
@@ -41,7 +41,7 @@ class BookRegisterTest {
         bookRegister.add(oldBook);
         String oldBookId = oldBook.getBookId();
         bookRegister.modify(oldBook, newBook);
-        List<Book> list = bookRegister.getRegister();
+        List<Book> list = bookRegister.getRegisterList();
 
         assertEquals(1, list.size());
 
@@ -60,28 +60,28 @@ class BookRegisterTest {
         bookRegister.add(oldBook);
         bookRegister.add(newBook);
         bookRegister.remove(oldBook);
-        List<Book> list = bookRegister.getRegister();
+        List<Book> list = bookRegister.getRegisterList();
         assertEquals(1, list.size());
         assertTrue(list.contains(newBook));
     }
 
 
     @Test
-    void testIsValid1() {
+    void testIsUnique1() {
         bookRegister.add(newBook);
-        assertFalse(bookRegister.isValid(newBook));
+        assertFalse(bookRegister.isUnique(newBook));
     }
 
     @Test
-    void testIsValid2() {
-        assertTrue(bookRegister.isValid(newBook));
+    void testIsUnique2() {
+        assertTrue(bookRegister.isUnique(newBook));
     }
 
     @Test
     void testGetValuesList() {
         bookRegister.add(newBook);
         bookRegister.add(oldBook);
-        List<Book> list = bookRegister.getRegister();
+        List<Book> list = bookRegister.getRegisterList();
         assertEquals(2, list.size());
         assertTrue(list.contains(newBook));
         assertTrue(list.contains(oldBook));

@@ -36,14 +36,14 @@ class LoanRegisterTest {
     @Test
     void testLoanRegister(){
         assertNotNull(loanRegister);
-        List<Loan> list = loanRegister.getRegister();
+        List<Loan> list = loanRegister.getRegisterList();
         assertTrue(list.isEmpty());
     }
 
     @Test
     void testAdd() {
         loanRegister.add(newLoan);
-        List<Loan> list = loanRegister.getRegister();
+        List<Loan> list = loanRegister.getRegisterList();
         assertEquals(1, list.size());
         assertTrue(list.contains(newLoan));
     }
@@ -52,7 +52,7 @@ class LoanRegisterTest {
     void testModify() {
         loanRegister.add(oldLoan);
         loanRegister.modify(oldLoan, newLoan);
-        List<Loan> list = loanRegister.getRegister();
+        List<Loan> list = loanRegister.getRegisterList();
 
         assertEquals(1, list.size());
 
@@ -68,28 +68,28 @@ class LoanRegisterTest {
         loanRegister.add(oldLoan);
         loanRegister.add(newLoan);
         loanRegister.remove(oldLoan);
-        List<Loan> list = loanRegister.getRegister();
+        List<Loan> list = loanRegister.getRegisterList();
         assertEquals(1, list.size());
         assertTrue(list.contains(newLoan));
     }
 
 
     @Test
-    void testIsValid1() {
+    void testIsUnique1() {
         loanRegister.add(newLoan);
-        assertFalse(loanRegister.isValid(newLoan));
+        assertFalse(loanRegister.isUnique(newLoan));
     }
 
     @Test
-    void testIsValid2() {
-        assertTrue(loanRegister.isValid(newLoan));
+    void testIsUnique2() {
+        assertTrue(loanRegister.isUnique(newLoan));
     }
 
     @Test
     void testGetValuesList() {
         loanRegister.add(newLoan);
         loanRegister.add(oldLoan);
-        List<Loan> list = loanRegister.getRegister();
+        List<Loan> list = loanRegister.getRegisterList();
         assertEquals(2, list.size());
         assertTrue(list.contains(newLoan));
         assertTrue(list.contains(oldLoan));

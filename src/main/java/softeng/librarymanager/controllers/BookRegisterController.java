@@ -103,7 +103,7 @@ public class BookRegisterController {
             // Passa le lambda expression per le callback (add e isValid)
             loader.setController(new BookInsertPopupController(
                 (Book toAdd) -> bookRegister.add(toAdd), 
-                (Book toVerify) -> bookRegister.isValid(toVerify)
+                (Book toVerify) -> bookRegister.isUnique(toVerify)
             ));
             
             Parent root = loader.load();
@@ -138,7 +138,7 @@ public class BookRegisterController {
             // Passa le callback per modify e isValid, più il libro selezionato
             loader.setController(new BookModifyPopupController(
                 (Book old, Book newObj) -> bookRegister.modify(old, newObj),
-                (Book toVerify) -> bookRegister.isValid(toVerify), 
+                (Book toVerify) -> bookRegister.isUnique(toVerify),
                 selectedBook
             ));
             
@@ -182,7 +182,7 @@ public class BookRegisterController {
      * @brief Aggiorna la TableView con i dati attuali del registro.
      */
     private void updateTableView() {
-        bookTable.setItems(FXCollections.observableArrayList(bookRegister.getRegister()));
+        bookTable.setItems(FXCollections.observableArrayList(bookRegister.getRegisterList()));
     }
 
     /**
@@ -197,7 +197,7 @@ public class BookRegisterController {
             return;
         }
 
-        ObservableList<Book> allBooks = FXCollections.observableArrayList(bookRegister.getRegister());
+        ObservableList<Book> allBooks = FXCollections.observableArrayList(bookRegister.getRegisterList());
         String lowerCaseSearchText = searchText.toLowerCase();
         ObservableList<Book> filteredBooks = FXCollections.observableArrayList();
 

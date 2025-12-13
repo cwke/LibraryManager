@@ -82,7 +82,7 @@ public class BookRegister implements Register<Book> {
      * @post Il valore restituito sarà "true" se il libro è valido, "false" altrimenti
      */
     @Override
-    public boolean isValid(Book toVerify) {
+    public boolean isUnique(Book toVerify) {
         return !this.bookRegister.contains(toVerify);
     }
 
@@ -92,12 +92,12 @@ public class BookRegister implements Register<Book> {
      * @post Viene restituita una lista contenente i libri presenti nel catalogo
      */
     @Override
-    public List<Book> getRegister() {
+    public List<Book> getRegisterList() {
         /*
          * Creiamo una nuova ArrayList passando il Set al costruttore per restituire una lista ordinata.
          */
         List<Book> list = new ArrayList<>(bookRegister);
-        list.sort(Comparator.comparing(Book::getTitle));
+        list.sort(Comparator.comparing(Book::getTitle).thenComparing(Book::getAuthors));
         return list;
     }
 }

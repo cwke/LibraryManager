@@ -83,7 +83,7 @@ public class StudentRegister implements Register<Student> {
      * @post Il valore restituito sarà "true" se lo studente è valido, "false" altrimenti
      */
     @Override
-    public boolean isValid(Student toVerify) {
+    public boolean isUnique(Student toVerify) {
         return !this.studentRegister.contains(toVerify);
     }
 
@@ -93,7 +93,7 @@ public class StudentRegister implements Register<Student> {
      * @post Viene restituita una lista contenente gli studenti presenti nel catalogo
      */
     @Override
-    public List<Student> getRegister() {
+    public List<Student> getRegisterList() {
         /*
          * Creiamo una nuova ArrayList passando il Set al costruttore per restituire una lista ordinata.
          */

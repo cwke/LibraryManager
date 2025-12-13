@@ -30,7 +30,7 @@ class StudentRegisterTest {
     void testGetValuesList() {
         studentRegister.add(newStudent);
         studentRegister.add(oldStudent);
-        List<Student> list = studentRegister.getRegister();
+        List<Student> list = studentRegister.getRegisterList();
         assertEquals(2, list.size());
         assertTrue(list.contains(newStudent));
         assertTrue(list.contains(oldStudent));
@@ -39,14 +39,14 @@ class StudentRegisterTest {
     @Test
     void testStudentRegister(){
         assertNotNull(studentRegister);
-        List<Student> list = studentRegister.getRegister();
+        List<Student> list = studentRegister.getRegisterList();
         assertTrue(list.isEmpty());
     }
 
     @Test
     void testAdd() {
         studentRegister.add(newStudent);
-        List<Student> list = studentRegister.getRegister();
+        List<Student> list = studentRegister.getRegisterList();
         assertEquals(1, list.size());
         assertTrue(list.contains(newStudent));
     }
@@ -56,7 +56,7 @@ class StudentRegisterTest {
         studentRegister.add(oldStudent);
         String oldStudId = oldStudent.getStudentId();
         studentRegister.modify(oldStudent, newStudent);
-        List<Student> list = studentRegister.getRegister();
+        List<Student> list = studentRegister.getRegisterList();
 
         assertEquals(1, list.size());
 
@@ -74,20 +74,20 @@ class StudentRegisterTest {
         studentRegister.add(oldStudent);
         studentRegister.add(newStudent);
         studentRegister.remove(oldStudent);
-        List<Student> list = studentRegister.getRegister();
+        List<Student> list = studentRegister.getRegisterList();
         assertEquals(1, list.size());
         assertTrue(list.contains(newStudent));
     }
 
     @Test
-    void testIsValid1() {
+    void testIsUnique1() {
         studentRegister.add(newStudent);
-        assertFalse(studentRegister.isValid(newStudent));
+        assertFalse(studentRegister.isUnique(newStudent));
     }
 
     @Test
-    void testIsValid2() {
-        assertTrue(studentRegister.isValid(newStudent));
+    void testIsUnique2() {
+        assertTrue(studentRegister.isUnique(newStudent));
     }
 
 }

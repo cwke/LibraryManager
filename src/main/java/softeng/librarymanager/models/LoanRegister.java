@@ -83,7 +83,7 @@ public class LoanRegister implements Register<Loan> {
      * @post Il valore restituito sarà "true" se il loan è valido, "false" altrimenti
      */
     @Override
-    public boolean isValid(Loan toVerify) {
+    public boolean isUnique(Loan toVerify) {
         for (Loan loan : loanRegister)
             if(loan.getStudent().equals(toVerify.getStudent()) &&
                     loan.getBook().equals(toVerify.getBook()) &&
@@ -98,7 +98,7 @@ public class LoanRegister implements Register<Loan> {
      * @post Viene restituita una lista contenente i prestiti presenti nel catalogo, ordinata per loanId.
      */
     @Override
-    public List<Loan> getRegister() {
+    public List<Loan> getRegisterList() {
         /*
          * Creiamo una nuova ArrayList passando il Set al costruttore per restituire una lista ordinata.
          */
