@@ -79,6 +79,7 @@ public class MenuBarController implements ResultActions {
             this.defaultSavePath = selectedFile.getAbsolutePath();
             if (library != null) libraryIOManager.saveLibrary(library, this.defaultSavePath);
         }
+        else failure();
     }
 
     private File fileSelection(boolean openFile) {
