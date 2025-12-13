@@ -70,7 +70,9 @@ public class MainController implements Refresh {
     @FXML
     public void initialize() {
         menuBarController.setMainRefresher(this); //non so se va spostata in un eventuale costruttore.
+
         library = new Library();
+        menuBarController.setLibrary(library);
 
         // CODICE DI TEST, RIMUOVERE PRIMA DEL COMMIT!! >>
         for (int i = 0; i< 10; i++) {

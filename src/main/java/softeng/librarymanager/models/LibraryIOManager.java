@@ -12,6 +12,7 @@ package softeng.librarymanager.models;
 import softeng.librarymanager.controllers.student.ResultActions;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -41,7 +42,7 @@ public class LibraryIOManager {
      */
     public void saveLibrary(Library libraryToSave, String filePath) {
         File fileObj = new File(filePath);
-        try(ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(fileObj)))){
+        try(ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(Files.newOutputStream(fileObj.toPath())))){
             oos.writeObject(libraryToSave);
             System.out.println("...");
             resultActions.success();
