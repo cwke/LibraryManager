@@ -8,11 +8,25 @@
 
 package softeng.librarymanager.controllers;
 
+import javafx.beans.binding.Binding;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import softeng.librarymanager.models.Book;
 import softeng.librarymanager.models.Register;
 import softeng.librarymanager.models.Student;
+
+import java.io.IOException;
+import java.util.Optional;
 
 /**
  * @class StudentRegisterController
@@ -24,55 +38,17 @@ import softeng.librarymanager.models.Student;
  */
 public class StudentRegisterController {
 
-    /**
-     * @brief Tabella per la visualizzazione dell'elenco degli studenti.
-     */
-    @FXML
-    private TableView<Student> studentTable;
+    @FXML private TableView<Student> studentTable;
+    @FXML private TableColumn<Student, String> nameClm;
+    @FXML private TableColumn<Student, String> surnameClm;
+    @FXML private TableColumn<Student, String> studentIdClm;
+    @FXML private TableColumn<Student, String> emailClm;
 
-    /**
-     * @brief Colonna della tabella per il nome dello studente.
-     */
-    @FXML
-    private TableColumn<Student, String> nameClm;
-
-    /**
-     * @brief Colonna della tabella per il cognome dello studente.
-     */
-    @FXML
-    private TableColumn<Student, String> surnameClm;
-
-    /**
-     * @brief Colonna della tabella per la matricola (ID) dello studente.
-     */
-    @FXML
-    private TableColumn<Student, String> studentIdClm;
-
-    /**
-     * @brief Colonna della tabella per l'email dello studente.
-     */
-    @FXML
-    private TableColumn<Student, String> emailClm;
-
-    /**
-     * @brief Riferimento al modello del registro studenti.
-     */
     private Register<Student> studentRegister;
 
-    /**
-     * @brief Riferimento al controller della barra laterale (incluso via <fx:include>).
-     */
-    @FXML
-    private SideBarController sideBarController;
+    @FXML private SideBarController sideBarController;
 
-    /**
-     * @brief Controller per il popup di inserimento studente.
-     */
     private StudentInsertPopupController studentInsertPopupController;
-
-    /**
-     * @brief Controller per il popup di modifica studente.
-     */
     private StudentModifyPopupController studentModifyPopupController;
     
     /**
@@ -90,6 +66,24 @@ public class StudentRegisterController {
      */
     @FXML
     public void initialize() {
+        // Inizializza la tabella
+        updateTableView();
+
+        // Configurazione Colonne: Usa SimpleStringProperty per avvolgere i getter della classe POJO Book
+        nameClm.setCellValueFactory( row -> new SimpleStringProperty(row.getValue().getName()));
+        surnameClm.setCellValueFactory( row -> new SimpleStringProperty(row.getValue().getSurname()));
+        studentIdClm.setCellValueFactory( row -> new SimpleStringProperty(row.getValue().getStudentId()));
+        emailClm.setCellValueFactory( row -> new SimpleStringProperty(row.getValue().getEmail()));
+
+        // Sidebar Event Listeners
+        sideBarController.getAddBtn().setOnAction(event -> openInsertPopup());
+        sideBarController.getModifyBtn().setOnAction(event -> openModifyPopup());
+        sideBarController.getRemoveBtn().setOnAction(event -> removeFromRegister());
+
+        // Binding: Disabilita i tasti Modifica e Rimuovi se non è selezionata una riga
+        Binding<Boolean> noItemSelectedBinding = studentTable.getSelectionModel().selectedItemProperty().isNull();
+        sideBarController.getRemoveBtn().disableProperty().bind(noItemSelectedBinding);
+        sideBarController.getModifyBtn().disableProperty().bind(noItemSelectedBinding);
     }
 
     /**
@@ -97,6 +91,33 @@ public class StudentRegisterController {
      * @details Invocato alla pressione del tasto "Aggiungi" nella SideBar.
      */
     private void openInsertPopup() {
+        try {
+            // Usa il percorso assoluto che avevi nella branch per sicurezza
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/softeng/librarymanager/fxml/StudentPopupView.fxml"));
+
+            // Passa le lambda expression per le callback (add e isValid)
+            loader.setController(new StudentInsertPopupController(
+                    (Student toAdd) -> studentRegister.add(toAdd),
+                    (Student toVerify) -> studentRegister.isUnique(toVerify)
+            ));
+
+            Parent root = loader.load();
+            Scene scene = new Scene(root, 480, 720);
+
+            // CSS
+            scene.getStylesheets().add(getClass().getResource("/softeng/librarymanager/style.css").toExternalForm());
+
+            Stage popup = new Stage();
+            popup.setTitle("Inserimento Studente");
+            popup.initModality(Modality.APPLICATION_MODAL);
+            popup.setScene(scene);
+            popup.showAndWait();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // Aggiorna la tabella alla chiusura del popup
+        updateTableView();
     }
 
     /**
@@ -109,11 +130,31 @@ public class StudentRegisterController {
 
     /**
      * @brief Rimuove lo studente selezionato dal registro.
-     * @details Invocato alla pressione del tasto "Rimuovi" nella SideBar.
      */
     private void removeFromRegister() {
+        Student selectedStudent = studentTable.getSelectionModel().getSelectedItem();
+        if (selectedStudent == null) return;
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Conferma rimozione");
+        alert.setHeaderText("Sei sicuro di voler rimuovere lo studente '" + selectedStudent.getName() + " " + selectedStudent.getSurname() + "'?");
+        alert.setContentText("L'operazione è irreversibile.");
+        alert.setGraphic(null);
+        alert.getDialogPane().getStylesheets().add(getClass().getResource("/softeng/librarymanager/style.css").toExternalForm());
+
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            studentRegister.remove(selectedStudent);
+            updateTableView();
+        }
     }
 
-
+    /**
+     * @brief Aggiorna la TableView con i dati attuali del registro.
+     */
+    private void updateTableView() {
+        studentTable.setItems(FXCollections.observableArrayList(studentRegister.getRegisterList()));
+    }
 
 }
