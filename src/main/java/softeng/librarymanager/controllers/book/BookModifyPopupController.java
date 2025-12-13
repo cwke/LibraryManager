@@ -9,74 +9,62 @@
 package softeng.librarymanager.controllers.book;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.stage.Stage;
 import softeng.librarymanager.models.Book;
 import softeng.librarymanager.models.RegisterModifier;
-import softeng.librarymanager.models.RegisterValidator;
 
 /**
  * @class BookModifyPopupController
  * @brief Classe controller per la gestione del popup di modifica libri.
- * @details Estende {@link BookPopupController}. Gestisce il popolamento dei campi
- *          con i dati esistenti e l'aggiornamento del libro nel registro tramite
+ * @details Estende {@link BookPopupController}. Gestisce il popolamento dei
+ *          campi
+ *          con i dati esistenti e l'aggiornamento del libro nel registro
+ *          tramite
  *          {@link RegisterModifier}.
  */
 public class BookModifyPopupController extends BookPopupController {
 
-    /**
-     * @brief Interfaccia funzionale per l'operazione di modifica.
-     */
     private RegisterModifier<Book> bookRegisterModifier;
-
-    /**
-     * @brief Interfaccia funzionale per la validazione dei dati.
-     */
-    private RegisterValidator<Book> bookRegisterValidator;
-
-    /**
-     * @brief Riferimento all'oggetto Book originale da modificare.
-     */
     private Book bookToModify;
 
     /**
-     * @brief Inizializza il controller.
-     * @details Richiama l'inizializzazione della superclasse.
+     * @brief Costruttore.
+     * @param[in] BookRegisterModifier L'istanza che implementa RegisterModifier<Book>.
+     * @param[in] bookToModify Il libro selezionato da modificare.
      */
-    
-    
-    public BookModifyPopupController(RegisterModifier<Book> bookRegisterModifier, RegisterValidator<Book> bookRegisterValidator, Book bookToModify) {
+    public BookModifyPopupController(RegisterModifier<Book> bookRegisterModifier, Book bookToModify) {
         this.bookRegisterModifier = bookRegisterModifier;
-        this.bookRegisterValidator = bookRegisterValidator;
         this.bookToModify = bookToModify;
     }
 
+    /**
+     * @brief Inizializza il controller.
+     */
     @Override
     @FXML
     public void initialize() {
         super.initialize();
-    }
 
-    /**
-     * @brief Imposta il libro da modificare e popola i campi della GUI.
-     * @param[in] bookToModify L'istanza del libro da modificare.
-     */
-    public void setBookToModify(Book bookToModify) {
-        this.bookToModify = bookToModify;
-    }
+        // Placeholder campi
+        if (bookToModify != null) {
+            titleTF.setText(bookToModify.getTitle());
+            Author1TF.setText(bookToModify.getAuthors().get(0));
+            if (bookToModify.getAuthors().size() >= 2) {
+                addAuthorsBtn.fire();
+                dynamicAuthorFields.get(0).setText(bookToModify.getAuthors().get(1));
+            }
+            if (bookToModify.getAuthors().size() == 3) {
+                addAuthorsBtn.fire();
+                dynamicAuthorFields.get(1).setText(bookToModify.getAuthors().get(2));
+            }
+            bookCodeTF.setText(bookToModify.getBookId());
+            publishYearTF.setText(String.valueOf(bookToModify.getPublishmentYear()));
+            copiesTF.setText(String.valueOf(bookToModify.getAvailableCopies()));
 
-    /**
-     * @brief Imposta il delegato per la modifica nel registro.
-     * @param[in] bookRegisterModifier L'istanza che implementa RegisterModifier.
-     */
-    public void setBookRegisterModifier(RegisterModifier<Book> bookRegisterModifier) {
-        this.bookRegisterModifier = bookRegisterModifier;
-    }
-
-    /**
-     * @brief Imposta il delegato per la validazione.
-     * @param[in] bookRegisterValidator L'istanza che implementa RegisterValidator.
-     */
-    public void setBookRegisterValidator(RegisterValidator<Book> bookRegisterValidator) {
-        this.bookRegisterValidator = bookRegisterValidator;
+            // Rendo non modificabile ISBN
+            bookCodeTF.setDisable(true);
+        }
     }
 
     /**
@@ -86,6 +74,15 @@ public class BookModifyPopupController extends BookPopupController {
      */
     @Override
     public void confirmBtnAction(javafx.event.ActionEvent event) {
-        // Implementazione specifica per la modifica
+        try {
+            Book bookModified = new Book(titleTF.getText(), getAuthorsListPopup(), bookCodeTF.getText(), Integer.parseInt(publishYearTF.getText()), Integer.parseInt(copiesTF.getText()));
+
+            bookRegisterModifier.modify(bookToModify, bookModified);
+            // Chiudi la finestra
+            Stage stage = (Stage) confirmBtn.getScene().getWindow();
+            stage.close();
+        } catch (IllegalArgumentException e) {
+            showAlert(Alert.AlertType.ERROR, "Errore", "Dati non validi", e.getMessage());
+        }
     }
 }

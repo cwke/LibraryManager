@@ -32,7 +32,7 @@ public class StudentModifyPopupController extends StudentPopupController {
     /**
      * @brief Costruttore.
      * @param[in] studentRegisterModifier L'istanza che implementa RegisterModifier<Student>.
-     * @param[in] studentToModify Lo studente selezionato da modificare
+     * @param[in] studentToModify Lo studente selezionato da modificare.
      */
     public StudentModifyPopupController(RegisterModifier<Student> studentRegisterModifier, Student studentToModify) {
         this.studentRegisterModifier = studentRegisterModifier;

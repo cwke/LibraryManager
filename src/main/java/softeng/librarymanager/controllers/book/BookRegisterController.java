@@ -28,6 +28,7 @@ import javafx.scene.control.TableView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.scene.layout.AnchorPane;
+
 import softeng.librarymanager.controllers.SideBarController;
 import softeng.librarymanager.models.Book;
 import softeng.librarymanager.models.Register;
@@ -52,11 +53,6 @@ public class BookRegisterController {
     private final Register<Book> bookRegister;
 
     @FXML private SideBarController sideBarController;
-    @FXML private AnchorPane rootPane;
-
-    // Controller per i popup (non strettamente necessari come campi se istanziati localmente, ma utili per debug)
-    private BookInsertPopupController bookInsertPopupController;
-    private BookModifyPopupController bookModifyPopupController;
 
     /**
      * @brief Costruttore del controller.
@@ -95,9 +91,6 @@ public class BookRegisterController {
         sideBarController.getModifyBtn().disableProperty().bind(noItemSelectedBinding);
     }
 
-    /**
-     * @brief Apre il popup per l'inserimento di un nuovo libro.
-     */
     private void openInsertPopup() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/softeng/librarymanager/fxml/BookPopupView.fxml"));
@@ -126,9 +119,6 @@ public class BookRegisterController {
         updateTableView();
     }
 
-    /**
-     * @brief Apre il popup per la modifica del libro selezionato.
-     */
     private void openModifyPopup() {
         Book selectedBook = bookTable.getSelectionModel().getSelectedItem();
         if (selectedBook == null) return;
@@ -138,7 +128,6 @@ public class BookRegisterController {
             
             loader.setController(new BookModifyPopupController(
                 (Book old, Book newObj) -> bookRegister.modify(old, newObj),
-                (Book toVerify) -> bookRegister.isUnique(toVerify),
                 selectedBook
             ));
             
@@ -159,9 +148,6 @@ public class BookRegisterController {
         updateTableView();
     }
 
-    /**
-     * @brief Rimuove il libro selezionato dal registro con richiesta di conferma.
-     */
     private void removeFromRegister() {
         Book selectedBook = bookTable.getSelectionModel().getSelectedItem();
         if (selectedBook == null) return;
@@ -170,6 +156,9 @@ public class BookRegisterController {
         alert.setTitle("Conferma rimozione");
         alert.setHeaderText("Sei sicuro di voler rimuovere il libro '" + selectedBook.getTitle() + "'?");
         alert.setContentText("L'operazione è irreversibile.");
+        alert.setGraphic(null);
+        alert.getDialogPane().getStylesheets()
+                .add(getClass().getResource("/softeng/librarymanager/style.css").toExternalForm());
 
         Optional<ButtonType> result = alert.showAndWait();
 
@@ -187,9 +176,6 @@ public class BookRegisterController {
         bookTable.refresh();
     }
 
-    /**
-     * @brief Filtra i libri nella tabella in base al testo nella barra di ricerca.
-     */
     private void searchBook() {
         String searchText = sideBarController.getSearchBarTF().getText();
         

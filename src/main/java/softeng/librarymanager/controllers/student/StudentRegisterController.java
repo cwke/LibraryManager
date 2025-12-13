@@ -57,10 +57,6 @@ public class StudentRegisterController {
 
     @FXML private SideBarController sideBarController;
 
-    // Controller per i popup (non strettamente necessari come campi se istanziati localmente, ma utili per debug)
-    private StudentInsertPopupController studentInsertPopupController;
-    private StudentModifyPopupController studentModifyPopupController;
-
     /**
      * @brief Costruttore del controller.
      * @param[in] studentRegister L'istanza del registro studenti.
@@ -168,8 +164,7 @@ public class StudentRegisterController {
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Conferma rimozione");
-        alert.setHeaderText("Sei sicuro di voler rimuovere lo studente '" + selectedStudent.getName() + " "
-                + selectedStudent.getSurname() + "'?");
+        alert.setHeaderText("Sei sicuro di voler rimuovere lo studente '" + selectedStudent.getName() + " " + selectedStudent.getSurname() + "'?");
         alert.setContentText("L'operazione è irreversibile.");
         alert.setGraphic(null);
         alert.getDialogPane().getStylesheets()
@@ -183,7 +178,10 @@ public class StudentRegisterController {
         }
     }
 
-    private void updateTableView() {
+    /**
+     * @brief Aggiorna la TableView con i dati attuali del registro.
+     */
+    public void updateTableView() {
         studentTable.setItems(FXCollections.observableArrayList(studentRegister.getRegisterList()));
         studentTable.refresh();
     }

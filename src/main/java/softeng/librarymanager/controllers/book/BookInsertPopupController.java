@@ -10,6 +10,8 @@ package softeng.librarymanager.controllers.book;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.stage.Stage;
 import softeng.librarymanager.models.Book;
 import softeng.librarymanager.models.RegisterAdder;
 import softeng.librarymanager.models.RegisterValidator;
@@ -23,14 +25,8 @@ import softeng.librarymanager.models.RegisterValidator;
  */
 public class BookInsertPopupController extends BookPopupController {
 
-    /**
-     * @brief Interfaccia funzionale per l'operazione di aggiunta.
-     */
-    private RegisterAdder<Book> bookRegisterAdder;
 
-    /**
-     * @brief Interfaccia funzionale per la validazione dei dati.
-     */
+    private RegisterAdder<Book> bookRegisterAdder;
     private RegisterValidator<Book> bookRegisterValidator;
 
     public BookInsertPopupController(RegisterAdder<Book> bookRegisterAdder, RegisterValidator<Book> bookRegisterValidator) {
@@ -40,7 +36,6 @@ public class BookInsertPopupController extends BookPopupController {
 
     /**
      * @brief Inizializza il controller.
-     * @details Richiama l'inizializzazione della superclasse.
      */
     @Override
     @FXML
@@ -55,6 +50,20 @@ public class BookInsertPopupController extends BookPopupController {
      */
     @Override
     public void confirmBtnAction(ActionEvent event) {
-        // Implementazione specifica per l'aggiunta
+        try {
+            Book bookToAdd = new Book(titleTF.getText(), getAuthorsListPopup(), bookCodeTF.getText(), Integer.parseInt(publishYearTF.getText()), Integer.parseInt(copiesTF.getText()));
+
+            if (bookRegisterValidator.isUnique(bookToAdd)) {
+                bookRegisterAdder.add(bookToAdd);
+                // Chiudi la finestra
+                Stage stage = (Stage) confirmBtn.getScene().getWindow();
+                stage.close();
+            } else {
+                showAlert(Alert.AlertType.ERROR, "Errore", "Libro duplicato",
+                        "Il codice ISBN inserito è già presente.");
+            }
+        } catch (IllegalArgumentException e) {
+            showAlert(Alert.AlertType.ERROR, "Errore", "Dati non validi", e.getMessage());
+        }
     }
 }

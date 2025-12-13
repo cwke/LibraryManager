@@ -8,11 +8,11 @@
 
 package softeng.librarymanager.controllers.book;
 
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.beans.binding.Bindings;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -21,6 +21,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @class BookPopupController
@@ -39,15 +42,12 @@ public abstract class BookPopupController {
     @FXML protected TextField publishYearTF;
     @FXML protected TextField copiesTF;
     @FXML protected TextField bookCodeTF;
-
     @FXML protected Button confirmBtn;
     @FXML protected Button cancelBtn;
     @FXML protected Button addAuthorsBtn;
 
     /**
      * @brief Inizializzazione base del controller.
-     * @details Metodo chiamato automaticamente da JavaFX dopo il caricamento
-     *          dell'FXML.
      */
     @FXML
     public void initialize() {
@@ -56,19 +56,24 @@ public abstract class BookPopupController {
         }
     }
 
-    // PARTE DI CODICE PER AUTORI
+    // PARTE DI CODICE PER AUTOR
 
-    protected final Image removeImg = new Image(
+    protected List<TextField> dynamicAuthorFields = new ArrayList<>();
+
+    private final Image removeImg = new Image(
             getClass().getResourceAsStream("/softeng/librarymanager/assets/remove.png"));
 
     @FXML
-    protected HBox createAuthorRow(int authorNum) {
+    private HBox createAuthorRow(int authorNum) {
         HBox row = new HBox();
         row.setAlignment(javafx.geometry.Pos.CENTER);
         row.setSpacing(20.0);
 
         Label label = new Label("Autore " + authorNum + ":");
         TextField tf = new TextField();
+
+        // Aggiungi alla lista
+        dynamicAuthorFields.add(tf);
 
         ImageView view = new ImageView(removeImg);
         view.setFitHeight(16);
@@ -78,6 +83,8 @@ public abstract class BookPopupController {
         btn.setGraphic(view);
         btn.setOnAction(e -> {
             authorsListVBox.getChildren().remove(row);
+            // Rimuovi dalla lista quando la riga viene eliminata
+            dynamicAuthorFields.remove(tf);
         });
 
         btn.disableProperty().bind(Bindings.createBooleanBinding(() -> {
@@ -88,14 +95,38 @@ public abstract class BookPopupController {
         return row;
     }
 
+    protected List<String> getAuthorsListPopup() {
+        List<String> authors = new ArrayList<>();
+
+        // 1. Aggiungi autore principale
+        if (Author1TF.getText() != null && !Author1TF.getText().trim().isEmpty()) {
+            authors.add(Author1TF.getText().trim());
+        }
+
+        // 2. Aggiungi autori dai campi dinamici
+        for (TextField tf : dynamicAuthorFields) {
+            String text = tf.getText();
+            if (text != null && !text.trim().isEmpty()) {
+                authors.add(text.trim());
+            }
+        }
+        return authors;
+    }
+
     @FXML
-    public void addAuthors(ActionEvent event) {
+    private void addAuthors(ActionEvent event) {
         int nextAuthorNum = authorsListVBox.getChildren().size() + 1;
         authorsListVBox.getChildren().add(createAuthorRow(nextAuthorNum));
     }
 
     // FINE PARTE DI CODICE PER AUTORI
 
+    /**
+     * @brief Gestisce l'evento di click sul bottone di conferma.
+     * @details Metodo astratto da implementare nelle sottoclassi per definire
+     *          la logica specifica (Inserimento o Modifica).
+     * @param[in] event L'evento generato dal click.
+     */
     @FXML
     public abstract void confirmBtnAction(ActionEvent event);
 
@@ -109,10 +140,21 @@ public abstract class BookPopupController {
         // 1. Recuperiamo il componente che ha scatenato l'evento (il pulsante)
         Node source = (Node) event.getSource();
 
-        // 2. Dal pulsante, otteniamo la Scena, e dalla Scena otteniamo la Finestra (Stage)
+        // 2. Dal pulsante, otteniamo la Scena, e dalla Scena otteniamo la Finestra
+        // (Stage)
         Stage stage = (Stage) source.getScene().getWindow();
 
         // 3. Chiudiamo la finestra
         stage.close();
+    }
+
+    protected void showAlert(Alert.AlertType type, String title, String header, String content) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+        alert.setGraphic(null);
+        alert.getDialogPane().getStylesheets().add(getClass().getResource("/softeng/librarymanager/style.css").toExternalForm());
+        alert.showAndWait();
     }
 }
