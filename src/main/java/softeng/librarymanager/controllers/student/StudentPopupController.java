@@ -10,10 +10,13 @@ package softeng.librarymanager.controllers.student;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
-/**s
+/**
  * @class StudentPopupController
  * @brief Classe base astratta per i controller dei popup studenti (Inserimento e Modifica).
  * @details Raccoglie i componenti grafici comuni (TextField per l'anagrafica) e gestisce
@@ -21,45 +24,15 @@ import javafx.scene.control.TextField;
  */
 public abstract class StudentPopupController {
 
-    /**
-     * @brief Campo di testo per il nome dello studente.
-     */
-    @FXML
-    protected TextField nameTF;
-
-    /**
-     * @brief Campo di testo per il cognome dello studente.
-     */
-    @FXML
-    protected TextField surnameTF;
-
-    /**
-     * @brief Campo di testo per la matricola (ID) dello studente.
-     */
-    @FXML
-    protected TextField studentIdTF;
-
-    /**
-     * @brief Campo di testo per l'email dello studente.
-     */
-    @FXML
-    protected TextField emailTF;
-
-    /**
-     * @brief Bottone di conferma (Salva/Aggiungi).
-     */
-    @FXML
-    protected Button confirmBtn;
-
-    /**
-     * @brief Bottone di annullamento.
-     */
-    @FXML
-    protected Button cancelBtn;
+    @FXML protected TextField nameTF;
+    @FXML protected TextField surnameTF;
+    @FXML protected TextField studentIdTF;
+    @FXML protected TextField emailTF;
+    @FXML protected Button confirmBtn;
+    @FXML protected Button cancelBtn;
 
     /**
      * @brief Inizializzazione base del controller.
-     * @details Metodo chiamato automaticamente da JavaFX.
      */
     @FXML
     public void initialize() {
@@ -81,6 +54,24 @@ public abstract class StudentPopupController {
      */
     @FXML
     public void cancelBtnAction(ActionEvent event) {
+        // 1. Recuperiamo il componente che ha scatenato l'evento (il pulsante)
+        Node source = (Node) event.getSource();
+
+        // 2. Dal pulsante, otteniamo la Scena, e dalla Scena otteniamo la Finestra
+        // (Stage)
+        Stage stage = (Stage) source.getScene().getWindow();
+
+        // 3. Chiudiamo la finestra
+        stage.close();
     }
 
+    protected void showAlert(Alert.AlertType type, String title, String header, String content) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+        alert.setGraphic(null);
+        alert.getDialogPane().getStylesheets().add(getClass().getResource("/softeng/librarymanager/style.css").toExternalForm());
+        alert.showAndWait();
+    }
 }

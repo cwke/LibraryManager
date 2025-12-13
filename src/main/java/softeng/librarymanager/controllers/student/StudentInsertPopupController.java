@@ -8,7 +8,11 @@
 
 package softeng.librarymanager.controllers.student;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.stage.Stage;
+
 import softeng.librarymanager.models.RegisterAdder;
 import softeng.librarymanager.models.RegisterValidator;
 import softeng.librarymanager.models.Student;
@@ -22,44 +26,16 @@ import softeng.librarymanager.models.Student;
  */
 public class StudentInsertPopupController extends StudentPopupController {
 
-    /**
-     * @brief Interfaccia funzionale per l'operazione di aggiunta al registro studenti.
-     */
     private RegisterAdder<Student> studentRegisterAdder;
-
-    /**
-     * @brief Interfaccia funzionale per la validazione dei dati studente.
-     */
     private RegisterValidator<Student> studentRegisterValidator;
 
-    public StudentInsertPopupController(RegisterAdder<Student> studentRegisterAdder, RegisterValidator<Student> studentRegisterValidator) {
-        this.studentRegisterAdder = studentRegisterAdder;
-        this.studentRegisterValidator = studentRegisterValidator;
-    }
-
     /**
-     * @brief Inizializza il controller.
-     * @details Richiama l'inizializzazione della superclasse.
-     */
-    @Override
-    @FXML
-    public void initialize() {
-        super.initialize();
-    }
-
-    /**
-     * @brief Imposta il delegato per l'aggiunta al registro.
+     * @brief Costruttore.
      * @param[in] studentRegisterAdder L'istanza che implementa RegisterAdder<Student>.
-     */
-    public void setStudentRegisterAdder(RegisterAdder<Student> studentRegisterAdder) {
-        this.studentRegisterAdder = studentRegisterAdder;
-    }
-
-    /**
-     * @brief Imposta il delegato per la validazione.
      * @param[in] studentRegisterValidator L'istanza che implementa RegisterValidator<Student>.
      */
-    public void setStudentRegisterValidator(RegisterValidator<Student> studentRegisterValidator) {
+    public StudentInsertPopupController(RegisterAdder<Student> studentRegisterAdder, RegisterValidator<Student> studentRegisterValidator) {
+        this.studentRegisterAdder = studentRegisterAdder;
         this.studentRegisterValidator = studentRegisterValidator;
     }
 
@@ -69,7 +45,21 @@ public class StudentInsertPopupController extends StudentPopupController {
      * @param[in] event L'evento click.
      */
     @Override
-    public void confirmBtnAction(javafx.event.ActionEvent event) {
-        // Implementazione specifica per l'aggiunta di uno studente
+    public void confirmBtnAction(ActionEvent event) {
+        try {
+            Student studentToAdd = new Student(nameTF.getText(), surnameTF.getText(), studentIdTF.getText(), emailTF.getText());
+
+            if (studentRegisterValidator.isUnique(studentToAdd)) {
+                studentRegisterAdder.add(studentToAdd);
+                // Chiudi la finestra
+                Stage stage = (Stage) confirmBtn.getScene().getWindow();
+                stage.close();
+            } else {
+                showAlert(Alert.AlertType.ERROR, "Errore", "Studente duplicato",
+                        "La matricola inserita è già presente.");
+            }
+        } catch (IllegalArgumentException e) {
+            showAlert(Alert.AlertType.ERROR, "Errore", "Dati non validi", e.getMessage());
+        }
     }
 }

@@ -23,12 +23,12 @@
                <VBox.margin>
                   <Insets top="10.0" />
                </VBox.margin></Label>
-             <TextField fx:id="codeTF" />
+             <TextField fx:id="studentIdTF" />
              <Label text="Mail">
                <VBox.margin>
                   <Insets top="10.0" />
                </VBox.margin></Label>
-             <TextField fx:id="mailTF" />
+             <TextField fx:id="emailTF" />
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                <children>
                    <Button fx:id="confirmBtn" mnemonicParsing="false" onAction="#confirmBtnAction" text="Conferma">
