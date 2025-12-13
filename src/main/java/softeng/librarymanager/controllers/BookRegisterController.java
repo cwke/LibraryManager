@@ -25,9 +25,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TabPane;
-import javafx.scene.control.Tab;
-import javafx.scene.Node;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.scene.layout.AnchorPane;
@@ -76,7 +73,7 @@ public class BookRegisterController {
         // Inizializza la tabella
         updateTableView();
 
-        // Configurazione Colonne: Usa SimpleStringProperty per avvolgere i getter della classe POJO Book
+        // Configurazione Colonne:
         titleClm.setCellValueFactory(row -> new SimpleStringProperty(row.getValue().getTitle()));
         authorsClm.setCellValueFactory(row -> new SimpleStringProperty(String.join(", ", row.getValue().getAuthors())));
         publishmentYearClm.setCellValueFactory(row -> new SimpleIntegerProperty(row.getValue().getPublishmentYear()).asObject());
@@ -95,10 +92,6 @@ public class BookRegisterController {
         Binding<Boolean> noItemSelectedBinding = bookTable.getSelectionModel().selectedItemProperty().isNull();
         sideBarController.getRemoveBtn().disableProperty().bind(noItemSelectedBinding);
         sideBarController.getModifyBtn().disableProperty().bind(noItemSelectedBinding);
-        
-        System.out.println("BookRegisterController initialized. rootPane is: " + rootPane);
-        
-
     }
 
     /**
@@ -106,10 +99,8 @@ public class BookRegisterController {
      */
     private void openInsertPopup() {
         try {
-            // Usa il percorso assoluto che avevi nella branch per sicurezza
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/softeng/librarymanager/fxml/BookPopupView.fxml"));
             
-            // Passa le lambda expression per le callback (add e isValid)
             loader.setController(new BookInsertPopupController(
                 (Book toAdd) -> bookRegister.add(toAdd), 
                 (Book toVerify) -> bookRegister.isUnique(toVerify)
@@ -144,7 +135,6 @@ public class BookRegisterController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/softeng/librarymanager/fxml/BookPopupView.fxml"));
             
-            // Passa le callback per modify e isValid, più il libro selezionato
             loader.setController(new BookModifyPopupController(
                 (Book old, Book newObj) -> bookRegister.modify(old, newObj),
                 (Book toVerify) -> bookRegister.isUnique(toVerify),
@@ -164,6 +154,8 @@ public class BookRegisterController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        
+        updateTableView();
     }
 
     /**
@@ -189,8 +181,7 @@ public class BookRegisterController {
     /**
      * @brief Aggiorna la TableView con i dati attuali del registro.
      */
-    private void updateTableView() {
-        System.out.println("BOOK REFRESH");
+    public void updateTableView() {
         bookTable.setItems(FXCollections.observableArrayList(bookRegister.getRegisterList()));
         bookTable.refresh();
     }

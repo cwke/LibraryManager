@@ -79,26 +79,17 @@ public class LoanRegisterController {
      */
     @FXML
     public void initialize() {
+        // Inizializza la tabella
         updateTableView();
-
-        /*
-        studentClm.setCellValueFactory(row -> {
-            Student s = row.getValue().getStudent();
-            return new SimpleStringProperty(s.getSurname() + " " + s.getName() + " | " + s.getStudentId());
-        });
         
-        bookClm.setCellValueFactory(row -> {
-            Book b = row.getValue().getBook();
-            return new SimpleStringProperty(b.getTitle() + " | " + b.getBookId());
-        });
-        */
+        // Configurazione colonne;
         studentNameClm.setCellValueFactory(row -> new SimpleStringProperty(row.getValue().getStudent().getName()));
         studentSurnameClm.setCellValueFactory(row -> new SimpleStringProperty(row.getValue().getStudent().getSurname()));
         studentIdClm.setCellValueFactory(row -> new SimpleStringProperty(row.getValue().getStudent().getStudentId()));
         
         bookNameClm.setCellValueFactory(row -> new SimpleStringProperty(row.getValue().getBook().getTitle()));
         bookIdClm.setCellValueFactory(row -> new SimpleStringProperty(row.getValue().getBook().getBookId()));
-        
+      
         loanEndClm.setCellValueFactory(row -> new SimpleObjectProperty<LocalDate>(row.getValue().getLoanEnd()));
       
         returnedClm.setCellValueFactory(row -> new SimpleStringProperty(row.getValue().isReturned() ? "Sì" : "No"));
@@ -148,6 +139,7 @@ public class LoanRegisterController {
             e.printStackTrace();
         }
         
+        // Aggiorna la tabella alla chiusura del popup
         updateTableView();
     }
 
@@ -215,6 +207,7 @@ public class LoanRegisterController {
 
     private void updateTableView() {
         loanTable.setItems(FXCollections.observableArrayList(library.getLoanRegister().getRegisterList()));
+        loanTable.refresh();
     }
     
     private void searchLoan() {

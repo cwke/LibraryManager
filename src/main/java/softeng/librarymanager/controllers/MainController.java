@@ -81,9 +81,16 @@ public class MainController {
         try {
             // Carica la Book Tab
             FXMLLoader bookLoader = new FXMLLoader(getClass().getResource("/softeng/librarymanager/fxml/BookRegisterView.fxml"));
-            bookLoader.setController(new BookRegisterController(library.getBookRegister()));
+            BookRegisterController bookRegisterController = new BookRegisterController(library.getBookRegister());
+            bookLoader.setController(bookRegisterController);
             
             bookTab.setContent(bookLoader.load());
+            
+            bookTab.setOnSelectionChanged(event -> {
+                if (bookTab.isSelected()) {
+                    bookRegisterController.updateTableView();
+                }
+            });
 
             // Carica la Student Tab
             FXMLLoader studentLoader = new FXMLLoader(getClass().getResource("/softeng/librarymanager/fxml/StudentRegisterView.fxml"));
