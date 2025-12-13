@@ -136,7 +136,7 @@ public class Loan implements Comparable<Loan>, Serializable{
      * @brief Verifica se il prestito è attivabile.
      * @return True se sia lo studente che il libro sono disponibili per il prestito, false altrimenti.
      */
-    public boolean isActivable() {
+    private boolean isActivable() {
         return book.isAvailableForLoan() &&
                 student.isAvailableForLoan();
     }

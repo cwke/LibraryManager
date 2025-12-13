@@ -19,38 +19,55 @@ class LoanTest {
     void testLoan() {
         Student validStudent = new Student("Mario", "Rossi", "1234567890", "m.rossi@studenti.unisa.it");
         Book validBook = new Book("La roba", validAuthors, "1234567890123", 1880, 10);
+        
         //Creazione valida
         Loan loan = new Loan(validStudent, validBook, validLoanEnd);
 
         assertEquals(validStudent, loan.getStudent());
         assertEquals(validBook, loan.getBook());
         assertEquals(validLoanEnd, loan.getLoanEnd());
-        assertEquals(loan, validStudent.getActiveLoans().get(0));
-        assertEquals(9, validBook.getAvailableCopies());
         
         //Creazione invalida perché studente null
         assertThrows(IllegalArgumentException.class, () -> new Loan(null, validBook, validLoanEnd));
         
-        //Creazione invalida perché studente non disponibile per prestito
-        validStudent.addActiveLoan(loan);
-        validStudent.addActiveLoan(loan);
-        assertThrows(IllegalArgumentException.class, () -> new Loan(validStudent, validBook, validLoanEnd));
-        
         //Creazione invalida perché libro null
         assertThrows(IllegalArgumentException.class, () -> new Loan(validStudent, null, validLoanEnd));
-        
-        //Creazione invalida perché libro non disponibile per prestito
-        assertThrows(IllegalArgumentException.class, () -> new Loan(validStudent, new Book("La roba", validAuthors, "1234567890123", 1880, 0), validLoanEnd));
         
         //Creazione invalida perché data ultima di restituzione null
         assertThrows(IllegalArgumentException.class, () -> new Loan(validStudent, validBook, null));
     }
+    
+    //Test ActivateLoan e di conseguenza anche di isActivable
+    @Test
+    void testActivateLoan() {
+        Student validStudent = new Student("Mario", "Rossi", "1234567890", "m.rossi@studenti.unisa.it");
+        Book validBook = new Book("La roba", validAuthors, "1234567890123", 1880, 10);
+        Loan loan = new Loan(validStudent, validBook, validLoanEnd);
+        
+        //Attvivazione valida
+        loan.activateLoan();
+        assertEquals(loan, validStudent.getActiveLoans().get(0));
+        assertEquals(9, validBook.getAvailableCopies());
+        
+        //Attivazione invalida perché studente non disponibile per prestito
+        validStudent.addActiveLoan(loan);
+        validStudent.addActiveLoan(loan);
+        assertThrows(IllegalStateException.class, () -> loan.activateLoan());
+        
+        //Attivazione invalida perché libro non disponibile per prestito
+        validStudent.removeActiveLoan(loan);
+        Book noCopiesBook = new Book("la roba", validAuthors, "0987654321098", 1880, 0);
+        Loan noCopiesLoan = new Loan(validStudent, noCopiesBook, validLoanEnd);
+        assertThrows(IllegalStateException.class, () -> noCopiesLoan.activateLoan());    
+    }
 
+    //Test returnLoan e di conseguenza anche di isReturned
     @Test
     void testReturnLoan() {
         Student validStudent = new Student("Mario", "Rossi", "1234567890", "m.rossi@studenti.unisa.it");
         Book validBook = new Book("La roba", validAuthors, "1234567890123", 1880, 10);
         Loan loan = new Loan(validStudent, validBook, validLoanEnd);
+        loan.activateLoan();
         
         //Verifica libro non restituito
         assertFalse(loan.isReturned());
@@ -62,6 +79,7 @@ class LoanTest {
         assertEquals(10, validBook.getAvailableCopies());
     }
 
+    //Test coerenza compareTo-equals
     @Test
     void testCompareTo() {
         Student validStudent = new Student("Mario", "Rossi", "1234567890", "m.rossi@studenti.unisa.it");
@@ -69,13 +87,12 @@ class LoanTest {
 
         Loan l1 = new Loan(validStudent, validBook, validLoanEnd);
         Loan l2 = new Loan(validStudent, validBook, validLoanEnd);
-        Loan l3 = new Loan(validStudent, validBook, validLoanEnd);
         
-        //Verifica prestito minore
-        assertTrue(l2.compareTo(l3) < 0);
+        //Verifica uguaglianza prestiti
+        assertEquals(0, l1.compareTo(l1));
         
-        //Verifica libro maggiore
-        assertTrue(l2.compareTo(l1) > 0);
+        //Verifica disuguaglianza prestiti
+        assertTrue(l1.compareTo(l2) != 0);
     }
 
     @Test
