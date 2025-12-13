@@ -22,6 +22,6 @@ public interface RegisterModifier<T> {
      * @param[in] newObj Il nuovo oggetto che sostituisce il precedente.
      * @return boolean True se la modifica ha successo, False altrimenti.
      */
-    boolean modify(T old, T newObj);
+    void modify(T old, T newObj);
 
 }

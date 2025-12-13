@@ -8,92 +8,51 @@
 
 package softeng.librarymanager.controllers;
 
+import java.io.IOException;
+import java.util.Collections;
+import java.util.Optional;
+
+import javafx.beans.binding.Binding;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import softeng.librarymanager.models.Book;
 import softeng.librarymanager.models.Register;
 
-import java.io.IOException;
-
 /**
  * @class BookRegisterController
- * @brief Classe controller per la gestione dell'interfaccia utente del catalogo
- *        libri.
- * @details Questa classe gestisce la visualizzazione tabellare dei libri,
- *          l'interazione
- *          con la barra laterale (SideBar) e coordina l'apertura dei popup per
- *          l'inserimento
- *          e la modifica dei libri.
- *          Si occupa inoltre di collegare la vista al modello dati
- *          {@link Register}<Book>.
+ * @brief Classe controller per la gestione dell'interfaccia utente del catalogo libri.
+ * @details Questa classe gestisce la visualizzazione tabellare dei libri, l'interazione
+ * con la barra laterale (SideBar) e coordina l'apertura dei popup per l'inserimento
+ * e la modifica dei libri.
+ * Si occupa inoltre di collegare la vista al modello dati {@link Register}<Book>.
  */
 public class BookRegisterController {
 
-    /**
-     * @brief Tabella per la visualizzazione dell'elenco dei libri.
-     */
-    @FXML
-    private TableView<Book> bookTable;
+    @FXML private TableView<Book> bookTable;
+    @FXML private TableColumn<Book, String> titleClm;
+    @FXML private TableColumn<Book, String> authorsClm;
+    @FXML private TableColumn<Book, Integer> publishmentYearClm;
+    @FXML private TableColumn<Book, String> bookIdClm;
+    @FXML private TableColumn<Book, Integer> availableCopiesClm;
 
-    /**
-     * @brief Colonna della tabella per il titolo del libro.
-     */
-    @FXML
-    private TableColumn<Book, String> titleClm;
+    private final Register<Book> bookRegister;
 
-    /**
-     * @brief Colonna della tabella per gli autori del libro.
-     */
-    @FXML
-    private TableColumn<Book, String> authorsClm;
+    @FXML private SideBarController sideBarController;
 
-    /**
-     * @brief Colonna della tabella per l'anno di pubblicazione.
-     */
-    @FXML
-    private TableColumn<Book, Integer> publishmentYearClm;
-
-    /**
-     * @brief Colonna della tabella per l'ID (ISBN) del libro.
-     */
-    @FXML
-    private TableColumn<Book, String> bookIdClm;
-
-    /**
-     * @brief Colonna della tabella per il numero di copie disponibili.
-     */
-    @FXML
-    private TableColumn<Book, Integer> availableCopiesClm;
-
-    /**
-     * @brief Riferimento al modello del registro libri.
-     * @see Register
-     */
-    private Register<Book> bookRegister;
-
-    /**
-     * @brief Riferimento al controller della barra laterale (incluso via
-     *        <fx:include>).
-     */
-    @FXML
-    private SideBarController sideBarController;
-
-    /**
-     * @brief Controller per il popup di inserimento libro.
-     */
+    // Controller per i popup (non strettamente necessari come campi se istanziati localmente, ma utili per debug)
     private BookInsertPopupController bookInsertPopupController;
-
-    /**
-     * @brief Controller per il popup di modifica libro.
-     */
     private BookModifyPopupController bookModifyPopupController;
 
     /**
@@ -106,89 +65,152 @@ public class BookRegisterController {
 
     /**
      * @brief Metodo di inizializzazione del controller JavaFX.
-     * @details Configura le colonne della tabella (binding con le proprietà di
-     *          Book)
-     *          e associa i listener agli eventi dei bottoni della SideBar
-     *          (Aggiungi, Modifica, Rimuovi).
      */
     @FXML
     public void initialize() {
-        bookTable.setItems(FXCollections.observableArrayList(bookRegister.getRegister()));
-        // Binding per la visualizzazione degli studenti nella tabella
+        // Inizializza la tabella
+        updateTableView();
 
-        titleClm.setCellValueFactory(new PropertyValueFactory<>("title"));
-        authorsClm.setCellValueFactory(new PropertyValueFactory<>("authors"));
-        publishmentYearClm.setCellValueFactory(new PropertyValueFactory<>("publishmentYear"));
-        bookIdClm.setCellValueFactory(new PropertyValueFactory<>("bookId"));
-        availableCopiesClm.setCellValueFactory(new PropertyValueFactory<>("availableCopies"));
+        // Configurazione Colonne: Usa SimpleStringProperty per avvolgere i getter della classe POJO Book
+        titleClm.setCellValueFactory(row -> new SimpleStringProperty(row.getValue().getTitle()));
+        authorsClm.setCellValueFactory(row -> new SimpleStringProperty(row.getValue().getAuthors()));
+        publishmentYearClm.setCellValueFactory(row -> new SimpleIntegerProperty(row.getValue().getPublishmentYear()).asObject());
+        bookIdClm.setCellValueFactory(row -> new SimpleStringProperty(row.getValue().getBookId()));
+        availableCopiesClm.setCellValueFactory(row -> new SimpleIntegerProperty(row.getValue().getAvailableCopies()).asObject());
 
-        // Sidebar
+        // Sidebar Event Listeners
         sideBarController.getAddBtn().setOnAction(event -> openInsertPopup());
         sideBarController.getModifyBtn().setOnAction(event -> openModifyPopup());
         sideBarController.getRemoveBtn().setOnAction(event -> removeFromRegister());
+        
+        // Listener per la barra di ricerca
+        sideBarController.getSearchBarTF().textProperty().addListener((observable, oldValue, newValue) -> searchBook());
 
-        // Binding per la disabilitazione del tasto rimuovi se non è selezionato nessun
-        // item
-        sideBarController.getRemoveBtn().disableProperty()
-                .bind(bookTable.getSelectionModel().selectedItemProperty().isNull());
+        // Binding: Disabilita i tasti Modifica e Rimuovi se non è selezionata una riga
+        Binding<Boolean> noItemSelectedBinding = bookTable.getSelectionModel().selectedItemProperty().isNull();
+        sideBarController.getRemoveBtn().disableProperty().bind(noItemSelectedBinding);
+        sideBarController.getModifyBtn().disableProperty().bind(noItemSelectedBinding);
     }
 
     /**
      * @brief Apre il popup per l'inserimento di un nuovo libro.
-     * @details Invocato alla pressione del tasto "Aggiungi" nella SideBar.
      */
     private void openInsertPopup() {
         try {
-            // 1. Carica il file FXML
-            // Usa percorso assoluto per caricare correttamente dalla cartella resources
-            FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/softeng/librarymanager/fxml/BookPopupView.fxml"));
-
-            // 2. Istanzia e imposta il controller manualmente per passare le dipendenze
-            BookInsertPopupController controller = new BookInsertPopupController(
-                    bookRegister::add,
-                    bookRegister::isValid);
-            loader.setController(controller);
-
+            // Usa il percorso assoluto che avevi nella branch per sicurezza
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/softeng/librarymanager/fxml/BookPopupView.fxml"));
+            
+            // Passa le lambda expression per le callback (add e isValid)
+            loader.setController(new BookInsertPopupController(
+                (Book toAdd) -> bookRegister.add(toAdd), 
+                (Book toVerify) -> bookRegister.isValid(toVerify)
+            ));
+            
             Parent root = loader.load();
-
-            // 3. Crea il nuovo Stage (la finestra)
-            Stage stage = new Stage();
-            stage.setTitle("Inserimento studente");
-            Scene scene = new Scene(root);
+            Scene scene = new Scene(root, 480, 720);
+            
+            // CSS
             scene.getStylesheets().add(getClass().getResource("/softeng/librarymanager/style.css").toExternalForm());
-            stage.setScene(scene);
-
-            // 4. Configura il comportamento "Popup" (Modale)
-            // WINDOW_MODAL o APPLICATION_MODAL blocca l'interazione con la finestra sotto
-            stage.initModality(Modality.APPLICATION_MODAL);
-
-            // (Opzionale) Imposta la finestra principale come proprietaria (così il popup
-            // sta sempre sopra)
-            // stage.initOwner(bottoneCheHaChiamato.getScene().getWindow());
-
-            // 5. Mostra la finestra
-            stage.showAndWait(); // showAndWait blocca l'esecuzione finché il popup non viene chiuso
-
+            
+            Stage popup = new Stage();
+            popup.setTitle("Inserimento Libro");
+            popup.initModality(Modality.APPLICATION_MODAL);
+            popup.setScene(scene);
+            popup.showAndWait();
+            
         } catch (IOException e) {
-            e.printStackTrace(); // Utile per vedere se sbagli il percorso del file
+            e.printStackTrace();
         }
-
+        // Aggiorna la tabella alla chiusura del popup
+        updateTableView();
     }
 
     /**
      * @brief Apre il popup per la modifica del libro selezionato.
-     * @details Invocato alla pressione del tasto "Modifica" nella SideBar.
-     *          Recupera l'elemento selezionato nella TableView e lo passa al popup.
      */
     private void openModifyPopup() {
+        Book selectedBook = bookTable.getSelectionModel().getSelectedItem();
+        if (selectedBook == null) return;
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/softeng/librarymanager/fxml/BookPopupView.fxml"));
+            
+            // Passa le callback per modify e isValid, più il libro selezionato
+            loader.setController(new BookModifyPopupController(
+                (Book old, Book newObj) -> bookRegister.modify(old, newObj),
+                (Book toVerify) -> bookRegister.isValid(toVerify), 
+                selectedBook
+            ));
+            
+            Parent root = loader.load();
+            Scene scene = new Scene(root, 480, 720);
+            scene.getStylesheets().add(getClass().getResource("/softeng/librarymanager/style.css").toExternalForm());
+
+            Stage popup = new Stage();
+            popup.setTitle("Modifica Libro");
+            popup.initModality(Modality.APPLICATION_MODAL);
+            popup.setScene(scene);
+            popup.showAndWait();
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        updateTableView();
     }
 
     /**
-     * @brief Rimuove il libro selezionato dal registro.
-     * @details Invocato alla pressione del tasto "Rimuovi" nella SideBar.
+     * @brief Rimuove il libro selezionato dal registro con richiesta di conferma.
      */
     private void removeFromRegister() {
+        Book selectedBook = bookTable.getSelectionModel().getSelectedItem();
+        if (selectedBook == null) return;
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Conferma rimozione");
+        alert.setHeaderText("Sei sicuro di voler rimuovere il libro '" + selectedBook.getTitle() + "'?");
+        alert.setContentText("L'operazione è irreversibile.");
+
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            bookRegister.remove(selectedBook);
+            updateTableView();
+        }
     }
 
+    /**
+     * @brief Aggiorna la TableView con i dati attuali del registro.
+     */
+    private void updateTableView() {
+        bookTable.setItems(FXCollections.observableArrayList(bookRegister.getRegister()));
+    }
+
+    /**
+     * @brief Filtra i libri nella tabella in base al testo nella barra di ricerca.
+     */
+    private void searchBook() {
+        String searchText = sideBarController.getSearchBarTF().getText();
+        
+        // Se la ricerca è vuota, mostra tutto
+        if (searchText == null || searchText.isEmpty()) {
+            updateTableView();
+            return;
+        }
+
+        ObservableList<Book> allBooks = FXCollections.observableArrayList(bookRegister.getRegister());
+        String lowerCaseSearchText = searchText.toLowerCase();
+        ObservableList<Book> filteredBooks = FXCollections.observableArrayList();
+
+        for (Book book : allBooks) {
+            // Cerca per Titolo, Autore o ISBN
+            if (book.getTitle().toLowerCase().contains(lowerCaseSearchText) ||
+                book.getAuthors().toLowerCase().contains(lowerCaseSearchText) ||
+                book.getBookId().toLowerCase().contains(lowerCaseSearchText)) {
+                filteredBooks.add(book);
+            }
+        }
+        
+        Collections.sort(filteredBooks);
+        bookTable.setItems(filteredBooks);
+    }
 }

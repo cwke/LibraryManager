@@ -9,7 +9,7 @@
     <children>
         <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
-                <fx:include source="MenuView.fxml" />
+                <fx:include fx:id="menuBar" source="MenuView.fxml" />
                 <TabPane id="TabPane" tabClosingPolicy="UNAVAILABLE">
                     <tabs>
                         <Tab fx:id="bookTab" text="Book Catalog">
