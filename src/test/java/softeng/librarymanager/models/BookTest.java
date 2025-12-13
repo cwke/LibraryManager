@@ -4,67 +4,109 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class BookTest {
+    
+    private final String validTitle = "La roba";
+    private final String validAuthors = "Giovanni Verga";
+    private final String validBookId = "1234567890123";
+    private final int validPublishmentYear = 1880;
+    private final int validAvailableCopies = 10;
 
+    //Test costruttore e di conseguenza dei getter e delle funzioni di validazione
     @Test
-    void testValidBookCreation() {
-        Book book = new Book("Titolo", "Autore", "1234567890123", 2020, 5);
+    void testBook() {
+        //Creazione valida
+        Book book = new Book(validTitle, validAuthors, validBookId, validPublishmentYear, validAvailableCopies);
 
-        assertEquals("Titolo", book.getTitle());
-        assertEquals("Autore", book.getAuthors());
-        assertEquals("1234567890123", book.getBookId());
-        assertEquals(2020, book.getPublishmentYear());
-        assertEquals(5, book.getAvailableCopies());
+        assertEquals(validTitle, book.getTitle());
+        assertEquals(validAuthors, book.getAuthors());
+        assertEquals(validBookId, book.getBookId());
+        assertEquals(validPublishmentYear, book.getPublishmentYear());
+        assertEquals(validAvailableCopies, book.getAvailableCopies());
+        
+        //Creazione invalida perché titolo null
+        assertThrows(IllegalArgumentException.class, () -> new Book(null, validAuthors, validBookId, validPublishmentYear, validAvailableCopies));
+        
+        //Creazione invalida perché autori null
+        assertThrows(IllegalArgumentException.class, () -> new Book(validTitle, null, validBookId, validPublishmentYear, validAvailableCopies));
+        
+        //Creazione invalida perché identificativo libro null
+        assertThrows(IllegalArgumentException.class, () -> new Book(validTitle, validAuthors, null, validPublishmentYear, validAvailableCopies));
+        
+        //Creazione invalida perché lunghezza identificativo libro diversa da 13
+        assertThrows(IllegalArgumentException.class, () -> new Book(validTitle, validAuthors, "12345", validPublishmentYear, validAvailableCopies));
+        
+        //Creazione invalida perché anno di pubblicazione minore di 0
+        assertThrows(IllegalArgumentException.class, () -> new Book(validTitle, validAuthors, validBookId, -1, validAvailableCopies));
+        
+        //Creazione invalida perché numero di copie disponibili minore di 0
+        assertThrows(IllegalArgumentException.class, () -> new Book(validTitle, validAuthors, validBookId, validPublishmentYear, -1));
     }
 
     @Test
-    void testInvalidBookIdThrows() {
-        assertThrows(IllegalArgumentException.class,
-                () -> new Book("Titolo", "Autore", "123", 2020, 5));
-    }
+    void testCopy() {
+        Book book = new Book(validTitle, validAuthors, validBookId, validPublishmentYear, validAvailableCopies);
+        Book bookCopy = new Book("C", "D", "9876543210987", 2021, 9);
 
-    @Test
-    void testNegativeCopiesThrows() {
-        assertThrows(IllegalArgumentException.class,
-                () -> new Book("Titolo", "Autore", "1234567890123", 2020, -1));
-    }
+        book.copy(bookCopy);
 
-    @Test
-    void testCopyUpdatesFields() {
-        Book book1 = new Book("A", "B", "1234567890123", 2000, 2);
-        Book book2 = new Book("C", "D", "9876543210987", 2021, 9);
-
-        book1.copy(book2);
-
-        assertEquals("C", book1.getTitle());
-        assertEquals("D", book1.getAuthors());
-        assertEquals(2021, book1.getPublishmentYear());
-        assertEquals(9, book1.getAvailableCopies());
-        assertEquals("1234567890123", book1.getBookId()); // non cambia
+        assertEquals("C", book.getTitle());
+        assertEquals("D", book.getAuthors());
+        assertEquals(2021, book.getPublishmentYear());
+        assertEquals(9, book.getAvailableCopies());
+        assertEquals(validBookId, book.getBookId()); // non cambia
     }
 
     @Test
     void testCompareTo() {
-        Book b1 = new Book("T", "A", "1234567890123", 2020, 1);
+        Book book = new Book(validTitle, validAuthors, validBookId, validPublishmentYear, validAvailableCopies);
+        
+        //Verifica libro uguale
+        Book b1 = new Book("T", "A", validBookId, 2020, 1);
+        assertTrue(book.compareTo(b1) == 0);
+        
+        //Verifica libro minore
         Book b2 = new Book("T", "A", "2234567890123", 2020, 1);
-
-        assertTrue(b1.compareTo(b2) < 0);
+        assertTrue(book.compareTo(b2) < 0);
+        
+        //Verifica libro maggiore
+        Book b3 = new Book("T", "A", "0234567890123", 2020, 1);
+        assertTrue(book.compareTo(b3) > 0);
     }
 
     @Test
-    void testEqualsAndHashCode() {
-        Book b1 = new Book("T", "A", "1234567890123", 2020, 1);
-        Book b2 = new Book("X", "Y", "1234567890123", 2020, 9);
+    void testEquals() {
+        Book book = new Book(validTitle, validAuthors, validBookId, validPublishmentYear, validAvailableCopies);
+        
+        //Verifica libri uguali
+        Book book1 = new Book("", "", validBookId, 2020, 9);
+        assertEquals(book, book1);
+        
+        //Verifica libri diversi
+        Book book2 = new Book(validTitle, validAuthors, "1234567654321", validPublishmentYear, validAvailableCopies);
+        assertFalse(book.equals(book2));
+    }
 
-        assertEquals(b1, b2);
-        assertEquals(b1.hashCode(), b2.hashCode());
+    @Test
+    void testHashCode() {
+        Book book = new Book(validTitle, validAuthors, validBookId, validPublishmentYear, validAvailableCopies);
+        
+        //Verifica hashcode libri uguali
+        Book book1 = new Book("", "", validBookId, 2020, 9);
+        assertEquals(book.hashCode(), book1.hashCode());
+        
+        //Verifica hashcode libri diversi
+        Book book2 = new Book(validTitle, validAuthors, "1234567654321", validPublishmentYear, validAvailableCopies);
+        assertFalse(book.hashCode() == book2.hashCode());
     }
 
     @Test
     void testIsAvailableForLoan() {
-        Book book = new Book("T", "A", "1234567890123", 2020, 1);
+        //Verifica libro disponibile per il prestito
+        Book book = new Book(validTitle, validAuthors, validBookId, validPublishmentYear, validAvailableCopies);
         assertTrue(book.isAvailableForLoan());
 
-        book.setAvailableCopies(0);
-        assertFalse(book.isAvailableForLoan());
+        //Verifica libro non disponibile per il prestito
+        Book book1 = new Book(validTitle, validAuthors, validBookId, validPublishmentYear, 0);
+        assertFalse(book1.isAvailableForLoan());
     }
 }
