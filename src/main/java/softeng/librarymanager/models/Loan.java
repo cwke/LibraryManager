@@ -10,7 +10,6 @@ package softeng.librarymanager.models;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -25,7 +24,7 @@ public class Loan implements Comparable<Loan>, Serializable{
     /**
      * @brief Identificativo univoco del prestito {readOnly}
      */
-    private UUID loanId;
+    private final UUID loanId;
 
     /**
      * @brief Riferimento allo studente che ha effettuato il prestito {readOnly}.
