@@ -1,0 +1,119 @@
+@startuml
+skinparam nodesep 50
+'hide members
+
+StudentRegisterController "1" -d-> "1" "SideBarController"
+StudentRegisterController "1" -d-> "1" "Register<T>"
+StudentRegisterController .l.> StudentInsertPopupController
+StudentRegisterController .r.> StudentModifyPopupController
+
+StudentInsertPopupController "1" -u-> "1" "RegisterAdder<T>"
+StudentInsertPopupController "1" -d-> "1" "RegisterValidator<T>"
+StudentInsertPopupController -u-|> StudentPopupController
+
+
+StudentModifyPopupController "1" -u-> "1" "RegisterModifier<T>"
+StudentModifyPopupController -u-|> StudentPopupController
+StudentModifyPopupController "1" -d-> "1" Student
+
+class Student {
+    - name : String
+    - surname : String
+    - studentId : String {readOnly}
+    - email : String
+    - activeLoans : List<Loan>
+
+    + Student(...)
+    + getName() : String
+    + getSurname() : String
+    + getStudentId() : String
+    + getEmail() : String
+    + getActiveLoans() : List<Loan>
+    + copy(...) : void
+    + addActiveLoan(...) : void
+    + removeActiveLoan(...) : void
+    + isValid() : boolean
+    + isAvailableForLoan() : boolean
+    - isStudentIdValid(...) : boolean
+    - isEmailValid(...) : boolean
+}
+
+interface "Register<T>" {
+    + add(...) : void
+    + modify(...) : void
+    + remove(...) : void
+    + isUnique(...) : boolean
+    + getRegisterList() : List<T>
+}
+
+interface "RegisterAdder<T>" {
+    + add(...) : void
+}
+
+interface "RegisterModifier<T>" {
+    + modify(...) : void
+}
+
+interface "RegisterValidator<T>" {
+    + isUnique(...) : boolean
+}
+
+class SideBarController {
+    - addBtn : Button
+    - searchBarTF : TextField
+    - removeBtn : Button
+    - modifyBtn : Button
+
+    + getAddBtn() : Button
+    + getSearchBarTF() : TextField
+    + getRemoveBtn() : Button
+    + getModifyBtn() : Button
+}
+
+class StudentRegisterController {
+    - studentTable : TableView<Student>
+    - nameClm : TableColumn<Student, String>
+    - surnameClm : TableColumn<Student, String>
+    - studentIdClm : TableColumn<Student, String>
+    - emailClm : TableColumn<Student, String>
+    - studentRegister : Register<Student>
+    - sideBarController : SideBarController
+
+    + StudentRegisterController(...)
+    + initialize() : void
+    + updateTableView() : void
+    - openInsertPopup() : void
+    - openModifyPopup() : void
+    - removeFromRegister() : void
+    - searchBook() : void
+}
+
+abstract class StudentPopupController {
+    # nameTF : TextField
+    # surnameTF : TextField
+    # studentIdTF : TextField
+    # emailTF : TextField
+    # confirmBtn : Button
+    # cancelBtn : Button
+
+    + initialize() : void
+    + {abstract} confirmBtnAction(...) : void
+    + cancelBtnAction(...) : void
+    # showAlert(...) : void
+}
+
+class StudentInsertPopupController {
+    - studentRegisterAdder : RegisterAdder<Student>
+    - studentRegisterValidator : RegisterValidator<Student>
+
+    + StudentInsertPopupController(...)
+}
+
+class StudentModifyPopupController {
+    - studentRegisterModifier : RegisterModifier<Student>
+    - studentToModify : Student
+
+    + StudentModifyPopupController(...)
+    + initialize() : void
+}
+@enduml

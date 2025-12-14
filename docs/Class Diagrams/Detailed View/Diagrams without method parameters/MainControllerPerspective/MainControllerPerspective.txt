@@ -1,0 +1,154 @@
+@startuml
+skinparam nodesep 50
+'hide members
+
+MainController "1" -l-> "1" Library
+MainController .u.|> Refresh
+MainController "1" -u-> "1" MenuBarController
+MainController ..> BookRegisterController
+MainController ..> StudentRegisterController
+MainController ..> LoanRegisterController
+
+MenuBarController "1" -r-> "1" Refresh
+MenuBarController "1" -l-> "1" LibraryIOManager
+MenuBarController "1" -d-> "1" Library
+MenuBarController .u.|> ResultActions
+ 
+LibraryIOManager ..> Library
+LibraryIOManager "1" -u-> "1" ResultActions
+
+StudentRegisterController "1" -d-> "1" "SideBarController"
+LoanRegisterController "1" -d-> "1" "SideBarController"
+BookRegisterController "1" -d-> "1" "SideBarController"
+
+
+
+class Library {
+    - bookRegister : Register<Book>
+    - studentRegister : Register<Student>
+    - loanRegister : Register<Loan>
+
+    + Library()
+    + getBookRegister() : Register<Book>
+    + getStudentRegister() : Register<Student>
+    + getLoanRegister() : Register<Loan>
+}
+
+class MainController {
+    - library : Library
+    - bookTab : Tab
+    - studentTab : Tab
+    - loanTab : Tab
+    - menuBarController : MenuBarController
+
+    + initialize() : void
+    - initializeRegisterControllers(...) : void
+}
+
+interface Refresh {
+    + refresh(...) : void
+}
+
+class MenuBarController {
+    - menuBar : MenuBar
+    - libraryIOManager : LibraryIOManager
+    - defaultSavePath : String
+    - mainRefresher : Refresh
+    - library : Library
+
+    + initialize() : void
+    + setLibrary(...) : void
+    + setMainRefresher(...) : void
+    + openFile(...) : void
+    + closeFile(...) : void
+    + saveFile(...) : void
+    + saveFileWithName(...) : void
+    - fileSelection(...) : File
+    - showAlert(...) : void
+}
+
+class LibraryIOManager {
+    - resultActions : ResultActions
+
+    + LibraryIOManager(...)
+    + saveLibrary(...) : void
+    + loadLibrary(...) : Library
+}
+
+interface ResultActions {
+    + success() : void
+    + failure() : void
+}
+
+class StudentRegisterController {
+    - studentTable : TableView<Student>
+    - nameClm : TableColumn<Student, String>
+    - surnameClm : TableColumn<Student, String>
+    - studentIdClm : TableColumn<Student, String>
+    - emailClm : TableColumn<Student, String>
+    - studentRegister : Register<Student>
+    - sideBarController : SideBarController
+
+    + StudentRegisterController(...)
+    + initialize() : void
+    + updateTableView() : void
+    - openInsertPopup() : void
+    - openModifyPopup() : void
+    - removeFromRegister() : void
+    - searchBook() : void
+}
+
+class LoanRegisterController {
+    - loanTable : TableView<Loan>
+    - studentNameClm : TableColumn<Loan, String>
+    - studentSurnameClm : TableColumn<Loan, String>
+    - studentIdClm : TableColumn<Loan, String>
+    - bookNameClm : TableColumn<Loan, String>
+    - bookIdClm : TableColumn<Loan, String>
+    - loanEndClm : TableColumn<Loan, LocalDate>
+    - returnedClm : TableColumn<Loan, String>
+    - library : Library
+    - sideBarController : SideBarController
+    - loanInsertPopupController : LoanInsertPopupController
+    - loanModifyPopupController : LoanModifyPopupController
+
+    + LoanRegisterController(...)
+    + initialize() : void
+    - openInsertPopup() : void
+    - openModifyPopup() : void
+    - removeFromRegister() : void
+    - updateTableView() : void
+    - searchLoan() : void
+}
+
+class BookRegisterController {
+    - bookTable : TableView<Book>
+    - titleClm : TableColumn<Book, String>
+    - authorsClm : TableColumn<Book, String>
+    - publishmentYearClm : TableColumn<Book, Integer>
+    - bookIdClm : TableColumn<Book, String>
+    - availableCopiesClm : TableColumn<Book, Integer>
+    - bookRegister : Register<Book>
+    - sideBarController : SideBarController
+
+    + BookRegisterController(...)
+    + initialize() : void
+    - openInsertPopup() : void
+    - openModifyPopup() : void
+    - removeFromRegister() : void
+    + updateTableView() : void
+    - searchBook() : void
+}
+
+class SideBarController {
+    - addBtn : Button
+    - searchBarTF : TextField
+    - removeBtn : Button
+    - modifyBtn : Button
+
+    + getAddBtn() : Button
+    + getSearchBarTF() : TextField
+    + getRemoveBtn() : Button
+    + getModifyBtn() : Button
+}
+@enduml
