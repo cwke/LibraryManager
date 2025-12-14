@@ -16,13 +16,13 @@
                                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                             </columnResizePolicy>
                             <columns>
-                                <TableColumn fx:id="studentNameClm" minWidth="100.0" text="Nome studente" />
-                                <TableColumn fx:id="studentSurnameClm" minWidth="100.0" text="Cognome studente" />
-                                <TableColumn fx:id="studentIdClm" minWidth="100.0" text="Matricola studente" />
-                                <TableColumn fx:id="bookNameClm" minWidth="100.0" text="Nome libro" />
-                                <TableColumn fx:id="bookIdClm" minWidth="100.0" text="ISBN libro" />
-                                <TableColumn fx:id="loanEndClm" minWidth="150.0" text="Data fine prestito" />
-                                <TableColumn fx:id="returnedClm" minWidth="100.0" text="Restituito" />
+                                <TableColumn fx:id="studentNameClm" minWidth="30.0" text="Nome studente" />
+                                <TableColumn fx:id="studentSurnameClm" minWidth="30.0" text="Cognome studente" />
+                                <TableColumn fx:id="studentIdClm" minWidth="30.0" text="Matricola studente" />
+                                <TableColumn fx:id="bookNameClm" minWidth="30.0" text="Nome libro" />
+                                <TableColumn fx:id="bookIdClm" minWidth="30.0" text="ISBN libro" />
+                                <TableColumn fx:id="loanEndClm" minWidth="60.0" text="Data fine prestito" />
+                                <TableColumn fx:id="returnedClm" minWidth="30.0" text="Restituito" />
                             </columns>
                         </TableView>
                     </children>

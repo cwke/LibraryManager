@@ -16,11 +16,11 @@
                                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                             </columnResizePolicy>
                             <columns>
-                                <TableColumn fx:id="titleClm" minWidth="100.0" text="Titolo" />
-                                <TableColumn fx:id="authorsClm" minWidth="100.0" text="Autori" />
-                                <TableColumn fx:id="publishmentYearClm" minWidth="70.0" text="Anno di pubblicazione" />
-                                <TableColumn fx:id="bookIdClm" minWidth="80.0" text="ISBN" />
-                                <TableColumn fx:id="availableCopiesClm" minWidth="50.0" text="Copie" />
+                                <TableColumn fx:id="titleClm" minWidth="30.0" text="Titolo" />
+                                <TableColumn fx:id="authorsClm" minWidth="30.0" text="Autori" />
+                                <TableColumn fx:id="publishmentYearClm" minWidth="30.0" text="Anno di pubblicazione" />
+                                <TableColumn fx:id="bookIdClm" minWidth="30.0" text="ISBN" />
+                                <TableColumn fx:id="availableCopiesClm" minWidth="30.0" text="Copie" />
                             </columns>
                         </TableView>
                     </children>

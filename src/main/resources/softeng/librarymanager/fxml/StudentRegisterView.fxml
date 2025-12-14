@@ -16,11 +16,11 @@
                                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                             </columnResizePolicy>
                             <columns>
-                                <TableColumn fx:id="nameClm" minWidth="100.0" prefWidth="203.20000916719437" text="Nome" />
-                                <TableColumn fx:id="surnameClm" minWidth="100.0" prefWidth="309.59999084472656" text="Cognome" />
-                                <TableColumn fx:id="studentIdClm" minWidth="100.0" prefWidth="164.800048828125" text="Matricola" />
-                                <TableColumn fx:id="emailClm" minWidth="150.0" prefWidth="310.39996337890625" text="Mail" />
-                        <TableColumn fx:id="activeLoansCountClm" prefWidth="103.99993896484375" text="Prestiti attivi" />
+                                <TableColumn fx:id="nameClm" minWidth="30.0" prefWidth="203.20000916719437" text="Nome" />
+                                <TableColumn fx:id="surnameClm" minWidth="30.0" prefWidth="309.59999084472656" text="Cognome" />
+                                <TableColumn fx:id="studentIdClm" minWidth="30.0" prefWidth="164.800048828125" text="Matricola" />
+                                <TableColumn fx:id="emailClm" minWidth="60.0" prefWidth="310.39996337890625" text="Mail" />
+                                <TableColumn fx:id="activeLoansCountClm" minWidth="15.0" prefWidth="103.99993896484375" text="Prestiti attivi" />
                             </columns>
                         </TableView>
                     </children>
