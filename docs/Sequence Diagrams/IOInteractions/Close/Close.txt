@@ -1,0 +1,11 @@
+@startuml
+'DIAGRAMMA DI SEQUENZA DELLA CHIUSURA
+
+actor Admin
+
+participant "<u>:MenuBarController" as MenuBarController
+participant "<u>:MainController" as MainController
+
+Admin -> MenuBarController : closeFile(event)
+MenuBarController -> MainController : refresh(new Library)
+@enduml

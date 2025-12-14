@@ -1,0 +1,18 @@
+@startuml
+'DIAGRAMMA DI SEQUENZA DELL'APERTURA
+
+actor Admin
+
+participant "<u>:MenuBarController" as MenuBarController
+participant "<u>:LibraryIOManager" as LibraryIOManager
+participant "<u>:MainController" as MainController
+
+Admin -> MenuBarController : openFile(event)
+MenuBarController -> LibraryIOManager : loadLibrary(library, selectedPath)
+alt Success
+LibraryIOManager -> MenuBarController : success()
+MenuBarController -> MainController : refresh(loadedLibrary)
+else
+LibraryIOManager -> MenuBarController : failure()
+end
+@enduml

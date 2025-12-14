@@ -3,22 +3,27 @@
 
 actor Admin
 
-participant SideBarController
-participant LoanRegisterController
-participant LoanInsertPopupController
-participant MainController
-participant LoanRegister
+participant "<u>:LoanRegisterController" as LoanRegisterController
+participant "<u>:LoanInsertPopupController" as LoanInsertPopupController
+participant "<u>:LoanRegister" as LoanRegister
+participant "<u>inserted :Loan" as Loan
+participant "<u>insertedLoanBook :Book" as Book
+participant "<u>insertedLoanStudent :Student" as Student
 
-Admin -> SideBarController : "Clicks "Add" Button"
-SideBarController -> LoanRegisterController : openInsertPopup()
+Admin -> LoanRegisterController : openInsertPopup()
 LoanRegisterController --> Admin : "Shows Insert Popup"
-loop LoanNotValid
-Admin -> LoanInsertPopupController : "Inserts Data"
-LoanInsertPopupController -> LoanRegister : isValid(Loan inserted)
-LoanInsertPopupController <-- LoanRegister : result
-opt loanNotValid
-LoanInsertPopupController --> Admin : "Data not correct, please retry"
-end
-end
-LoanInsertPopupController -> LoanRegister : add(Loan inserted)
+Admin -> LoanInsertPopupController : confirmBtnAction(event)
+LoanInsertPopupController -> LoanRegister : add(insertedLoan)
+LoanRegister -> Loan : activateLoan()
+Loan -> Loan : isActivable()
+activate Loan
+Loan -> Book : isAvailableForLoan()
+Book --> Loan : result
+Loan -> Student : isAvailableForLoan()
+Student --> Loan : result
+deactivate Loan
+Loan -> Book : getAvailableCopies()
+Book --> Loan : availableCopies
+Loan -> Book : setAvailableCopies(availableCopies-1)
+Loan -> Student : addActiveLoan(this)
 @enduml

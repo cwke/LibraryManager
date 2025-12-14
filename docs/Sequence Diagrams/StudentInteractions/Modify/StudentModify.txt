@@ -3,23 +3,18 @@
 
 actor Admin
 
-participant SideBarController
-participant StudentRegisterController
-participant StudentModifyPopupController
-participant MainController
-participant StudentRegister
+participant "<u>:StudentRegisterController" as StudentRegisterController
+participant "<u>:StudentModifyPopupController" as StudentModifyPopupController
+participant "<u>:StudentRegister" as StudentRegister
 
 Admin -> StudentRegisterController : "Selects a Student"
-Admin -> SideBarController : "Clicks "Modify" Button"
-SideBarController -> StudentRegisterController : openModifyPopup()
+Admin -> StudentRegisterController : openModifyPopup()
 StudentRegisterController --> Admin : "Shows Modify Popup"
-loop studentNotValid
-Admin -> StudentModifyPopupController : "Inserts new Data"
-StudentModifyPopupController -> StudentRegister : isValid(new Student)
-StudentModifyPopupController <-- StudentRegister : result
-opt studentNotValid
-StudentModifyPopupController --> Admin : "Data not correct, please retry"
+loop StudentNotValid
+Admin -> StudentModifyPopupController : confirmBtnAction(event)
+opt StudentNotValid
+StudentModifyPopupController --> Admin : "Shows Error Alert"
 end
 end
-StudentModifyPopupController -> StudentRegister : modify(Student selected, new Student)
+StudentModifyPopupController -> StudentRegister : modify(selectedStudent, newStudent)
 @enduml

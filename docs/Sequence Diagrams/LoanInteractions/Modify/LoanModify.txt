@@ -1,25 +1,20 @@
 @startuml
-'DIAGRAMMA DI SEQUENZA DELLA MODIFICA DI UNO LOAN
+'DIAGRAMMA DI SEQUENZA DELLA MODIFICA DI UN PRESTITO
 
 actor Admin
 
-participant SideBarController
-participant LoanRegisterController
-participant LoanModifyPopupController
-participant MainController
-participant LoanRegister
+participant "<u>:LoanRegisterController" as LoanRegisterController
+participant "<u>:LoanModifyPopupController" as LoanModifyPopupController
+participant "<u>:LoanRegister" as LoanRegister
 
 Admin -> LoanRegisterController : "Selects a Loan"
-Admin -> SideBarController : "Clicks "Modify" Button"
-SideBarController -> LoanRegisterController : openModifyPopup()
+Admin -> LoanRegisterController : openModifyPopup()
 LoanRegisterController --> Admin : "Shows Modify Popup"
-loop loanNotValid
-Admin -> LoanModifyPopupController : "Inserts new Data"
-LoanModifyPopupController -> LoanRegister : isValid(new Loan)
-LoanModifyPopupController <-- LoanRegister : result
-opt loanNotValid
-LoanModifyPopupController --> Admin : "Data not correct, please retry"
+loop LoanNotValid
+Admin -> LoanModifyPopupController : confirmBtnAction(event)
+opt LoanNotValid
+LoanModifyPopupController --> Admin : "Shows Error Alert"
 end
 end
-LoanModifyPopupController -> LoanRegister : modify(Loan selected, new Loan)
+LoanModifyPopupController -> LoanRegister : modify(selectedLoan, newLoan)
 @enduml

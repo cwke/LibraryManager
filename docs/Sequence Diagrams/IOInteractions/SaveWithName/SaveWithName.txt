@@ -1,0 +1,16 @@
+@startuml
+'DIAGRAMMA DI SEQUENZA DEL SALVATAGGIO CON NOME
+
+actor Admin
+
+participant "<u>:MenuBarController" as MenuBarController
+participant "<u>:LibraryIOManager" as LibraryIOManager 
+
+Admin -> MenuBarController : saveFileWithName(event)
+MenuBarController -> LibraryIOManager : saveLibrary(library, defaultSavePath)
+alt Success
+LibraryIOManager -> MenuBarController : success()
+else
+LibraryIOManager -> MenuBarController : failure()
+end
+@enduml

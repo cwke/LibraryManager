@@ -3,13 +3,10 @@
 
 actor Admin
 
-participant SideBarController
-participant BookRegisterController
-participant MainController
-participant BookRegister
+participant "<u>:BookRegisterController" as BookRegisterController
+participant "<u>:BookRegister" as BookRegister 
 
 Admin -> BookRegisterController : "Selects a Book"
-Admin -> SideBarController : "Clicks "Remove" Button"
-SideBarController -> BookRegisterController : removeFromRegister()
-BookRegisterController -> BookRegister : remove(Selected Book)
+Admin -> BookRegisterController : removeFromRegister()
+BookRegisterController -> BookRegister : remove(selectedBook)
 @enduml

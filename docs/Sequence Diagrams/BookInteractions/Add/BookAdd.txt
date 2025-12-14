@@ -3,22 +3,19 @@
 
 actor Admin
 
-participant SideBarController
-participant BookRegisterController
-participant BookInsertPopupController
-participant MainController
-participant BookRegister
+participant "<u>:BookRegisterController" as BookRegisterController
+participant "<u>:BookInsertPopupController" as BookInsertPopupController
+participant "<u>:BookRegister" as BookRegister
 
-Admin -> SideBarController : "Clicks "Add" Button"
-SideBarController -> BookRegisterController : openInsertPopup()
+Admin -> BookRegisterController : openInsertPopup()
 BookRegisterController --> Admin : "Shows Insert Popup"
 loop BookNotValid
-Admin -> BookInsertPopupController : "Inserts Data"
-BookInsertPopupController -> BookRegister : isValid(Book inserted)
+Admin -> BookInsertPopupController : confirmBtnAction(event)
+BookInsertPopupController -> BookRegister : isUnique(insertedBook)
 BookInsertPopupController <-- BookRegister : result
 opt BookNotValid
-BookInsertPopupController --> Admin : "Data not correct, please retry"
+BookInsertPopupController --> Admin : "Shows Error Alert"
 end
 end
-BookInsertPopupController -> BookRegister : add(Book inserted)
+BookInsertPopupController -> BookRegister : add(insertedBook)
 @enduml

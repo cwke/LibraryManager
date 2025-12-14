@@ -1,0 +1,20 @@
+@startuml
+'DIAGRAMMA DI SEQUENZA DELLA RIMOZIONE DI UN PRESTITO 
+
+actor Admin
+
+participant "<u>:LoanRegisterController" as LoanRegisterController
+participant "<u>:LoanRegister" as LoanRegister 
+participant "<u>selectedLoan :Loan" as Loan
+participant "<u>selectedLoanBook :Book" as Book
+participant "<u>selectedLoanStudent :Student" as Student
+
+Admin -> LoanRegisterController : "Selects a Loan"
+Admin -> LoanRegisterController : removeFromRegister()
+LoanRegisterController -> LoanRegister : remove(selectedLoan)
+LoanRegister -> Loan : returnLoan()
+Loan -> Book : getAvailableCopies()
+Book --> Loan : availableCopies
+Loan -> Book : setAvailableCopies(availableCopies+1)
+Loan -> Student : removeActiveLoan(this)
+@enduml

@@ -1,0 +1,12 @@
+@startuml
+'DIAGRAMMA DI SEQUENZA DELLA RIMOZIONE DI UNO STUDENTE
+
+actor Admin
+
+participant "<u>:StudentRegisterController" as StudentRegisterController
+participant "<u>:StudentRegister" as StudentRegister 
+
+Admin -> StudentRegisterController : "Selects a Student"
+Admin -> StudentRegisterController : removeFromRegister()
+StudentRegisterController -> StudentRegister : remove(selectedStudent)
+@enduml

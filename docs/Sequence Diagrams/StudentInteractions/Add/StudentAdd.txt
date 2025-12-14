@@ -3,23 +3,21 @@
 
 actor Admin
 
-participant SideBarController
-participant StudentRegisterController
-participant StudentInsertPopupController
-participant MainController
-participant StudentRegister
+participant "<u>:StudentRegisterController" as StudentRegisterController
+participant "<u>:StudentInsertPopupController" as StudentInsertPopupController
+participant "<u>:StudentRegister" as StudentRegister
 
-Admin -> SideBarController : "Clicks "Add" Button"
-SideBarController -> StudentRegisterController : openInsertPopup()
+Admin -> StudentRegisterController : openInsertPopup()
 StudentRegisterController --> Admin : "Shows Insert Popup"
 loop studentNotValid
-Admin -> StudentInsertPopupController : "Inserts Data"
-StudentInsertPopupController -> StudentRegister : isValid(Student inserted)
+Admin -> StudentInsertPopupController : confirmBtnAction(event)
+StudentInsertPopupController -> StudentRegister : isUnique(insertedStudent)
 StudentInsertPopupController <-- StudentRegister : result
 opt studentNotValid
-StudentInsertPopupController --> Admin : "Data not correct, please retry"
+StudentInsertPopupController --> Admin : "Shows Error Alert"
 end
 end
-StudentInsertPopupController -> StudentRegister : add(Student inserted)
+StudentInsertPopupController -> StudentRegister : add(insertedStudent)
 @enduml
+
 
