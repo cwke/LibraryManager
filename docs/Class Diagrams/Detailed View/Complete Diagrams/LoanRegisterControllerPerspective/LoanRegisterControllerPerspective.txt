@@ -1,0 +1,140 @@
+@startuml
+skinparam nodesep 50
+'hide members
+
+LoanRegisterController "1" -d-> "1" "SideBarController"
+LoanRegisterController "1" -d-> "1" Library
+LoanRegisterController .l.> LoanInsertPopupController
+LoanRegisterController .r.> LoanModifyPopupController
+
+LoanInsertPopupController "1" -u-> "1" "RegisterAdder<T>"
+LoanInsertPopupController "1" -d-> "1" "RegisterValidator<T>"
+LoanInsertPopupController "1" -u-> "2" "RegisterObtainer<T>"
+LoanInsertPopupController -u-|> LoanPopupController
+
+
+LoanModifyPopupController "1" -u-> "1" "RegisterModifier<T>"
+LoanModifyPopupController -u-|> LoanPopupController
+LoanModifyPopupController "1" -d-> "1" Loan
+
+
+
+class Loan {
+    - loanId : UUID {readOnly}
+    - student : Student {readOnly}
+    - book : Book {readOnly}
+    - loanEnd : LocalDate
+    - returned : boolean
+
+    + Loan(Student student, Book book, LocalDate loanEnd)
+    + getLoanId() : UUID
+    + getStudent() : Student
+    + getBook() : Book
+    + getLoanEnd() : LocalDate
+    + isReturned() : boolean
+    + setLoanEnd(LocalDate loanEnd) : void
+    + returnLoan() : void
+    + activateLoan() : void
+    + isDelay() : boolean
+    - isActivable() : boolean
+    - isValid() : boolean
+}
+
+class Library {
+    - bookRegister : Register<Book>
+    - studentRegister : Register<Student>
+    - loanRegister : Register<Loan>
+
+    + Library()
+    + getBookRegister() : Register<Book>
+    + getStudentRegister() : Register<Student>
+    + getLoanRegister() : Register<Loan>
+}
+
+interface "RegisterAdder<T>" {
+    + add(T toAdd) : void
+}
+
+interface "RegisterModifier<T>" {
+    + modify(T old, T newObj) : void
+}
+
+interface "RegisterObtainer<T>" {
+    + getRegister() : List<T>
+}
+
+interface "RegisterValidator<T>" {
+    + isUnique(T toVerify) : boolean
+}
+
+class SideBarController {
+    - addBtn : Button
+    - searchBarTF : TextField
+    - removeBtn : Button
+    - modifyBtn : Button
+
+    + getAddBtn() : Button
+    + getSearchBarTF() : TextField
+    + getRemoveBtn() : Button
+    + getModifyBtn() : Button
+}
+
+class LoanRegisterController {
+    - loanTable : TableView<Loan>
+    - studentNameClm : TableColumn<Loan, String>
+    - studentSurnameClm : TableColumn<Loan, String>
+    - studentIdClm : TableColumn<Loan, String>
+    - bookNameClm : TableColumn<Loan, String>
+    - bookIdClm : TableColumn<Loan, String>
+    - loanEndClm : TableColumn<Loan, LocalDate>
+    - returnedClm : TableColumn<Loan, String>
+    - library : Library
+    - sideBarController : SideBarController
+    - loanInsertPopupController : LoanInsertPopupController
+    - loanModifyPopupController : LoanModifyPopupController
+
+    + LoanRegisterController(Library library)
+    + initialize() : void
+    - openInsertPopup() : void
+    - openModifyPopup() : void
+    - removeFromRegister() : void
+    - updateTableView() : void
+    - searchLoan() : void
+}
+
+abstract class LoanPopupController {
+    # studentSearchTF : TextField
+    # studentListView : ListView<Student>
+    # bookSearchTF : TextField
+    # bookListView : ListView<Book>
+    # dateDP : DatePicker
+    # confirmBtn : Button
+    # cancelBtn : Button
+
+    + initialize() : void
+    + {abstract} confirmBtnAction(ActionEvent event) : void
+    + cancelBtnAction(ActionEvent event) : void
+    # showAlert(Alert.AlertType type, String title, String header, String content) : void
+}
+
+class LoanInsertPopupController {
+    - loanRegisterAdder : RegisterAdder<Loan>
+    - bookRegisterObtainer : RegisterObtainer<Book>
+    - studentRegisterObtainer : RegisterObtainer<Student>
+    - loanRegisterValidator : RegisterValidator<Loan>
+
+    + LoanInsertPopupController(RegisterAdder<Loan> loanRegisterAdder, RegisterObtainer<Book> bookRegisterObtainer, RegisterObtainer<Student> studentRegisterObtainer, RegisterValidator<Loan> loanRegisterValidator)
+    + initialize() : void
+    - setupStudentInsert() : void
+    - setupBookInsert() : void
+}
+
+class LoanModifyPopupController {
+    - loanRegisterModifier : RegisterModifier<Loan>
+    - loanRegisterValidator : RegisterValidator<Loan>
+    - loanToModify : Loan
+
+    + LoanModifyPopupController(RegisterModifier<Loan> loanRegisterModifier, Loan loanToModify)
+    + initialize() : void
+}
+@enduml

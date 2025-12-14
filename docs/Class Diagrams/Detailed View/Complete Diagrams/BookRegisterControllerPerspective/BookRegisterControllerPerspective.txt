@@ -1,0 +1,134 @@
+@startuml
+skinparam nodesep 50
+'hide members
+
+BookRegisterController "1" -d-> "1" "SideBarController"
+BookRegisterController "1" -d-> "1" "Register<T>"
+BookRegisterController .l.> BookInsertPopupController
+BookRegisterController .r.> BookModifyPopupController
+
+BookInsertPopupController "1" -u-> "1" "RegisterAdder<T>"
+BookInsertPopupController "1" -d-> "1" "RegisterValidator<T>"
+BookInsertPopupController -u-|> BookPopupController
+
+
+BookModifyPopupController "1" -u-> "1" "RegisterModifier<T>"
+BookModifyPopupController -u-|> BookPopupController
+BookModifyPopupController "1" -d-> "1" Book
+
+
+
+@startuml
+
+class Book {
+    - title : String
+    - authors : List<String>
+    - bookId : String {readOnly}
+    - publishmentYear : int
+    - availableCopies : int
+
+    + Book(String title, List<String> authors, String bookId, int publishmentYear, int availableCopies)
+    + getTitle() : String
+    + getAuthors() : List<String>
+    + getBookId() : String
+    + getPublishmentYear() : int
+    + getAvailableCopies() : int
+    + setAvailableCopies(int availableCopies  ) : void
+    + copy(Book newData) : void
+    + isAvailableForLoan() : boolean
+    - isValid() : boolean
+    - isBookIdValid(String bookId) : boolean
+    - isPublishmentYearValid(int publishmentYear) : boolean
+    - isAvailableCopiesValid(int availableCopies) : boolean
+}
+
+interface "Register<T>" {
+    + add(T toAdd) : void
+    + modify(T old, T newObj) : void
+    + remove(T toRemove) : void
+    + isUnique(T toVerify) : boolean
+    + getRegisterList() : List<T>
+}
+
+interface "RegisterAdder<T>" {
+    + add(T toAdd) : void
+}
+
+interface "RegisterModifier<T>" {
+    + modify(T old, T newObj) : void
+}
+
+interface "RegisterValidator<T>" {
+    + isUnique(T toVerify) : boolean
+}
+
+class SideBarController {
+    - addBtn : Button
+    - searchBarTF : TextField
+    - removeBtn : Button
+    - modifyBtn : Button
+
+    + getAddBtn() : Button
+    + getSearchBarTF() : TextField
+    + getRemoveBtn() : Button
+    + getModifyBtn() : Button
+}
+
+class BookRegisterController {
+    - bookTable : TableView<Book>
+    - titleClm : TableColumn<Book, String>
+    - authorsClm : TableColumn<Book, String>
+    - publishmentYearClm : TableColumn<Book, Integer>
+    - bookIdClm : TableColumn<Book, String>
+    - availableCopiesClm : TableColumn<Book, Integer>
+    - bookRegister : Register<Book>
+    - sideBarController : SideBarController
+
+    + BookRegisterController(Register<Student> studentRegister)
+    + initialize() : void
+    - openInsertPopup() : void
+    - openModifyPopup() : void
+    - removeFromRegister() : void
+    + updateTableView() : void
+    - searchBook() : void
+}
+
+abstract class BookPopupController {
+    # titleTF : TextField
+    # authorsListVBox : VBox
+    # Author1TF : TextField
+    # publishYearTF : TextField
+    # copiesTF : TextField
+    # bookCodeTF : TextField
+    # confirmBtn : Button
+    # cancelBtn : Button
+    # addAuthorsBtn : Button
+    # dynamicAuthorFields : List<TextField>
+    - removeImg : Image
+
+    + initialize() : void
+    - createAuthorRow(int authorNum) : HBox
+    # getAuthorsListPopup() : List<String>
+    - addAuthors(ActionEvent event) : void
+    + {abstract} confirmBtnAction(ActionEvent event) : void
+    + cancelBtnAction(ActionEvent event) : void
+    # showAlert(Alert.AlertType type, String title, String header, String content) : void
+}
+
+class BookInsertPopupController {
+    - bookRegisterAdder : RegisterAdder<Book>
+    - bookRegisterValidator : RegisterValidator<Book>
+
+    + BookInsertPopupController(RegisterAdder<Book> bookRegisterAdder, RegisterValidator<Book> bookRegisterValidator)
+    + initialize() : void
+}
+
+class BookModifyPopupController {
+    - bookRegisterModifier : RegisterModifier<Book>
+    - bookToModify : Book
+
+    + BookModifyPopupController(RegisterModifier<Book> bookRegisterModifier, Book bookToModify)
+    + initialize() : void
+}
+
+@enduml

@@ -1,0 +1,257 @@
+@startuml
+skinparam nodesep 50
+'hide members
+
+Student "1" -r- "3" Loan
+
+Loan "*" -r-> "1" Book
+
+BookRegister "1" -d-> "*" Book
+BookRegister .u.|> "Register<T>"
+
+StudentRegister "1" -d-> "*" Student
+StudentRegister .u.|> "Register<T>"
+
+LoanRegister "1" -d-> "*" Loan
+LoanRegister .u.|> "Register<T>"
+
+Library "1" -l-> "3" "Register<T>"
+
+MainController "1" -l-> "1" Library
+MainController .u.|> Refresh
+MainController "1" -u-> "1" MenuBarController
+MainController ..> BookRegisterController
+MainController ..> StudentRegisterController
+MainController ..> LoanRegisterController
+
+MenuBarController "1" -r-> "1" Refresh
+MenuBarController "1" -l-> "1" LibraryIOManager
+MenuBarController "1" -d-> "1" Library
+MenuBarController .u.|> ResultActions
+ 
+LibraryIOManager ..> Library
+LibraryIOManager "1" -u-> "1" ResultActions
+
+StudentRegisterController "1" -d-> "1" "SideBarController"
+LoanRegisterController "1" -d-> "1" "SideBarController"
+BookRegisterController "1" -d-> "1" "SideBarController"
+
+class Student {
+    - name : String
+    - surname : String
+    - studentId : String {readOnly}
+    - email : String
+    - activeLoans : List<Loan>
+
+    + Student(String name, String surname, String studentId, String email)
+    + getName() : String
+    + getSurname() : String
+    + getStudentId() : String
+    + getEmail() : String
+    + getActiveLoans() : List<Loan>
+    + copy(Student newData) : void
+    + addActiveLoan(Loan loanToAdd) : void
+    + removeActiveLoan(Loan loanToRemove) : void
+    + isValid() : boolean
+    + isAvailableForLoan() : boolean
+    - isStudentIdValid(String studentId) : boolean
+    - isEmailValid(String email) : boolean
+}
+
+class Loan {
+    - loanId : UUID {readOnly}
+    - student : Student {readOnly}
+    - book : Book {readOnly}
+    - loanEnd : LocalDate
+
+    + Loan(Student student, Book book, LocalDate loanEnd)
+    + getLoanId() : UUID
+    + getStudent() : Student
+    + getBook() : Book
+    + getLoanEnd() : LocalDate
+    + isReturned() : boolean
+    + setLoanEnd(LocalDate loanEnd) : void
+    + returnLoan() : void
+    + activateLoan() : void
+    + isDelay() : boolean
+    - isActivable() : boolean
+    - isValid() : boolean
+}
+
+class Book {
+    - title : String
+    - authors : List<String>
+    - bookId : String {readOnly}
+    - publishmentYear : int
+    - availableCopies : int
+
+    + Book(String title, List<String> authors, String bookId, int publishmentYear, int availableCopies)
+    + getTitle() : String
+    + getAuthors() : List<String>
+    + getBookId() : String
+    + getPublishmentYear() : int
+    + getAvailableCopies() : int
+    + setAvailableCopies(int availableCopies) : void
+    + copy(Book newData) : void
+    + isAvailableForLoan() : boolean
+    - isValid() : boolean
+    - isBookIdValid(String bookId) : boolean
+    - isPublishmentYearValid(int publishmentYear) : boolean
+    - isAvailableCopiesValid(int availableCopies) : boolean
+}
+
+interface "Register<T>" {
+    + add(T toAdd) : void
+    + modify(T old, T newObj) : void
+    + remove(T toRemove) : void
+    + isUnique(T toVerify) : boolean
+    + getRegisterList() : List<T>
+}
+
+class BookRegister {
+    - bookRegister : Set<Book>
+
+    + BookRegister()
+}
+
+class StudentRegister {
+    - studentRegister : Set<Student>
+
+    + StudentRegister()
+}
+
+class LoanRegister {
+    - loanRegister : Set<Loan>
+
+    + LoanRegister()
+}
+
+class Library {
+    - bookRegister : Register<Book>
+    - studentRegister : Register<Student>
+    - loanRegister : Register<Loan>
+
+    + Library()
+    + getBookRegister() : Register<Book>
+    + getStudentRegister() : Register<Student>
+    + getLoanRegister() : Register<Loan>
+}
+
+class MainController {
+    - library : Library
+    - bookTab : Tab
+    - studentTab : Tab
+    - loanTab : Tab
+    - menuBarController : MenuBarController
+
+    + initialize() : void
+    - initializeRegisterControllers(Library library) : void
+}
+
+interface Refresh {
+    + refresh(Library newLibrary) : void
+}
+
+class MenuBarController {
+    - menuBar : MenuBar
+    - libraryIOManager : LibraryIOManager
+    - defaultSavePath : String
+    - mainRefresher : Refresh
+    - library : Library
+
+    + initialize() : void
+    + setLibrary(Library library) : void
+    + setMainRefresher(Refresh mainRefresher) : void
+    + openFile(ActionEvent event) : void
+    + closeFile(ActionEvent event) : void
+    + saveFile(ActionEvent event) : void
+    + saveFileWithName(ActionEvent event) : void
+    - fileSelection(boolean openFile) : File
+    - showAlert(Alert.AlertType type, String title, String header, String content) : void
+}
+
+class LibraryIOManager {
+    - resultActions : ResultActions
+
+    + LibraryIOManager(ResultActions actions)
+    + saveLibrary(Library libraryToSave, String filePath) : void
+    + loadLibrary(String filePath) : Library
+}
+
+interface ResultActions {
+    + success() : void
+    + failure() : void
+}
+
+class StudentRegisterController {
+    - studentTable : TableView<Student>
+    - nameClm : TableColumn<Student, String>
+    - surnameClm : TableColumn<Student, String>
+    - studentIdClm : TableColumn<Student, String>
+    - emailClm : TableColumn<Student, String>
+    - studentRegister : Register<Student>
+    - sideBarController : SideBarController
+
+    + StudentRegisterController(Register<Student> studentRegister)
+    + initialize() : void
+    + updateTableView() : void
+    - openInsertPopup() : void
+    - openModifyPopup() : void
+    - removeFromRegister() : void
+    - searchBook() : void
+}
+
+class LoanRegisterController {
+    - loanTable : TableView<Loan>
+    - studentNameClm : TableColumn<Loan, String>
+    - studentSurnameClm : TableColumn<Loan, String>
+    - studentIdClm : TableColumn<Loan, String>
+    - bookNameClm : TableColumn<Loan, String>
+    - bookIdClm : TableColumn<Loan, String>
+    - loanEndClm : TableColumn<Loan, LocalDate>
+    - returnedClm : TableColumn<Loan, String>
+    - library : Library
+    - sideBarController : SideBarController
+    - loanInsertPopupController : LoanInsertPopupController
+    - loanModifyPopupController : LoanModifyPopupController
+
+    + LoanRegisterController(Library library)
+    + initialize() : void
+    - openInsertPopup() : void
+    - openModifyPopup() : void
+    - removeFromRegister() : void
+    - updateTableView() : void
+    - searchLoan() : void
+}
+
+class BookRegisterController {
+    - bookTable : TableView<Book>
+    - titleClm : TableColumn<Book, String>
+    - authorsClm : TableColumn<Book, String>
+    - publishmentYearClm : TableColumn<Book, Integer>
+    - bookIdClm : TableColumn<Book, String>
+    - availableCopiesClm : TableColumn<Book, Integer>
+    - bookRegister : Register<Book>
+    - sideBarController : SideBarController
+
+    + BookRegisterController(Register<Book> bookRegister)
+    + initialize() : void
+    - openInsertPopup() : void
+    - openModifyPopup() : void
+    - removeFromRegister() : void
+    + updateTableView() : void
+    - searchBook() : void
+}
+
+class SideBarController {
+    - addBtn : Button
+    - searchBarTF : TextField
+    - removeBtn : Button
+    - modifyBtn : Button
+
+    + getAddBtn() : Button
+    + getSearchBarTF() : TextField
+    + getRemoveBtn() : Button
+    + getModifyBtn() : Button
+}
+@enduml

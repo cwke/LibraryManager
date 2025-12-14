@@ -1,0 +1,121 @@
+@startuml
+skinparam nodesep 50
+'hide members
+
+Student "1" -r- "3" Loan
+
+Loan "*" -r-> "1" Book
+
+BookRegister "1" -d-> "*" Book
+BookRegister .u.|> "Register<T>"
+
+StudentRegister "1" -d-> "*" Student
+StudentRegister .u.|> "Register<T>"
+
+LoanRegister "1" -d-> "*" Loan
+LoanRegister .u.|> "Register<T>"
+
+Library "1" -d-> "3" "Register<T>"
+
+class Student {
+    - name : String
+    - surname : String
+    - studentId : String {readOnly}
+    - email : String
+    - activeLoans : List<Loan>
+
+    + Student(String name, String surname, String studentId, String email)
+    + getName() : String
+    + getSurname() : String
+    + getStudentId() : String
+    + getEmail() : String
+    + getActiveLoans() : List<Loan>
+    + copy(Student newData) : void
+    + addActiveLoan(Loan loanToAdd) : void
+    + removeActiveLoan(Loan loanToRemove) : void
+    + isValid() : boolean
+    + isAvailableForLoan() : boolean
+    - isStudentIdValid(String studentId) : boolean
+    - isEmailValid(String email) : boolean
+}
+
+class Loan {
+    - loanId : UUID {readOnly}
+    - student : Student {readOnly}
+    - book : Book {readOnly}
+    - loanEnd : LocalDate
+    - returned : boolean
+
+    + Loan(Student student, Book book, LocalDate loanEnd)
+    + getLoanId() : UUID
+    + getStudent() : Student
+    + getBook() : Book
+    + getLoanEnd() : LocalDate
+    + isReturned() : boolean
+    + setLoanEnd(LocalDate loanEnd) : void
+    + returnLoan() : void
+    + activateLoan() : void
+    + isDelay() : boolean
+    - isActivable() : boolean
+    - isValid() : boolean
+}
+
+class Book {
+    - title : String
+    - authors : List<String>
+    - bookId : String {readOnly}
+    - publishmentYear : int
+    - availableCopies : int
+
+    + Book(String title, List<String> authors, String bookId, int publishmentYear, int availableCopies)
+    + getTitle() : String
+    + getAuthors() : List<String>
+    + getBookId() : String
+    + getPublishmentYear() : int
+    + getAvailableCopies() : int
+    + setAvailableCopies(int availableCopies) : void
+    + copy(Book newData) : void
+    + isAvailableForLoan() : boolean
+    - isValid() : boolean
+    - isBookIdValid(String bookId) : boolean
+    - isPublishmentYearValid(int publishmentYear) : boolean
+    - isAvailableCopiesValid(int availableCopies) : boolean
+}
+
+interface "Register<T>" {
+    + add(T toAdd) : void
+    + modify(T old, T newObj) : void
+    + remove(T toRemove) : void
+    + isUnique(T toVerify) : boolean
+    + getRegisterList() : List<T>
+}
+
+class BookRegister {
+    - bookRegister : Set<Book>
+
+    + BookRegister()
+}
+
+class StudentRegister {
+    - studentRegister : Set<Student>
+
+    + StudentRegister()
+}
+
+class LoanRegister {
+    - loanRegister : Set<Loan>
+
+    + LoanRegister()
+}
+
+class Library {
+    - bookRegister : Register<Book>
+    - studentRegister : Register<Student>
+    - loanRegister : Register<Loan>
+
+    + Library()
+    + getBookRegister() : Register<Book>
+    + getStudentRegister() : Register<Student>
+    + getLoanRegister() : Register<Loan>
+}
+@enduml
