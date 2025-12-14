@@ -2,6 +2,7 @@
 skinparam nodesep 50
 'hide members
 
+' --- RELATIONS ---
 LoanRegisterController "1" -d-> "1" "SideBarController"
 LoanRegisterController "1" -d-> "1" Library
 LoanRegisterController .l.> LoanInsertPopupController
@@ -18,6 +19,7 @@ LoanModifyPopupController -u-|> LoanPopupController
 LoanModifyPopupController "1" -d-> "1" Loan
 
 
+' --- CLASSES ---
 
 class Loan {
     - loanId : UUID {readOnly}
@@ -26,13 +28,13 @@ class Loan {
     - loanEnd : LocalDate
     - returned : boolean
 
-    + Loan(Student student, Book book, LocalDate loanEnd)
+    + Loan(student : Student, book : Book, loanEnd : LocalDate)
     + getLoanId() : UUID
     + getStudent() : Student
     + getBook() : Book
     + getLoanEnd() : LocalDate
     + isReturned() : boolean
-    + setLoanEnd(LocalDate loanEnd) : void
+    + setLoanEnd(loanEnd : LocalDate) : void
     + returnLoan() : void
     + activateLoan() : void
     + isDelay() : boolean
@@ -52,11 +54,11 @@ class Library {
 }
 
 interface "RegisterAdder<T>" {
-    + add(T toAdd) : void
+    + add(toAdd : T) : void
 }
 
 interface "RegisterModifier<T>" {
-    + modify(T old, T newObj) : void
+    + modify(oldItem : T, newItem : T) : void
 }
 
 interface "RegisterObtainer<T>" {
@@ -64,7 +66,7 @@ interface "RegisterObtainer<T>" {
 }
 
 interface "RegisterValidator<T>" {
-    + isUnique(T toVerify) : boolean
+    + isUnique(toVerify : T) : boolean
 }
 
 class SideBarController {
@@ -93,7 +95,7 @@ class LoanRegisterController {
     - loanInsertPopupController : LoanInsertPopupController
     - loanModifyPopupController : LoanModifyPopupController
 
-    + LoanRegisterController(Library library)
+    + LoanRegisterController(library : Library)
     + initialize() : void
     - openInsertPopup() : void
     - openModifyPopup() : void
@@ -112,9 +114,9 @@ abstract class LoanPopupController {
     # cancelBtn : Button
 
     + initialize() : void
-    + {abstract} confirmBtnAction(ActionEvent event) : void
-    + cancelBtnAction(ActionEvent event) : void
-    # showAlert(Alert.AlertType type, String title, String header, String content) : void
+    + {abstract} confirmBtnAction(event : ActionEvent) : void
+    + cancelBtnAction(event : ActionEvent) : void
+    # showAlert(type : Alert.AlertType, title : String, header : String, content : String) : void
 }
 
 class LoanInsertPopupController {
@@ -123,7 +125,7 @@ class LoanInsertPopupController {
     - studentRegisterObtainer : RegisterObtainer<Student>
     - loanRegisterValidator : RegisterValidator<Loan>
 
-    + LoanInsertPopupController(RegisterAdder<Loan> loanRegisterAdder, RegisterObtainer<Book> bookRegisterObtainer, RegisterObtainer<Student> studentRegisterObtainer, RegisterValidator<Loan> loanRegisterValidator)
+    + LoanInsertPopupController(loanRegisterAdder : RegisterAdder<Loan>, bookRegisterObtainer : RegisterObtainer<Book>, studentRegisterObtainer : RegisterObtainer<Student>, loanRegisterValidator : RegisterValidator<Loan>)
     + initialize() : void
     - setupStudentInsert() : void
     - setupBookInsert() : void
@@ -134,7 +136,7 @@ class LoanModifyPopupController {
     - loanRegisterValidator : RegisterValidator<Loan>
     - loanToModify : Loan
 
-    + LoanModifyPopupController(RegisterModifier<Loan> loanRegisterModifier, Loan loanToModify)
+    + LoanModifyPopupController(loanRegisterModifier : RegisterModifier<Loan>, loanToModify : Loan)
     + initialize() : void
 }
 @enduml

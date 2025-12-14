@@ -2,6 +2,7 @@
 skinparam nodesep 50
 'hide members
 
+' --- RELATIONS ---
 Student "1" -r- "3" Loan
 
 Loan "*" -r-> "1" Book
@@ -17,6 +18,9 @@ LoanRegister .u.|> "Register<T>"
 
 Library "1" -d-> "3" "Register<T>"
 
+
+' --- CLASSES ---
+
 class Student {
     - name : String
     - surname : String
@@ -24,19 +28,19 @@ class Student {
     - email : String
     - activeLoans : List<Loan>
 
-    + Student(String name, String surname, String studentId, String email)
+    + Student(name : String, surname : String, studentId : String, email : String)
     + getName() : String
     + getSurname() : String
     + getStudentId() : String
     + getEmail() : String
     + getActiveLoans() : List<Loan>
-    + copy(Student newData) : void
-    + addActiveLoan(Loan loanToAdd) : void
-    + removeActiveLoan(Loan loanToRemove) : void
+    + copy(newData : Student) : void
+    + addActiveLoan(loanToAdd : Loan) : void
+    + removeActiveLoan(loanToRemove : Loan) : void
     + isValid() : boolean
     + isAvailableForLoan() : boolean
-    - isStudentIdValid(String studentId) : boolean
-    - isEmailValid(String email) : boolean
+    - isStudentIdValid(studentId : String) : boolean
+    - isEmailValid(email : String) : boolean
 }
 
 class Loan {
@@ -46,13 +50,13 @@ class Loan {
     - loanEnd : LocalDate
     - returned : boolean
 
-    + Loan(Student student, Book book, LocalDate loanEnd)
+    + Loan(student : Student, book : Book, loanEnd : LocalDate)
     + getLoanId() : UUID
     + getStudent() : Student
     + getBook() : Book
     + getLoanEnd() : LocalDate
     + isReturned() : boolean
-    + setLoanEnd(LocalDate loanEnd) : void
+    + setLoanEnd(loanEnd : LocalDate) : void
     + returnLoan() : void
     + activateLoan() : void
     + isDelay() : boolean
@@ -67,26 +71,26 @@ class Book {
     - publishmentYear : int
     - availableCopies : int
 
-    + Book(String title, List<String> authors, String bookId, int publishmentYear, int availableCopies)
+    + Book(title : String, authors : List<String>, bookId : String, publishmentYear : int, availableCopies : int)
     + getTitle() : String
     + getAuthors() : List<String>
     + getBookId() : String
     + getPublishmentYear() : int
     + getAvailableCopies() : int
-    + setAvailableCopies(int availableCopies) : void
-    + copy(Book newData) : void
+    + setAvailableCopies(availableCopies : int) : void
+    + copy(newData : Book) : void
     + isAvailableForLoan() : boolean
     - isValid() : boolean
-    - isBookIdValid(String bookId) : boolean
-    - isPublishmentYearValid(int publishmentYear) : boolean
-    - isAvailableCopiesValid(int availableCopies) : boolean
+    - isBookIdValid(bookId : String) : boolean
+    - isPublishmentYearValid(publishmentYear : int) : boolean
+    - isAvailableCopiesValid(availableCopies : int) : boolean
 }
 
 interface "Register<T>" {
-    + add(T toAdd) : void
-    + modify(T old, T newObj) : void
-    + remove(T toRemove) : void
-    + isUnique(T toVerify) : boolean
+    + add(toAdd : T) : void
+    + modify(oldItem : T, newItem : T) : void
+    + remove(toRemove : T) : void
+    + isUnique(toVerify : T) : boolean
     + getRegisterList() : List<T>
 }
 

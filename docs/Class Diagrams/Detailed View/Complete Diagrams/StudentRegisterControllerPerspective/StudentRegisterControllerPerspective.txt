@@ -2,6 +2,7 @@
 skinparam nodesep 50
 'hide members
 
+' --- RELATIONS ---
 StudentRegisterController "1" -d-> "1" "SideBarController"
 StudentRegisterController "1" -d-> "1" "Register<T>"
 StudentRegisterController .l.> StudentInsertPopupController
@@ -16,6 +17,9 @@ StudentModifyPopupController "1" -u-> "1" "RegisterModifier<T>"
 StudentModifyPopupController -u-|> StudentPopupController
 StudentModifyPopupController "1" -d-> "1" Student
 
+
+' --- CLASSES ---
+
 class Student {
     - name : String
     - surname : String
@@ -23,39 +27,39 @@ class Student {
     - email : String
     - activeLoans : List<Loan>
 
-    + Student(String name, String surname, String studentId, String email)
+    + Student(name : String, surname : String, studentId : String, email : String)
     + getName() : String
     + getSurname() : String
     + getStudentId() : String
     + getEmail() : String
     + getActiveLoans() : List<Loan>
-    + copy(Student newData) : void
-    + addActiveLoan(Loan loanToAdd) : void
-    + removeActiveLoan(Loan loanToRemove) : void
+    + copy(newData : Student) : void
+    + addActiveLoan(loanToAdd : Loan) : void
+    + removeActiveLoan(loanToRemove : Loan) : void
     + isValid() : boolean
     + isAvailableForLoan() : boolean
-    - isStudentIdValid(String studentId) : boolean
-    - isEmailValid(String email) : boolean
+    - isStudentIdValid(studentId : String) : boolean
+    - isEmailValid(email : String) : boolean
 }
 
 interface "Register<T>" {
-    + add(T toAdd) : void
-    + modify(T old, T newObj) : void
-    + remove(T toRemove) : void
-    + isUnique(T toVerify) : boolean
+    + add(toAdd : T) : void
+    + modify(oldItem : T, newItem : T) : void
+    + remove(toRemove : T) : void
+    + isUnique(toVerify : T) : boolean
     + getRegisterList() : List<T>
 }
 
 interface "RegisterAdder<T>" {
-    + add(T toAdd) : void
+    + add(toAdd : T) : void
 }
 
 interface "RegisterModifier<T>" {
-    + modify(T old, T newObj) : void
+    + modify(oldItem : T, newItem : T) : void
 }
 
 interface "RegisterValidator<T>" {
-    + isUnique(T toVerify) : boolean
+    + isUnique(toVerify : T) : boolean
 }
 
 class SideBarController {
@@ -79,7 +83,7 @@ class StudentRegisterController {
     - studentRegister : Register<Student>
     - sideBarController : SideBarController
 
-    + StudentRegisterController(Register<Student> studentRegisterz)
+    + StudentRegisterController(studentRegister : Register<Student>)
     + initialize() : void
     + updateTableView() : void
     - openInsertPopup() : void
@@ -97,23 +101,23 @@ abstract class StudentPopupController {
     # cancelBtn : Button
 
     + initialize() : void
-    + {abstract} confirmBtnAction(ActionEvent event) : void
-    + cancelBtnAction(ActionEvent event) : void
-    # showAlert(Alert.AlertType type, String title, String header, String content) : void
+    + {abstract} confirmBtnAction(event : ActionEvent) : void
+    + cancelBtnAction(event : ActionEvent) : void
+    # showAlert(type : Alert.AlertType, title : String, header : String, content : String) : void
 }
 
 class StudentInsertPopupController {
     - studentRegisterAdder : RegisterAdder<Student>
     - studentRegisterValidator : RegisterValidator<Student>
 
-    + StudentInsertPopupController(RegisterAdder<Student> studentRegisterAdder, RegisterValidator<Student> studentRegisterValidator)
+    + StudentInsertPopupController(studentRegisterAdder : RegisterAdder<Student>, studentRegisterValidator : RegisterValidator<Student>)
 }
 
 class StudentModifyPopupController {
     - studentRegisterModifier : RegisterModifier<Student>
     - studentToModify : Student
 
-    + StudentModifyPopupController(RegisterModifier<Student> studentRegisterModifier, Student studentToModify)
+    + StudentModifyPopupController(studentRegisterModifier : RegisterModifier<Student>, studentToModify : Student)
     + initialize() : void
 }
 @enduml

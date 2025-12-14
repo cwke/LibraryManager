@@ -2,6 +2,7 @@
 skinparam nodesep 50
 'hide members
 
+' --- RELATIONS ---
 Student "1" -r- "3" Loan
 
 Loan "*" -r-> "1" Book
@@ -28,13 +29,15 @@ MenuBarController "1" -r-> "1" Refresh
 MenuBarController "1" -l-> "1" LibraryIOManager
 MenuBarController "1" -d-> "1" Library
 MenuBarController .u.|> ResultActions
- 
+
 LibraryIOManager ..> Library
 LibraryIOManager "1" -u-> "1" ResultActions
 
 StudentRegisterController "1" -d-> "1" "SideBarController"
 LoanRegisterController "1" -d-> "1" "SideBarController"
 BookRegisterController "1" -d-> "1" "SideBarController"
+
+' --- CLASSES ---
 
 class Student {
     - name : String
@@ -43,19 +46,19 @@ class Student {
     - email : String
     - activeLoans : List<Loan>
 
-    + Student(String name, String surname, String studentId, String email)
+    + Student(name : String, surname : String, studentId : String, email : String)
     + getName() : String
     + getSurname() : String
     + getStudentId() : String
     + getEmail() : String
     + getActiveLoans() : List<Loan>
-    + copy(Student newData) : void
-    + addActiveLoan(Loan loanToAdd) : void
-    + removeActiveLoan(Loan loanToRemove) : void
+    + copy(newData : Student) : void
+    + addActiveLoan(loanToAdd : Loan) : void
+    + removeActiveLoan(loanToRemove : Loan) : void
     + isValid() : boolean
     + isAvailableForLoan() : boolean
-    - isStudentIdValid(String studentId) : boolean
-    - isEmailValid(String email) : boolean
+    - isStudentIdValid(studentId : String) : boolean
+    - isEmailValid(email : String) : boolean
 }
 
 class Loan {
@@ -64,13 +67,13 @@ class Loan {
     - book : Book {readOnly}
     - loanEnd : LocalDate
 
-    + Loan(Student student, Book book, LocalDate loanEnd)
+    + Loan(student : Student, book : Book, loanEnd : LocalDate)
     + getLoanId() : UUID
     + getStudent() : Student
     + getBook() : Book
     + getLoanEnd() : LocalDate
     + isReturned() : boolean
-    + setLoanEnd(LocalDate loanEnd) : void
+    + setLoanEnd(loanEnd : LocalDate) : void
     + returnLoan() : void
     + activateLoan() : void
     + isDelay() : boolean
@@ -85,44 +88,41 @@ class Book {
     - publishmentYear : int
     - availableCopies : int
 
-    + Book(String title, List<String> authors, String bookId, int publishmentYear, int availableCopies)
+    + Book(title : String, authors : List<String>, bookId : String, publishmentYear : int, availableCopies : int)
     + getTitle() : String
     + getAuthors() : List<String>
     + getBookId() : String
     + getPublishmentYear() : int
     + getAvailableCopies() : int
-    + setAvailableCopies(int availableCopies) : void
-    + copy(Book newData) : void
+    + setAvailableCopies(availableCopies : int) : void
+    + copy(newData : Book) : void
     + isAvailableForLoan() : boolean
     - isValid() : boolean
-    - isBookIdValid(String bookId) : boolean
-    - isPublishmentYearValid(int publishmentYear) : boolean
-    - isAvailableCopiesValid(int availableCopies) : boolean
+    - isBookIdValid(bookId : String) : boolean
+    - isPublishmentYearValid(publishmentYear : int) : boolean
+    - isAvailableCopiesValid(availableCopies : int) : boolean
 }
 
 interface "Register<T>" {
-    + add(T toAdd) : void
-    + modify(T old, T newObj) : void
-    + remove(T toRemove) : void
-    + isUnique(T toVerify) : boolean
+    + add(toAdd : T) : void
+    + modify(oldItem : T, newItem : T) : void
+    + remove(toRemove : T) : void
+    + isUnique(toVerify : T) : boolean
     + getRegisterList() : List<T>
 }
 
 class BookRegister {
     - bookRegister : Set<Book>
-
     + BookRegister()
 }
 
 class StudentRegister {
     - studentRegister : Set<Student>
-
     + StudentRegister()
 }
 
 class LoanRegister {
     - loanRegister : Set<Loan>
-
     + LoanRegister()
 }
 
@@ -145,11 +145,11 @@ class MainController {
     - menuBarController : MenuBarController
 
     + initialize() : void
-    - initializeRegisterControllers(Library library) : void
+    - initializeRegisterControllers(library : Library) : void
 }
 
 interface Refresh {
-    + refresh(Library newLibrary) : void
+    + refresh(newLibrary : Library) : void
 }
 
 class MenuBarController {
@@ -160,22 +160,22 @@ class MenuBarController {
     - library : Library
 
     + initialize() : void
-    + setLibrary(Library library) : void
-    + setMainRefresher(Refresh mainRefresher) : void
-    + openFile(ActionEvent event) : void
-    + closeFile(ActionEvent event) : void
-    + saveFile(ActionEvent event) : void
-    + saveFileWithName(ActionEvent event) : void
-    - fileSelection(boolean openFile) : File
-    - showAlert(Alert.AlertType type, String title, String header, String content) : void
+    + setLibrary(library : Library) : void
+    + setMainRefresher(mainRefresher : Refresh) : void
+    + openFile(event : ActionEvent) : void
+    + closeFile(event : ActionEvent) : void
+    + saveFile(event : ActionEvent) : void
+    + saveFileWithName(event : ActionEvent) : void
+    - fileSelection(openFile : boolean) : File
+    - showAlert(type : Alert.AlertType, title : String, header : String, content : String) : void
 }
 
 class LibraryIOManager {
     - resultActions : ResultActions
 
-    + LibraryIOManager(ResultActions actions)
-    + saveLibrary(Library libraryToSave, String filePath) : void
-    + loadLibrary(String filePath) : Library
+    + LibraryIOManager(actions : ResultActions)
+    + saveLibrary(libraryToSave : Library, filePath : String) : void
+    + loadLibrary(filePath : String) : Library
 }
 
 interface ResultActions {
@@ -192,7 +192,7 @@ class StudentRegisterController {
     - studentRegister : Register<Student>
     - sideBarController : SideBarController
 
-    + StudentRegisterController(Register<Student> studentRegister)
+    + StudentRegisterController(studentRegister : Register<Student>)
     + initialize() : void
     + updateTableView() : void
     - openInsertPopup() : void
@@ -215,7 +215,7 @@ class LoanRegisterController {
     - loanInsertPopupController : LoanInsertPopupController
     - loanModifyPopupController : LoanModifyPopupController
 
-    + LoanRegisterController(Library library)
+    + LoanRegisterController(library : Library)
     + initialize() : void
     - openInsertPopup() : void
     - openModifyPopup() : void
@@ -234,7 +234,7 @@ class BookRegisterController {
     - bookRegister : Register<Book>
     - sideBarController : SideBarController
 
-    + BookRegisterController(Register<Book> bookRegister)
+    + BookRegisterController(bookRegister : Register<Book>)
     + initialize() : void
     - openInsertPopup() : void
     - openModifyPopup() : void

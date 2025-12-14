@@ -2,6 +2,7 @@
 skinparam nodesep 50
 'hide members
 
+' --- RELATIONS ---
 BookRegisterController "1" -d-> "1" "SideBarController"
 BookRegisterController "1" -d-> "1" "Register<T>"
 BookRegisterController .l.> BookInsertPopupController
@@ -17,8 +18,7 @@ BookModifyPopupController -u-|> BookPopupController
 BookModifyPopupController "1" -d-> "1" Book
 
 
-
-@startuml
+' --- CLASSES ---
 
 class Book {
     - title : String
@@ -27,39 +27,39 @@ class Book {
     - publishmentYear : int
     - availableCopies : int
 
-    + Book(String title, List<String> authors, String bookId, int publishmentYear, int availableCopies)
+    + Book(title : String, authors : List<String>, bookId : String, publishmentYear : int, availableCopies : int)
     + getTitle() : String
     + getAuthors() : List<String>
     + getBookId() : String
     + getPublishmentYear() : int
     + getAvailableCopies() : int
-    + setAvailableCopies(int availableCopies  ) : void
-    + copy(Book newData) : void
+    + setAvailableCopies(availableCopies : int) : void
+    + copy(newData : Book) : void
     + isAvailableForLoan() : boolean
     - isValid() : boolean
-    - isBookIdValid(String bookId) : boolean
-    - isPublishmentYearValid(int publishmentYear) : boolean
-    - isAvailableCopiesValid(int availableCopies) : boolean
+    - isBookIdValid(bookId : String) : boolean
+    - isPublishmentYearValid(publishmentYear : int) : boolean
+    - isAvailableCopiesValid(availableCopies : int) : boolean
 }
 
 interface "Register<T>" {
-    + add(T toAdd) : void
-    + modify(T old, T newObj) : void
-    + remove(T toRemove) : void
-    + isUnique(T toVerify) : boolean
+    + add(toAdd : T) : void
+    + modify(oldItem : T, newItem : T) : void
+    + remove(toRemove : T) : void
+    + isUnique(toVerify : T) : boolean
     + getRegisterList() : List<T>
 }
 
 interface "RegisterAdder<T>" {
-    + add(T toAdd) : void
+    + add(toAdd : T) : void
 }
 
 interface "RegisterModifier<T>" {
-    + modify(T old, T newObj) : void
+    + modify(oldItem : T, newItem : T) : void
 }
 
 interface "RegisterValidator<T>" {
-    + isUnique(T toVerify) : boolean
+    + isUnique(toVerify : T) : boolean
 }
 
 class SideBarController {
@@ -84,7 +84,7 @@ class BookRegisterController {
     - bookRegister : Register<Book>
     - sideBarController : SideBarController
 
-    + BookRegisterController(Register<Student> studentRegister)
+    + BookRegisterController(bookRegister : Register<Book>)
     + initialize() : void
     - openInsertPopup() : void
     - openModifyPopup() : void
@@ -107,19 +107,19 @@ abstract class BookPopupController {
     - removeImg : Image
 
     + initialize() : void
-    - createAuthorRow(int authorNum) : HBox
+    - createAuthorRow(authorNum : int) : HBox
     # getAuthorsListPopup() : List<String>
-    - addAuthors(ActionEvent event) : void
-    + {abstract} confirmBtnAction(ActionEvent event) : void
-    + cancelBtnAction(ActionEvent event) : void
-    # showAlert(Alert.AlertType type, String title, String header, String content) : void
+    - addAuthors(event : ActionEvent) : void
+    + {abstract} confirmBtnAction(event : ActionEvent) : void
+    + cancelBtnAction(event : ActionEvent) : void
+    # showAlert(type : Alert.AlertType, title : String, header : String, content : String) : void
 }
 
 class BookInsertPopupController {
     - bookRegisterAdder : RegisterAdder<Book>
     - bookRegisterValidator : RegisterValidator<Book>
 
-    + BookInsertPopupController(RegisterAdder<Book> bookRegisterAdder, RegisterValidator<Book> bookRegisterValidator)
+    + BookInsertPopupController(bookRegisterAdder : RegisterAdder<Book>, bookRegisterValidator : RegisterValidator<Book>)
     + initialize() : void
 }
 
@@ -127,7 +127,7 @@ class BookModifyPopupController {
     - bookRegisterModifier : RegisterModifier<Book>
     - bookToModify : Book
 
-    + BookModifyPopupController(RegisterModifier<Book> bookRegisterModifier, Book bookToModify)
+    + BookModifyPopupController(bookRegisterModifier : RegisterModifier<Book>, bookToModify : Book)
     + initialize() : void
 }
 

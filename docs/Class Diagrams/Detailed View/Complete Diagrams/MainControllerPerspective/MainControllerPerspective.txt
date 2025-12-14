@@ -2,6 +2,7 @@
 skinparam nodesep 50
 'hide members
 
+' --- RELATIONS ---
 MainController "1" -l-> "1" Library
 MainController .u.|> Refresh
 MainController "1" -u-> "1" MenuBarController
@@ -22,6 +23,7 @@ LoanRegisterController "1" -d-> "1" "SideBarController"
 BookRegisterController "1" -d-> "1" "SideBarController"
 
 
+' --- CLASSES ---
 
 class Library {
     - bookRegister : Register<Book>
@@ -42,11 +44,11 @@ class MainController {
     - menuBarController : MenuBarController
 
     + initialize() : void
-    - initializeRegisterControllers(Library library) : void
+    - initializeRegisterControllers(library : Library) : void
 }
 
 interface Refresh {
-    + refresh(Library newLibrary) : void
+    + refresh(newLibrary : Library) : void
 }
 
 class MenuBarController {
@@ -57,22 +59,22 @@ class MenuBarController {
     - library : Library
 
     + initialize() : void
-    + setLibrary(Library library) : void
-    + setMainRefresher(Refresh mainRefresher) : void
-    + openFile(ActionEvent event) : void
-    + closeFile(ActionEvent event) : void
-    + saveFile(ActionEvent event) : void
-    + saveFileWithName(ActionEvent event) : void
-    - fileSelection(boolean openFile) : File
-    - showAlert(Alert.AlertType type, String title, String header, String content) : void
+    + setLibrary(library : Library) : void
+    + setMainRefresher(mainRefresher : Refresh) : void
+    + openFile(event : ActionEvent) : void
+    + closeFile(event : ActionEvent) : void
+    + saveFile(event : ActionEvent) : void
+    + saveFileWithName(event : ActionEvent) : void
+    - fileSelection(openFile : boolean) : File
+    - showAlert(type : Alert.AlertType, title : String, header : String, content : String) : void
 }
 
 class LibraryIOManager {
     - resultActions : ResultActions
 
-    + LibraryIOManager(ResultActions actions)
-    + saveLibrary(Library libraryToSave, String filePath) : void
-    + loadLibrary(String filePath) : Library
+    + LibraryIOManager(actions : ResultActions)
+    + saveLibrary(libraryToSave : Library, filePath : String) : void
+    + loadLibrary(filePath : String) : Library
 }
 
 interface ResultActions {
@@ -89,7 +91,7 @@ class StudentRegisterController {
     - studentRegister : Register<Student>
     - sideBarController : SideBarController
 
-    + StudentRegisterController(Register<Student> studentRegister)
+    + StudentRegisterController(studentRegister : Register<Student>)
     + initialize() : void
     + updateTableView() : void
     - openInsertPopup() : void
@@ -112,7 +114,7 @@ class LoanRegisterController {
     - loanInsertPopupController : LoanInsertPopupController
     - loanModifyPopupController : LoanModifyPopupController
 
-    + LoanRegisterController(Library library)
+    + LoanRegisterController(library : Library)
     + initialize() : void
     - openInsertPopup() : void
     - openModifyPopup() : void
@@ -131,7 +133,7 @@ class BookRegisterController {
     - bookRegister : Register<Book>
     - sideBarController : SideBarController
 
-    + BookRegisterController(Register<Book> bookRegister)
+    + BookRegisterController(bookRegister : Register<Book>)
     + initialize() : void
     - openInsertPopup() : void
     - openModifyPopup() : void
