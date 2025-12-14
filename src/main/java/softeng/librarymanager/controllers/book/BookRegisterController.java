@@ -114,12 +114,14 @@ public class BookRegisterController {
             Parent root = loader.load();
             ScrollPane scrollPane = new ScrollPane(root);
             scrollPane.setFitToWidth(true);
-            Scene scene = new Scene(scrollPane, 620, 480);
+            Scene scene = new Scene(scrollPane, 640, 480);
 
             // CSS
             scene.getStylesheets().add(getClass().getResource("/softeng/librarymanager/style.css").toExternalForm());
 
             Stage popup = new Stage();
+            popup.setMinWidth(640);
+            popup.setMinHeight(480);
             popup.setTitle("Inserimento Libro");
             popup.initModality(Modality.APPLICATION_MODAL);
             popup.setScene(scene);
@@ -148,10 +150,12 @@ public class BookRegisterController {
             Parent root = loader.load();
             ScrollPane scrollPane = new ScrollPane(root);
             scrollPane.setFitToWidth(true);
-            Scene scene = new Scene(scrollPane, 620, 480);
+            Scene scene = new Scene(scrollPane, 640, 480);
             scene.getStylesheets().add(getClass().getResource("/softeng/librarymanager/style.css").toExternalForm());
 
             Stage popup = new Stage();
+            popup.setMinWidth(640);
+            popup.setMinHeight(480);
             popup.setTitle("Modifica Libro");
             popup.initModality(Modality.APPLICATION_MODAL);
             popup.setScene(scene);
@@ -208,7 +212,7 @@ public class BookRegisterController {
         }
         bookTable.setItems(filteredBooks);
     }
-    
+
     /**
      * @brief Aggiorna la TableView con i dati attuali del registro.
      */
@@ -216,5 +220,5 @@ public class BookRegisterController {
         bookTable.setItems(FXCollections.observableArrayList(bookRegister.getRegisterList()));
         bookTable.refresh();
     }
-    
+
 }

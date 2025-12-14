@@ -39,10 +39,9 @@ public class LibraryManager extends Application {
         String cssPath = getClass().getResource("style.css").toExternalForm();
         scene.getStylesheets().add(cssPath);
         stage.setScene(scene);
-        stage.setMinWidth(620);
+        stage.setMinWidth(640);
         stage.setMinHeight(480);
         stage.setTitle("Library Manager");
-        //System.out.println(getClass().getResource("./"));
         stage.getIcons().add(new Image(getClass().getResourceAsStream("assets/logo.png")));
         stage.show();
     }

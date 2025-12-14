@@ -34,7 +34,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import softeng.librarymanager.controllers.SideBarController;
 
-
 /**
  * @class LoanRegisterController
  * @brief Classe controller per la gestione dell'interfaccia utente del registro prestiti.
@@ -75,7 +74,6 @@ public class LoanRegisterController {
         this.library = library;
     }
 
-
     /**
      * @brief Metodo di inizializzazione del controller JavaFX.
      * @details Configura le colonne della tabella, e aggiunge i colori alle righe, 
@@ -100,8 +98,7 @@ public class LoanRegisterController {
                     setStyle("");
             }
         });
-        
-        
+
         // Configurazione colonne;
         studentNameClm.setCellValueFactory(row -> new SimpleStringProperty(row.getValue().getStudent().getName()));
         studentSurnameClm.setCellValueFactory(row -> new SimpleStringProperty(row.getValue().getStudent().getSurname()));
@@ -150,12 +147,14 @@ public class LoanRegisterController {
             ));
             
             Parent root = loader.load();
-            Scene scene = new Scene(root, 620, 480);
-            
+            Scene scene = new Scene(root, 640, 480);
+
             // CSS
             scene.getStylesheets().add(getClass().getResource("/softeng/librarymanager/style.css").toExternalForm());
             
             Stage popup = new Stage();
+            popup.setMinWidth(640);
+            popup.setMinHeight(480);
             popup.setTitle("Inserimento Prestito");
             popup.initModality(Modality.APPLICATION_MODAL);
             popup.setScene(scene);
@@ -181,12 +180,14 @@ public class LoanRegisterController {
             ));
             
             Parent root = loader.load();
-            Scene scene = new Scene(root, 620, 480);
-            
+            Scene scene = new Scene(root, 640, 480);
+
             // CSS
             scene.getStylesheets().add(getClass().getResource("/softeng/librarymanager/style.css").toExternalForm());
             
             Stage popup = new Stage();
+            popup.setMinWidth(640);
+            popup.setMinHeight(480);
             popup.setTitle("Modifica Prestito");
             popup.initModality(Modality.APPLICATION_MODAL);
             popup.setScene(scene);

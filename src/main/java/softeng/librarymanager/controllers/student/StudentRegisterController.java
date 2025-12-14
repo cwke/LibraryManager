@@ -104,12 +104,14 @@ public class StudentRegisterController {
                     (Student toVerify) -> studentRegister.isUnique(toVerify)));
 
             Parent root = loader.load();
-            Scene scene = new Scene(root, 620, 480);
+            Scene scene = new Scene(root, 640, 480);
 
             // CSS
             scene.getStylesheets().add(getClass().getResource("/softeng/librarymanager/style.css").toExternalForm());
 
             Stage popup = new Stage();
+            popup.setMinWidth(640);
+            popup.setMinHeight(480);
             popup.setTitle("Inserimento Studente");
             popup.initModality(Modality.APPLICATION_MODAL);
             popup.setScene(scene);
@@ -135,12 +137,14 @@ public class StudentRegisterController {
                     selectedStudent));
 
             Parent root = loader.load();
-            Scene scene = new Scene(root, 620, 480);
+            Scene scene = new Scene(root, 640, 480);
 
             // CSS
             scene.getStylesheets().add(getClass().getResource("/softeng/librarymanager/style.css").toExternalForm());
 
             Stage popup = new Stage();
+            popup.setMinWidth(640);
+            popup.setMinHeight(480);
             popup.setTitle("Modifica Studente");
             popup.initModality(Modality.APPLICATION_MODAL);
             popup.setScene(scene);
