@@ -12,7 +12,6 @@ import softeng.librarymanager.controllers.student.StudentRegisterController;
 import softeng.librarymanager.controllers.loan.LoanRegisterController;
 import softeng.librarymanager.controllers.book.BookRegisterController;
 import java.io.IOException;
-import java.time.LocalDate;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import softeng.librarymanager.models.Library;
@@ -27,38 +26,16 @@ import softeng.librarymanager.models.Library;
  */
 public class MainController implements Refresh {
 
-    /**
-     * @brief Istanza del modello dati principale (Facade).
-     */
-    /**
-     * @brief Istanza del modello dati principale (Facade).
-     */
-    private Library library;
-
-    /**
-     * @brief Tab per il catalogo libri.
-     */
     @FXML
     private javafx.scene.control.Tab bookTab;
-
-    /**
-     * @brief Tab per il registro studenti.
-     */
     @FXML
     private javafx.scene.control.Tab studentTab;
-
-    /**
-     * @brief Tab per il registro prestiti.
-     */
     @FXML
     private javafx.scene.control.Tab loanTab;
-
-    /**
-     * @brief Controller innestato per la barra dei menu superiore.
-     * @details Iniettato automaticamente tramite tag <fx:include> nell'FXML.
-     */
     @FXML
     private MenuBarController menuBarController;
+
+    private Library library;
 
     /**
      * @brief Metodo di inizializzazione del controller principale.
@@ -68,34 +45,20 @@ public class MainController implements Refresh {
      */
     @FXML
     public void initialize() {
-        menuBarController.setMainRefresher(this); //non so se va spostata in un eventuale costruttore.
+        menuBarController.setMainRefresher(this);
 
         library = new Library();
         menuBarController.setLibrary(library);
 
-        // CODICE DI TEST, RIMUOVERE PRIMA DEL COMMIT!! >>
-        for (int i = 0; i< 10; i++) {
-            softeng.librarymanager.models.Book b = new softeng.librarymanager.models.Book("Titolo " + i, java.util.Arrays.asList("Autore " + i, "Autore 2 "+i), String.format("%013d", i), 2000, 1);
-            softeng.librarymanager.models.Student s = new softeng.librarymanager.models.Student("Nome " + i, "Cognome " + i, String.format("%010d", i), i+"@studenti.unisa.it");
-            softeng.librarymanager.models.Loan l = new softeng.librarymanager.models.Loan(s, b, LocalDate.now().plusMonths(i));
-            library.getBookRegister().add(b);
-            library.getStudentRegister().add(s);
-            library.getLoanRegister().add(l);
-        }
-        // <<
-        
         initializeRegisterControllers(library);
-
-
     }
-    
+
     private void initializeRegisterControllers(Library library){
         try {
             // Carica la Book Tab
             FXMLLoader bookLoader = new FXMLLoader(getClass().getResource("/softeng/librarymanager/fxml/BookRegisterView.fxml"));
             BookRegisterController bookRegisterController = new BookRegisterController(library.getBookRegister());
             bookLoader.setController(bookRegisterController);
-
             bookTab.setContent(bookLoader.load());
 
             bookTab.setOnSelectionChanged(event -> {
@@ -106,8 +69,15 @@ public class MainController implements Refresh {
 
             // Carica la Student Tab
             FXMLLoader studentLoader = new FXMLLoader(getClass().getResource("/softeng/librarymanager/fxml/StudentRegisterView.fxml"));
-            studentLoader.setController(new StudentRegisterController(library.getStudentRegister()));
+            StudentRegisterController studentRegisterController = new StudentRegisterController(library.getStudentRegister());
+            studentLoader.setController(studentRegisterController);
             studentTab.setContent(studentLoader.load());
+
+            studentTab.setOnSelectionChanged(event -> {
+                if (studentTab.isSelected()) {
+                    studentRegisterController.updateTableView();
+                }
+            });
 
             // Carica la Loan tab
             FXMLLoader loanLoader = new FXMLLoader(getClass().getResource("/softeng/librarymanager/fxml/LoanRegisterView.fxml"));
@@ -119,8 +89,16 @@ public class MainController implements Refresh {
         }
     }
 
+    /**
+     * @brief Aggiorna l'istanza della libreria gestita dal controller.
+     * @details Implementazione dell'interfaccia {@link Refresh}. Questo metodo viene chiamato
+     *          quando l'oggetto {@link Library} principale viene sostituito (es. dopo il
+     *          caricamento da file), propagando la nuova istanza a tutti i sotto-controller delle tab.
+     * @param[i] newLibrary La nuova istanza di Library da utilizzare.
+     */
     @Override
     public void refresh(Library newLibrary) {
         initializeRegisterControllers(newLibrary);
     }
+
 }

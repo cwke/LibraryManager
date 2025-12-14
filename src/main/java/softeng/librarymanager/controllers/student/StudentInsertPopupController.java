@@ -9,10 +9,8 @@
 package softeng.librarymanager.controllers.student;
 
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
-
 import softeng.librarymanager.models.RegisterAdder;
 import softeng.librarymanager.models.RegisterValidator;
 import softeng.librarymanager.models.Student;
@@ -51,15 +49,14 @@ public class StudentInsertPopupController extends StudentPopupController {
 
             if (studentRegisterValidator.isUnique(studentToAdd)) {
                 studentRegisterAdder.add(studentToAdd);
-                // Chiudi la finestra
                 Stage stage = (Stage) confirmBtn.getScene().getWindow();
                 stage.close();
             } else {
-                showAlert(Alert.AlertType.ERROR, "Errore", "Studente duplicato",
-                        "La matricola inserita è già presente.");
+                showAlert(Alert.AlertType.ERROR, "Errore", "Studente duplicato", "La matricola inserita è già presente.");
             }
         } catch (IllegalArgumentException e) {
             showAlert(Alert.AlertType.ERROR, "Errore", "Dati non validi", e.getMessage());
         }
     }
+
 }
