@@ -14,9 +14,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import softeng.librarymanager.models.Library;
 import softeng.librarymanager.models.Loan;
-
 import java.time.LocalDate;
-import java.util.Collections;
 import java.util.Optional;
 import javafx.collections.ObservableList;
 import javafx.beans.binding.Binding;
@@ -55,17 +53,10 @@ public class LoanRegisterController {
     @FXML private TableColumn<Loan, String> bookIdClm;
     @FXML private TableColumn<Loan, LocalDate> loanEndClm;
     @FXML private TableColumn<Loan, String> returnedClm;
-
-    /**
-     * @brief Riferimento all'oggetto principale Library.
-     * @details Necessario per accedere trasversalmente ai registri (Prestiti, ma anche Libri e Studenti).
-     */
-    private Library library;
-
+    
     @FXML private SideBarController sideBarController;
 
-    private LoanInsertPopupController loanInsertPopupController;
-    private LoanModifyPopupController loanModifyPopupController;
+    private final Library library;
     
     /**
      * @brief Costruttore del controller.
@@ -225,7 +216,7 @@ public class LoanRegisterController {
                 "Sei sicuro di voler rimuovere il prestito di " + selectedLoan.getStudent().getSurname()
                 + " " + selectedLoan.getStudent().getName()
         );
-        alert.setContentText("L'operazione è irreversibile.");
+        alert.setContentText("L'operazione restituirà il prestito del libro " + selectedLoan.getBook().getTitle());
 
         Optional<ButtonType> result = alert.showAndWait();
 
@@ -262,8 +253,6 @@ public class LoanRegisterController {
                 filteredLoans.add(loan);
             }
         }
-        
-        Collections.sort(filteredLoans);
         loanTable.setItems(filteredLoans);
     }
     

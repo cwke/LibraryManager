@@ -10,29 +10,20 @@ package softeng.librarymanager.controllers.student;
 
 import javafx.beans.binding.Binding;
 import javafx.beans.property.SimpleStringProperty;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-
 import java.io.IOException;
-
-import java.util.Collections;
 import java.util.Optional;
-
-import softeng.librarymanager.models.Book;
 import softeng.librarymanager.models.Register;
 import softeng.librarymanager.models.Student;
 import softeng.librarymanager.controllers.SideBarController;
@@ -53,10 +44,10 @@ public class StudentRegisterController {
     @FXML private TableColumn<Student, String> studentIdClm;
     @FXML private TableColumn<Student, String> emailClm;
 
-    private Register<Student> studentRegister;
-
     @FXML private SideBarController sideBarController;
-
+    
+    private final Register<Student> studentRegister;
+    
     /**
      * @brief Costruttore del controller.
      * @param[in] studentRegister L'istanza del registro studenti.
@@ -207,8 +198,6 @@ public class StudentRegisterController {
                 filteredStudents.add(Student);
             }
         }
-
-        Collections.sort(filteredStudents);
         studentTable.setItems(filteredStudents);
     }
 }

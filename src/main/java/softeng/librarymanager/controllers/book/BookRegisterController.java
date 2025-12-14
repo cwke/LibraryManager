@@ -9,9 +9,7 @@
 package softeng.librarymanager.controllers.book;
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.Optional;
-
 import javafx.beans.binding.Binding;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -27,8 +25,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.scene.layout.AnchorPane;
-
 import softeng.librarymanager.controllers.SideBarController;
 import softeng.librarymanager.models.Book;
 import softeng.librarymanager.models.Register;
@@ -50,9 +46,9 @@ public class BookRegisterController {
     @FXML private TableColumn<Book, String> bookIdClm;
     @FXML private TableColumn<Book, Integer> availableCopiesClm;
 
-    private final Register<Book> bookRegister;
-
     @FXML private SideBarController sideBarController;
+    
+    private final Register<Book> bookRegister;
 
     /**
      * @brief Costruttore del controller.
@@ -197,8 +193,6 @@ public class BookRegisterController {
                 filteredBooks.add(book);
             }
         }
-        
-        Collections.sort(filteredBooks);
         bookTable.setItems(filteredBooks);
     }
 }

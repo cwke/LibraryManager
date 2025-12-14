@@ -10,13 +10,13 @@ package softeng.librarymanager.controllers.loan;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import softeng.librarymanager.models.Book;
 import softeng.librarymanager.models.Student;
 
@@ -60,6 +60,15 @@ public abstract class LoanPopupController {
      */
     @FXML
     public void cancelBtnAction(ActionEvent event) {
+        // 1. Recuperiamo il componente che ha scatenato l'evento (il pulsante)
+        Node source = (Node) event.getSource();
+
+        // 2. Dal pulsante, otteniamo la Scena, e dalla Scena otteniamo la Finestra
+        // (Stage)
+        Stage stage = (Stage) source.getScene().getWindow();
+
+        // 3. Chiudiamo la finestra
+        stage.close();
     }
     
     protected void showAlert(Alert.AlertType type, String title, String header, String content) {
