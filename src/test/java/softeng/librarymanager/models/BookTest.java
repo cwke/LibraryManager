@@ -55,7 +55,7 @@ class BookTest {
         book.copy(bookCopy);
 
         assertEquals("C", book.getTitle());
-        assertEquals("D", book.getAuthors());
+        assertEquals(otherAuthors, book.getAuthors());
         assertEquals(2021, book.getPublishmentYear());
         assertEquals(9, book.getAvailableCopies());
         assertEquals(validBookId, book.getBookId()); // non cambia

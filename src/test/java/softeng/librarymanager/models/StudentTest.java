@@ -67,13 +67,13 @@ class StudentTest {
         Student s1 = new Student("Mario", "Rossi", "1234567891", "m.rossi@studenti.unisa.it");
 
         //Verifica aggiunta
-        new Loan(student, book, java.time.LocalDate.now().plusDays(7));
+        student.addActiveLoan(new Loan(s1, book, java.time.LocalDate.now().plusDays(7)));
         assertEquals(1, student.getActiveLoans().size());
         
-        new Loan(student, book, java.time.LocalDate.now().plusDays(7));
+        student.addActiveLoan(new Loan(s1, book, java.time.LocalDate.now().plusDays(7)));
         assertEquals(2, student.getActiveLoans().size());
         
-        new Loan(student, book, java.time.LocalDate.now().plusDays(7));
+        student.addActiveLoan(new Loan(s1, book, java.time.LocalDate.now().plusDays(7)));
         assertEquals(3, student.getActiveLoans().size());
 
         //Verifica aggiunta fallita
@@ -134,6 +134,9 @@ class StudentTest {
         Loan l1 = new Loan(student, book, LocalDate.now());
         Loan l2 = new Loan(student, book, LocalDate.now());
         Loan l3 = new Loan(student, book, LocalDate.now());
+        l1.activateLoan();
+        l2.activateLoan();
+        l3.activateLoan();
                 
         assertFalse(student.isAvailableForLoan());
     }
