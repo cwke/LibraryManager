@@ -28,6 +28,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.TableRow;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import softeng.librarymanager.controllers.SideBarController;
@@ -82,6 +83,22 @@ public class LoanRegisterController {
     public void initialize() {
         // Inizializza la tabella
         updateTableView();
+        
+        // Configurazione dei colori per le righe delle tabelle se il prestito è restituito o in ritardo
+        loanTable.setRowFactory(tableView -> new TableRow<Loan>() {
+            @Override
+            protected void updateItem(Loan loan, boolean empty){
+                super.updateItem(loan, empty);
+                if (loan == null || empty) {setStyle(""); }
+                else if (loan.isDelay())
+                    setStyle("-fx-background-color: #FAA0A0");
+                else if (loan.isReturned())
+                    setStyle("-fx-background-color: #A1A1A1");
+                else
+                    setStyle("");
+            }
+        });
+        
         
         // Configurazione colonne;
         studentNameClm.setCellValueFactory(row -> new SimpleStringProperty(row.getValue().getStudent().getName()));
