@@ -1,0 +1,22 @@
+@startuml
+
+actor Admin
+
+usecase "Registrazione studente" as Reg
+usecase "Modifica studente" as Mod
+usecase "Rimozione studente" as Rim
+usecase "Visualizzazione studente" as Vis
+usecase "Ricerca studente" as Ric
+
+Admin --> Reg
+Admin --> Mod
+Admin --> Rim
+Admin --> Ric
+Admin --> Vis
+
+Reg ..> Vis : <<include>>
+Mod ..> Vis : <<include>>
+Rim ..> Vis : <<include>>
+Ric ..> Vis : <<extends>>
+
+@enduml

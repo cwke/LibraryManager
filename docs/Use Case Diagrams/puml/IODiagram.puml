@@ -1,0 +1,11 @@
+@startuml
+
+actor Admin
+
+usecase "Salvataggio archivio" as Sal
+usecase "Caricamento archivio" as Car
+
+Admin --> Sal
+Admin --> Car
+
+@enduml

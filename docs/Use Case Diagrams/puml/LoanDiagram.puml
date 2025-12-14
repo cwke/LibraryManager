@@ -1,0 +1,25 @@
+@startuml
+
+actor Admin
+
+usecase "Registrazione prestito" as Reg
+usecase "Modifica prestito" as Mod
+usecase "Rimozione prestito" as Rim
+usecase "Visualizzazione prestito" as Vis
+usecase "Ricerca prestito" as Ric
+usecase "Estinzione prestito" as Est
+
+Admin --> Reg
+Admin --> Mod
+Admin --> Rim
+Admin --> Ric
+Admin --> Vis
+Admin --> Est
+
+Reg ..> Vis : <<include>>
+Est ..> Vis : <<include>>
+Mod ..> Vis : <<include>>
+Rim ..> Vis : <<include>> 
+Ric ..> Vis : <<extends>>
+
+@enduml

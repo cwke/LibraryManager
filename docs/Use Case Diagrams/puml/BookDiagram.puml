@@ -1,0 +1,22 @@
+@startuml
+
+actor Admin
+
+usecase "Registrazione libro" as Reg
+usecase "Modifica libro" as Mod
+usecase "Rimozione libro" as Rim
+usecase "Visualizzazione libri" as Vis
+usecase "Ricerca libro" as Ric
+
+Admin --> Reg
+Admin --> Mod
+Admin --> Rim
+Admin --> Ric
+Admin --> Vis
+
+Reg ..> Vis : <<include>>
+Mod ..> Vis : <<include>>
+Rim ..> Vis : <<include>>
+Ric ..> Vis : <<extends>>
+
+@enduml
