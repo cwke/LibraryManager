@@ -12,7 +12,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import softeng.librarymanager.models.Book;
@@ -30,7 +32,7 @@ public abstract class LoanPopupController {
     @FXML protected ListView<Student> studentListView;
     @FXML protected TextField bookSearchTF;
     @FXML protected ListView<Book> bookListView;
-    @FXML protected javafx.scene.control.DatePicker dateDP;
+    @FXML protected DatePicker dateDP;
     @FXML protected Button confirmBtn;
     @FXML protected Button cancelBtn;
 

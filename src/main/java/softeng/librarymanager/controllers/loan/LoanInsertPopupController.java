@@ -13,6 +13,7 @@ import javafx.beans.binding.BooleanBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.cell.TextFieldListCell;
@@ -34,10 +35,10 @@ import softeng.librarymanager.models.Student;
  */
 public class LoanInsertPopupController extends LoanPopupController {
 
-    private RegisterAdder<Loan> loanRegisterAdder;
-    private RegisterObtainer<Book> bookRegisterObtainer;
-    private RegisterObtainer<Student> studentRegisterObtainer;
-    private RegisterValidator<Loan> loanRegisterValidator;
+    private final RegisterAdder<Loan> loanRegisterAdder;
+    private final RegisterObtainer<Book> bookRegisterObtainer;
+    private final RegisterObtainer<Student> studentRegisterObtainer;
+    private final RegisterValidator<Loan> loanRegisterValidator;
 
     public LoanInsertPopupController(RegisterAdder<Loan> loanRegisterAdder, RegisterObtainer<Book> bookRegisterObtainer, RegisterObtainer<Student> studentRegisterObtainer, RegisterValidator<Loan> loanRegisterValidator) {
         this.loanRegisterAdder = loanRegisterAdder;
@@ -140,7 +141,7 @@ public class LoanInsertPopupController extends LoanPopupController {
      * @param[in] event L'evento click.
      */
     @Override
-    public void confirmBtnAction(javafx.event.ActionEvent event) {
+    public void confirmBtnAction(ActionEvent event) {
         Student selectedStudent = studentListView.getSelectionModel().getSelectedItem();
         Book selectedBook = bookListView.getSelectionModel().getSelectedItem();
         LocalDate selectedDate = dateDP.getValue();

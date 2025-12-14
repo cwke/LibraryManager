@@ -20,6 +20,8 @@ import java.util.Collections;
 import java.util.Optional;
 import javafx.collections.ObservableList;
 import javafx.beans.binding.Binding;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -27,6 +29,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableRow;
 import javafx.stage.Modality;
@@ -90,10 +93,10 @@ public class LoanRegisterController {
             protected void updateItem(Loan loan, boolean empty){
                 super.updateItem(loan, empty);
                 if (loan == null || empty) {setStyle(""); }
-                else if (loan.isDelay())
-                    setStyle("-fx-background-color: #FAA0A0");
                 else if (loan.isReturned())
                     setStyle("-fx-background-color: #A1A1A1");
+                else if (loan.isDelay())
+                    setStyle("-fx-background-color: #FAA0A0");
                 else
                     setStyle("");
             }
@@ -104,12 +107,9 @@ public class LoanRegisterController {
         studentNameClm.setCellValueFactory(row -> new SimpleStringProperty(row.getValue().getStudent().getName()));
         studentSurnameClm.setCellValueFactory(row -> new SimpleStringProperty(row.getValue().getStudent().getSurname()));
         studentIdClm.setCellValueFactory(row -> new SimpleStringProperty(row.getValue().getStudent().getStudentId()));
-        
         bookNameClm.setCellValueFactory(row -> new SimpleStringProperty(row.getValue().getBook().getTitle()));
         bookIdClm.setCellValueFactory(row -> new SimpleStringProperty(row.getValue().getBook().getBookId()));
-      
         loanEndClm.setCellValueFactory(row -> new SimpleObjectProperty<LocalDate>(row.getValue().getLoanEnd()));
-      
         returnedClm.setCellValueFactory(row -> new SimpleStringProperty(row.getValue().isReturned() ? "Sì" : "No"));
     
         // Sidebar Event Listeners
@@ -117,13 +117,26 @@ public class LoanRegisterController {
         sideBarController.getModifyBtn().setOnAction(event -> openModifyPopup());
         sideBarController.getRemoveBtn().setOnAction(event -> removeFromRegister());
         
-        // Listener per la barra di ricerca
+        // Listener per la ricerca
         sideBarController.getSearchBarTF().textProperty().addListener( (observable, oldValue, newValue) -> searchLoan());
+        
+        // Aggiunta del tasto restituisci
+        Button returnBtn = sideBarController.createReturnBtn();
+        returnBtn.setOnAction(event -> returnLoan());
+        
+        // Binding: Disabilita il tasto returnBtn se la riga selezionata è restituita o non è selezionata
+        BooleanBinding returnLoanBinding = Bindings.createBooleanBinding(() -> {
+            Loan selected = loanTable.getSelectionModel().getSelectedItem();
+            return selected == null || selected.isReturned();
+        }, loanTable.getSelectionModel().selectedItemProperty());
+        
+        returnBtn.disableProperty().bind(returnLoanBinding);        
         
         // Binding: disabilita i tasti Modifica e Rimuovi se non è selezionata una riga
         Binding<Boolean> noItemSelectedBinding = loanTable.getSelectionModel().selectedItemProperty().isNull();
         sideBarController.getRemoveBtn().disableProperty().bind(noItemSelectedBinding);
         sideBarController.getModifyBtn().disableProperty().bind(noItemSelectedBinding);
+        
     }
 
     /**
@@ -252,5 +265,23 @@ public class LoanRegisterController {
         
         Collections.sort(filteredLoans);
         loanTable.setItems(filteredLoans);
+    }
+    
+    private void returnLoan() {
+        Loan selectedLoan = loanTable.getSelectionModel().getSelectedItem();
+        if (selectedLoan == null) return;
+        
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Restituzione prestito");
+        alert.setHeaderText("Sei sicuro di voler restituire il prestito?");
+        alert.setContentText("L'operazione è irreversibile.");
+        alert.setGraphic(null);
+        alert.getDialogPane().getStylesheets().add(getClass().getResource("/softeng/librarymanager/style.css").toExternalForm());
+        Optional<ButtonType> result =  alert.showAndWait();
+        
+        if (result != null && result.get() == ButtonType.OK) {
+            selectedLoan.returnLoan();
+            updateTableView();
+        }
     }
 }

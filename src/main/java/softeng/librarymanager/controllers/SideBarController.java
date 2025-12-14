@@ -11,6 +11,7 @@ package softeng.librarymanager.controllers;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 
 /**
  * @class SideBarController
@@ -22,29 +23,11 @@ import javafx.scene.control.TextField;
  */
 public class SideBarController {
 
-    /**
-     * @brief Bottone per l'aggiunta di una nuova entità.
-     */
-    @FXML
-    private Button addBtn;
-
-    /**
-     * @brief Campo di testo per la ricerca.
-     */
-    @FXML
-    private TextField searchBarTF;
-
-    /**
-     * @brief Bottone per la rimozione dell'entità selezionata.
-     */
-    @FXML
-    private Button removeBtn;
-
-    /**
-     * @brief Bottone per la modifica dell'entità selezionata.
-     */
-    @FXML
-    private Button modifyBtn;
+    @FXML private Button addBtn;
+    @FXML private TextField searchBarTF;
+    @FXML private Button removeBtn;
+    @FXML private Button modifyBtn;
+    @FXML private VBox sideBarVBox;
 
     /**
      * @brief Restituisce il riferimento al bottone di aggiunta.
@@ -76,6 +59,12 @@ public class SideBarController {
      */
     public Button getModifyBtn() {
         return this.modifyBtn;
+    }
+    
+    public Button createReturnBtn() {
+        Button returnBtn = new Button("Restituisci");
+        sideBarVBox.getChildren().add(returnBtn);
+        return returnBtn;
     }
 
 }
