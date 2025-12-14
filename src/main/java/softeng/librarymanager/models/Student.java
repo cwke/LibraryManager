@@ -5,7 +5,6 @@
  * @date Dicembre 2025
  * @package softeng.librarymanager.models
  */
-
 package softeng.librarymanager.models;
 
 import java.io.Serializable;
@@ -16,9 +15,12 @@ import java.util.Objects;
 /**
  * @class Student
  * @brief Classe modello che rappresenta uno studente.
- * @details Questa classe modella un'entità studente, contenente dettagli come
- * il nome, cognome, matricola, email, e numero di prestiti disponibili.
- * Implementa {@link Comparable} per l'ordinamento.
+ * @details Questa classe modella un'entità studente, contenente dettagli quali
+ * nome, cognome, matricola, email, e una lista di prestiti attualmente attivi.
+ * Implementa {@link Comparable} per l'ordinamento e {@link Serializable} per la serializzazione.
+ * @invariant attributi diversi da null.
+ * @invariant studentId.length == 10.
+ * @invariant email terminante in "@studenti.unisa.it".
  */
 public class Student implements Comparable<Student>, Serializable {
 
@@ -38,22 +40,24 @@ public class Student implements Comparable<Student>, Serializable {
     private final String studentId;
 
     /**
-     * @brief Email istituzionale o personale.
+     * @brief Email istituzionale.
      */
     private String email;
 
     /**
-     * @brief Lista dei prestiti attualmente attivi.
+     * @brief Prestiti attualmente attivi.
      */
     private final List<Loan> activeLoans;
 
     /**
      * @brief Costruttore parametrizzato.
-     * @details Inizializza le proprietà con i valori forniti e istanzia la lista dei prestiti.
+     * @details Inizializza le proprietà con i valori forniti e istanzia la lista dei prestiti se i valori forniti sono validi.
      * @param[in] name Nome dello studente.
      * @param[in] surname Cognome dello studente.
      * @param[in] studentId Matricola dello studente.
      * @param[in] email Email dello studente.
+     * @post Se le invarianti sono rispettate viene creato uno studente con i valori specificati.
+     * @post Se le invarianti non sono rispettate viene lanciata una IllegalArgumentException.
      */
     public Student(String name, String surname, String studentId, String email) {
         this.name = name;
@@ -97,19 +101,19 @@ public class Student implements Comparable<Student>, Serializable {
     }
 
     /**
-     * @brief Restituisce la lista dei prestiti attivi.
-     * @return List<Loan> La lista dei prestiti correnti.
+     * @brief Restituisce la lista dei prestiti attualmente attivi.
+     * @return List<Loan> La lista dei prestiti attualmente attivi.
      */
     public List<Loan> getActiveLoans() {
         return this.activeLoans;
     }
-
+    
     /**
-     * @brief Copia i dati anagrafici da uno studente sorgente a uno studente da modificare.
-     * @param[in,out] toModify Lo studente i cui campi verranno aggiornati.
+     * @brief Copia i dati modificabili da uno studente sorgente.
      * @param[in] newData Lo studente da cui verranno prelevati i nuovi valori.
      * @details Questo metodo sostituisce i tradizionali setter, permettendo di aggiornare
-     *          in un'unica chiamata i campi principali dello studente (nome, cognome, email).
+     *          in un'unica chiamata i principali campi modificabili dello studente (nome, cognome, email).
+     * @post I campi modificabili dello studente sono aggiornati con quelli dello studente specificato
      */
     public void copy(Student newData){
         this.name = newData.getName();
@@ -123,7 +127,8 @@ public class Student implements Comparable<Student>, Serializable {
      * @details Verifica che lo studente non abbia già raggiunto il limite massimo
      * di 3 prestiti.
      * @param[in] loanToAdd L'oggetto Loan da aggiungere.
-     * @throws IllegalStateException se lo studente ha già 3 prestiti attivi.
+     * @post Il prestito viene aggiunto alla lista dei prestiti attualmente attivi
+     * @post Se lo studente ha già 3 prestiti attivi viene lanciata IllegalStateException.
      */
     public void addActiveLoan(Loan loanToAdd) {
         if (!isAvailableForLoan()) {
@@ -134,8 +139,8 @@ public class Student implements Comparable<Student>, Serializable {
 
     /**
      * @brief Rimuove un prestito dalla lista dei prestiti attivi.
-     * @details Metodo chiamato quando un libro viene restituito.
      * @param[in] loanToRemove L'oggetto Loan da rimuovere.
+     * @post Il prestito viene rimosso dalla lista dei prestiti attualmente attivi
      */
     public void removeActiveLoan(Loan loanToRemove) {
         this.activeLoans.remove(loanToRemove);
@@ -143,9 +148,10 @@ public class Student implements Comparable<Student>, Serializable {
 
     /**
      * @brief Confronta due studenti per l'ordinamento.
-     * @details L'ordinamento avviene prima per cognome, poi per nome, infine per ID.
-     * @param[in] other Lo studente con cui confrontare.
-     * @return int Un valore negativo, zero o positivo.
+     * @details Il confronto viene effettuato sull'identificativo dello studente (studentId).
+     * @param[in] other Lo studente con cui confrontare l'istanza corrente.
+     * @return int Un valore negativo, zero o positivo se questo studente è
+     *             rispettivamente minore, uguale o maggiore di quello passato.
      */
     @Override
     public int compareTo(Student other) {
@@ -156,7 +162,7 @@ public class Student implements Comparable<Student>, Serializable {
 
     /**
      * @brief Verifica la validità e completezza dei dati di uno studente.
-     * @details Controlla che nome, cognome, ID ed email siano validi secondo le invarianti.
+     * @details Controlla che tutte le invarianti siano rispettate.
      * @return boolean True in caso di successo, altrimenti False.
      */
     public boolean isValid(){
@@ -166,23 +172,11 @@ public class Student implements Comparable<Student>, Serializable {
                 isEmailValid(email);
     }
 
-    /**
-     * @brief Verifica la correttezza dell'identificativo di uno studente.
-     * @details La correttezza viene verificata relativamente alle invarianti (es. non nullo, formato specifico).
-     * @param[in] studentId L'identificativo da verificare.
-     * @return boolean True in caso di successo, altrimenti False.
-     */
     private boolean isStudentIdValid(String studentId){
         // Implementazione esempio: ID non nullo e non vuoto
         return studentId != null && studentId.length() == 10;
     }
 
-    /**
-     * @brief Verifica la correttezza dell'email di uno studente.
-     * @details Verifica che l'email contenga il carattere '@' e non sia nulla.
-     * @param[in] email L'email da verificare.
-     * @return boolean True in caso di successo, altrimenti False.
-     */
     private boolean isEmailValid(String email){
         return email != null && email.endsWith("@studenti.unisa.it");
     }
@@ -196,6 +190,13 @@ public class Student implements Comparable<Student>, Serializable {
         return this.activeLoans.size() < 3;
     }
 
+    /**
+     * @brief Verifica l'uguaglianza tra due studenti.
+     * @details Due studenti sono considerati uguali se condividono lo stesso
+     *          identificativo univoco (studentId)
+     * @param[in] other L'oggetto con cui confrontare lo studente.
+     * @return boolean true se gli studenti sono uguali, false altrimenti.
+     */
     @Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -207,8 +208,15 @@ public class Student implements Comparable<Student>, Serializable {
         return studentId.equals(otherStudent.getStudentId());
     }
 
+    /**
+     * @brief Calcola l'hash dello studente.
+     * @details L'hash è calcolato utilizzando esclusivamente l'identificativo
+     *          dello studente (studentId).
+     * @return int Il valore hash dello studente.
+     */
     @Override
     public int hashCode() {
         return Objects.hash(this.studentId);
     }
+    
 }

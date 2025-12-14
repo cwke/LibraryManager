@@ -17,10 +17,11 @@ import java.util.Objects;
  * @details Questa classe modella un'entità libro all'interno del catalogo, contenente
  * dettagli come titolo, anno di pubblicazione, autori, ID univoco
  * e numero di copie disponibili.
- * Implementa {@link Comparable} per l'ordinamento.
- * @invariant availableCopies >= 0
- * @invariant bookId.length == 13
- * @invariant publishmentYear >= 0
+ * Implementa {@link Comparable} per l'ordinamento e {@link Serializable} per la serializzazione.
+ * @invariant attributi diversi da null.
+ * @invariant availableCopies >= 0.
+ * @invariant bookId.length == 13.
+ * @invariant publishmentYear >= 0.
  */
 public class Book implements Comparable<Book>, Serializable {
 
@@ -35,7 +36,7 @@ public class Book implements Comparable<Book>, Serializable {
     private List<String> authors;
 
     /**
-     * @brief Identificativo univoco libro (ISBN) {readOnly}.
+     * @brief Identificativo univoco libro {readOnly}.
      */
     private final String bookId;
 
@@ -54,9 +55,10 @@ public class Book implements Comparable<Book>, Serializable {
      * @details Inizializza gli attributi con i valori specificati se validi.
      * @param[in] title Il titolo del libro.
      * @param[in] authors Gli autori del libro.
-     * @param[in] bookId L'identificativo univoco del libro (ISBN).
+     * @param[in] bookId L'identificativo univoco del libro.
      * @param[in] publishmentYear L'anno di pubblicazione del libro.
      * @param[in] availableCopies Il numero di copie disponibili iniziali.
+     * @post Se le invarianti sono rispettate viene creato un libro con i valori specificati.
      * @post Se le invarianti non sono rispettate viene lanciata una IllegalArgumentException.
      */
     public Book(String title, List<String> authors, String bookId, int publishmentYear, int availableCopies) {
@@ -85,7 +87,7 @@ public class Book implements Comparable<Book>, Serializable {
     }
 
     /**
-     * @brief Restituisce l'identificativo univoco (ISBN).
+     * @brief Restituisce l'identificativo univoco.
      * @return String L'ISBN del libro.
      */
     public String getBookId() {
@@ -111,18 +113,20 @@ public class Book implements Comparable<Book>, Serializable {
     /**
      * @brief Imposta il numero di copie disponibili.
      * @param[in] availableCopies Il nuovo numero di copie.
-     * @post Se le invarianti non sono rispettate (es. copie negative) viene lanciata una IllegalArgumentException.
+     * @post Se le invarianti sono rispettate imposta il nuovo numero di copie disponibili
+     * @post Se le invarianti non sono rispettate viene lanciata una IllegalArgumentException.
      */
     public void setAvailableCopies(int availableCopies) {
+        if(!isAvailableCopiesValid(availableCopies)) throw new IllegalArgumentException("Impossibile impostare un numero di copie disponibili negativo");
         this.availableCopies = availableCopies;
     }
 
     /**
-     * @brief Copia i dati modificabili da un libro sorgente a un libro da modificare.
-     * @param[in,out] toModify Lo studente i cui campi verranno aggiornati.
-     * @param[in] newData Lo studente da cui verranno prelevati i nuovi valori.
+     * @brief Copia i dati modificabili da un libro sorgente.
+     * @param[in] newData Il libro da cui verranno prelevati i nuovi valori.
      * @details Questo metodo sostituisce i tradizionali setter, permettendo di aggiornare
-     *          in un'unica chiamata i campi principali dello studente (nome, cognome, email).
+     *          in un'unica chiamata i principali campi modificabili del libro (titolo, autori, anno di pubblicazione, numero di copie disponibili).
+     * @post I campi modificabili del libro sono aggiornati con quelli del libro specificato
      */
     public void copy(Book newData){
         this.title = newData.getTitle();
@@ -133,9 +137,10 @@ public class Book implements Comparable<Book>, Serializable {
 
     /**
      * @brief Confronta due libri per l'ordinamento.
-     * @details L'ordinamento avviene lessicograficamente prima per titolo, poi per autori, e infine per ID.
+     * @details Il confronto viene effettuato sull'identificativo del libro (bookId).
      * @param[in] other Il libro con cui confrontare l'istanza corrente.
-     * @return int Un valore negativo, zero o positivo.
+     * @return int Un valore negativo, zero o positivo se questo libro è
+     *             rispettivamente minore, uguale o maggiore di quello passato.
      */
     @Override
     public int compareTo(Book other) {
@@ -145,11 +150,6 @@ public class Book implements Comparable<Book>, Serializable {
         return this.bookId.compareTo(other.bookId);
     }
 
-    /**
-     * @brief Verifica la validità di tutti i dati necessari per creare un libro.
-     * @details Controlla che tutte le invarianti siano rispettate simultaneamente.
-     * @return boolean True in caso di successo (tutti i dati validi), altrimenti False.
-     */
     private boolean isValid(){
         return isBookIdValid(bookId) &&
                 isPublishmentYearValid(publishmentYear) &&
@@ -158,32 +158,14 @@ public class Book implements Comparable<Book>, Serializable {
                 authors != null;
     }
 
-    /**
-     * @brief Verifica la validità dell'identificativo di un libro.
-     * @details Controlla che l'ID rispetti il formato richiesto (es. lunghezza 13 caratteri).
-     * @param[in] bookId L'identificativo da verificare.
-     * @return boolean True se l'ID è valido, altrimenti False.
-     */
     private boolean isBookIdValid(String bookId){
         return bookId != null && bookId.length() == 13;
     }
 
-    /**
-     * @brief Verifica la validità dell'anno di pubblicazione.
-     * @details Controlla che l'anno non sia negativo.
-     * @param[in] publishmentYear L'anno da verificare.
-     * @return boolean True se l'anno è valido, altrimenti False.
-     */
     private boolean isPublishmentYearValid(int publishmentYear){
         return publishmentYear >= 0;
     }
 
-    /**
-     * @brief Verifica la validità del numero di copie.
-     * @details Controlla che il numero di copie non sia negativo.
-     * @param[in] availableCopies Il numero di copie da verificare.
-     * @return boolean True se il numero è valido, altrimenti False.
-     */
     private boolean isAvailableCopiesValid(int availableCopies){
         return availableCopies >= 0;
     }
@@ -197,6 +179,14 @@ public class Book implements Comparable<Book>, Serializable {
         return this.availableCopies > 0;
     }
 
+    
+    /**
+     * @brief Verifica l'uguaglianza tra due libri.
+     * @details Due libri sono considerati uguali se condividono lo stesso
+     *          identificativo univoco (bookId)
+     * @param[in] other L'oggetto con cui confrontare il libro.
+     * @return boolean true se i libri sono uguali, false altrimenti.
+     */
     @Override
     public boolean equals(Object otherBook) {
         if (this == otherBook) return true;
@@ -208,8 +198,15 @@ public class Book implements Comparable<Book>, Serializable {
         return bookId.equals(other.getBookId());
     }
 
+    /**
+     * @brief Calcola l'hash del libro.
+     * @details L'hash è calcolato utilizzando esclusivamente l'identificativo
+     *          del libro (bookId).
+     * @return int Il valore hash del libro.
+     */
     @Override
     public int hashCode() {
         return Objects.hash(this.bookId);
     }
+    
 }
