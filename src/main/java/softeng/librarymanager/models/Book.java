@@ -1,7 +1,7 @@
 /**
  * @file Book.java
  * @brief Definizione della classe modello che rappresenta un libro.
- * @author Acerra Fabrizio, Affinita Natale, Cwiertka Jakub, Galluccio Hermann
+ * @author [Acerra Fabrizio, Affinita Natale, Cwiertka Jakub, Galluccio Hermann]
  * @date Dicembre 2025
  * @package softeng.librarymanager.models
  */

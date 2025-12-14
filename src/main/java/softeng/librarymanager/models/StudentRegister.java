@@ -1,8 +1,9 @@
 /**
  * @file StudentRegister.java
  * @brief Implementazione del registro degli studenti.
- * @author Acerra Fabrizio
+ * @author [Acerra Fabrizio, Affinita Natale, Cwiertka Jakub, Galluccio Hermann]
  * @date Dicembre 2025
+ * @package softeng.librarymanager.models
  */
 
 package softeng.librarymanager.models;
@@ -12,16 +13,18 @@ import java.util.*;
 
 /**
  * @brief Implementa un catalogo studenti e le funzionalità per la sua gestione.
+ * @details  Questa classe fornisce metodi per l'aggiunta, la rimozione, la modifica e la verifica dell'univocità di uno studente.
+ * Inoltre, fornisce un metodo per la restituzione del catalogo come lista ordinata.
  * @see Register
  * @see Student
  * @invariant studentRegister != null
  */
 public class StudentRegister implements Register<Student>, Serializable {
 
-    private Set<Student> studentRegister;
+    private Set<Student> studentRegister;///< @brief Struttura dati interna per la memorizzazione del catalogo.
 
     /**
-     * @post Il catalogo studenti è correttamente inizializzato come un TreeSet vuoto.
+     * @post Il catalogo studenti è correttamente inizializzato ed è vuoto.
      */
     public StudentRegister() {
         this.studentRegister = new TreeSet<>();
@@ -33,7 +36,7 @@ public class StudentRegister implements Register<Student>, Serializable {
      * @pre toAdd != null
      * @pre toAdd deve essere uno studente valido secondo RegisterValidator
      * @see RegisterValidator
-     * @post Lo studente specificato è correttamente inserito nel catalogo.
+     * @post Lo studente specificato è presente nel catalogo.
      */
     @Override
     public void add(Student toAdd) {
@@ -41,24 +44,17 @@ public class StudentRegister implements Register<Student>, Serializable {
     }
 
     /**
-     * @brief Modifica i dati di uno studente esistente nel catalogo.
+     * @brief Modifica i dati di uno studente già presente nel catalogo.
+     * @details Copia i dati modificabili (nome, cognome, mail) dal nuovo oggetto a quello già presente
      * @param[in] old Studente da modificare.
      * @param[in] newObj Studente contenente i nuovi dati aggiornati.
      * @pre newObj != null
      * @pre 'old' deve essere già presente nel catalogo.
-     * @pre 'newObj' deve essere uno Studente valido secondo RegisterValidator
-     * @see RegisterValidator
-     * @post I dati dello studente specificato sono aggiornati mantenendo invariato il riferimento (all'oggetto originale) presente nel catalogo.
+     * @post I dati dello studente specificato sono aggiornati con quelli di 'newObj'
+     * @post Il riferimento all'oggetto originale presente nel catalogo resta invariato.
      */
     @Override
     public void modify(Student old, Student newObj) {
-        /*
-         * Recuperiamo il riferimento all'oggetto Student memorizzato nel set.
-         * Poiché i Loan (prestiti) potrebbero mantenere un riferimento diretto all'istanza
-         * dello studente, non possiamo sostituire l'oggetto con una nuova istanza (per necessità di sincronizzazione).
-         * Procediamo quindi aggiornando i singoli campi dell'istanza esistente con i valori di 'newObj'.
-         * Si noti che, essendo lo studentId non modificabile, non è possibile corrompere l'ordinamento del TreeSet.
-         */
         for(Student student : studentRegister)
             if(student.equals(old)){
                 student.copy(newObj);
@@ -69,7 +65,7 @@ public class StudentRegister implements Register<Student>, Serializable {
      * @brief Rimuove uno studente dal catalogo.
      * @param[in] toRemove Studente da rimuovere dal catalogo.
      * @pre 'toRemove' è attualmente presente nel catalogo.
-     * @post Lo studente specificato è rimosso dal catalogo.
+     * @post 'toRemove' è rimosso dal catalogo.
      */
     @Override
     public void remove(Student toRemove) {
@@ -77,11 +73,10 @@ public class StudentRegister implements Register<Student>, Serializable {
     }
 
     /**
-     * @brief Verifica la validità di uno studente.
-     * @param[in] toVerify Studente la cui validità va verificata.
-     * @return true se lo studente rispetta i criteri di validità, false altrimenti.
-     * @pre toVerify e i suoi attributi devono essere !null.
-     * @post Il valore restituito sarà "true" se lo studente è valido, "false" altrimenti
+     * @brief Verifica l'assenza di uno studente nel catalogo.
+     * @param[in] toVerify studente la cui assenza va verificata.
+     * @return True se lo studente non è già presente nel catalogo, false altrimenti.
+     * @pre toVerify != null
      */
     @Override
     public boolean isUnique(Student toVerify) {
@@ -89,17 +84,16 @@ public class StudentRegister implements Register<Student>, Serializable {
     }
 
     /**
-     * @brief Restituisce la lista di tutti gli studenti presenti nel catalogo.
-     * @return Una List contenente tutti gli studenti presenti nel catalogo
-     * @post Viene restituita una lista contenente gli studenti presenti nel catalogo
+     * @brief Restituisce una lista ordinata di tutti gli studenti presenti nel catalogo.
+     * @details L'ordinamento avviene prima per Cognome, poi per Nome, infine per Matricola.
+     * @return Una lista (ordinata per Cognome, Nome e Matricola) contenente tutti gli studenti del catalogo
      */
     @Override
     public List<Student> getRegisterList() {
-        /*
-         * Creiamo una nuova ArrayList passando il Set al costruttore per restituire una lista ordinata.
-         */
         List<Student> list = new ArrayList<>(studentRegister);
-        list.sort(Comparator.comparing(Student::getName).thenComparing(Student::getSurname));
+        list.sort(Comparator.comparing(Student::getSurname).
+                thenComparing(Student::getName).
+                thenComparing(Student::getStudentId));
         return list;
     }
 
