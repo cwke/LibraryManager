@@ -28,30 +28,23 @@ import softeng.librarymanager.models.Student;
  */
 public abstract class LoanPopupController {
 
-    @FXML protected TextField studentSearchTF;
-    @FXML protected ListView<Student> studentListView;
-    @FXML protected TextField bookSearchTF;
-    @FXML protected ListView<Book> bookListView;
-    @FXML protected DatePicker dateDP;
-    @FXML protected Button confirmBtn;
-    @FXML protected Button cancelBtn;
+    @FXML 
+    protected TextField studentSearchTF;
+    @FXML 
+    protected ListView<Student> studentListView;
+    @FXML 
+    protected TextField bookSearchTF;
+    @FXML 
+    protected ListView<Book> bookListView;
+    @FXML 
+    protected DatePicker dateDP;
+    @FXML 
+    protected Button confirmBtn;
+    @FXML 
+    protected Button cancelBtn;
 
-    /**
-     * @brief Inizializzazione base del controller.
-     * @details Metodo chiamato automaticamente da JavaFX dopo il caricamento dell'FXML.
-     */
     @FXML
-    public void initialize() {
-    }
-
-    /**
-     * @brief Gestisce l'evento di click sul bottone di conferma.
-     * @details Metodo astratto o base da implementare nelle sottoclassi per definire
-     *          la logica specifica (Inserimento o Modifica).
-     * @param[in] event L'evento generato dal click.
-     */
-    @FXML
-    public abstract void confirmBtnAction(ActionEvent event);
+    protected abstract void confirmBtnAction(ActionEvent event);
 
     /**
      * @brief Gestisce l'evento di click sul bottone di annullamento.
@@ -59,18 +52,19 @@ public abstract class LoanPopupController {
      * @param[in] event L'evento generato dal click.
      */
     @FXML
-    public void cancelBtnAction(ActionEvent event) {
-        // 1. Recuperiamo il componente che ha scatenato l'evento (il pulsante)
+    protected void cancelBtnAction(ActionEvent event) {
         Node source = (Node) event.getSource();
-
-        // 2. Dal pulsante, otteniamo la Scena, e dalla Scena otteniamo la Finestra
-        // (Stage)
         Stage stage = (Stage) source.getScene().getWindow();
-
-        // 3. Chiudiamo la finestra
         stage.close();
     }
-    
+
+    /**
+     * @brief Mostra un alert con il tipo, titolo, testo e contenuto specificati.
+     * @param[in] type Il tipo di alert.
+     * @param[in] title Il titolo dell'alert.
+     * @param[in] header Il testo dell'intestazione dell'alert.
+     * @param[in] content Il contenuto dell'alert.
+     */ 
     protected void showAlert(Alert.AlertType type, String title, String header, String content) {
         Alert alert = new Alert(type);
         alert.setTitle(title);

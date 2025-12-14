@@ -44,20 +44,19 @@ import softeng.librarymanager.models.Register;
  */
 public class BookRegisterController {
 
-    @FXML
+    @FXML 
     private TableView<Book> bookTable;
-    @FXML
+    @FXML 
     private TableColumn<Book, String> titleClm;
-    @FXML
+    @FXML 
     private TableColumn<Book, String> authorsClm;
-    @FXML
+    @FXML 
     private TableColumn<Book, Integer> publishmentYearClm;
-    @FXML
+    @FXML 
     private TableColumn<Book, String> bookIdClm;
-    @FXML
+    @FXML 
     private TableColumn<Book, Integer> availableCopiesClm;
-
-    @FXML
+    @FXML 
     private SideBarController sideBarController;
 
     private final Register<Book> bookRegister;
@@ -71,11 +70,13 @@ public class BookRegisterController {
     }
 
     /**
-     * @brief Metodo di inizializzazione del controller JavaFX.
+     * @brief Metodo di inizializzazione del controller.
+     * @details Viene chiamato automaticamente da JavaFX dopo il caricamenteo dell'FXML.
+     *          Inizializza la tabella e le colonne, imposta i Binding per i tasti di modifica e rimozione,
+     *          aggiunge il listener per la barra di ricerca.
      */
     @FXML
     public void initialize() {
-        // Inizializza la tabella
         updateTableView();
 
         // Configurazione Colonne:
@@ -87,7 +88,7 @@ public class BookRegisterController {
         availableCopiesClm
                 .setCellValueFactory(row -> new SimpleIntegerProperty(row.getValue().getAvailableCopies()).asObject());
 
-        // Sidebar Event Listeners
+        // Sidebar
         sideBarController.getAddBtn().setOnAction(event -> openInsertPopup());
         sideBarController.getModifyBtn().setOnAction(event -> openModifyPopup());
         sideBarController.getRemoveBtn().setOnAction(event -> removeFromRegister());
@@ -184,14 +185,6 @@ public class BookRegisterController {
         }
     }
 
-    /**
-     * @brief Aggiorna la TableView con i dati attuali del registro.
-     */
-    public void updateTableView() {
-        bookTable.setItems(FXCollections.observableArrayList(bookRegister.getRegisterList()));
-        bookTable.refresh();
-    }
-
     private void searchBook() {
         String searchText = sideBarController.getSearchBarTF().getText();
 
@@ -215,4 +208,13 @@ public class BookRegisterController {
         }
         bookTable.setItems(filteredBooks);
     }
+    
+    /**
+     * @brief Aggiorna la TableView con i dati attuali del registro.
+     */
+    public void updateTableView() {
+        bookTable.setItems(FXCollections.observableArrayList(bookRegister.getRegisterList()));
+        bookTable.refresh();
+    }
+    
 }

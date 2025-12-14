@@ -18,10 +18,8 @@ import softeng.librarymanager.models.RegisterModifier;
  * @class BookModifyPopupController
  * @brief Classe controller per la gestione del popup di modifica libri.
  * @details Estende {@link BookPopupController}. Gestisce il popolamento dei
- *          campi
- *          con i dati esistenti e l'aggiornamento del libro nel registro
- *          tramite
- *          {@link RegisterModifier}.
+ *          campi con i dati esistenti e l'aggiornamento del libro nel registro
+ *          tramite {@link RegisterModifier}.
  */
 public class BookModifyPopupController extends BookPopupController {
 
@@ -39,7 +37,9 @@ public class BookModifyPopupController extends BookPopupController {
     }
 
     /**
-     * @brief Inizializza il controller.
+     * @brief Metodo di inizializzazione del controller.
+     * @details Viene chiamato automaticamente da JavaFX dopo il caricamenteo dell'FXML.
+     *          Inizializza i campi con i dati esistenti e imposta i listener.
      */
     @Override
     @FXML
@@ -62,27 +62,22 @@ public class BookModifyPopupController extends BookPopupController {
             publishYearTF.setText(String.valueOf(bookToModify.getPublishmentYear()));
             copiesTF.setText(String.valueOf(bookToModify.getAvailableCopies()));
 
-            // Rendo non modificabile ISBN
             bookCodeTF.setDisable(true);
         }
     }
 
-    /**
-     * @brief Gestisce l'azione di conferma per la modifica.
-     * @details Raccoglie i dati modificati, valida l'oggetto e applica le modifiche.
-     * @param[in] event L'evento click.
-     */
     @Override
-    public void confirmBtnAction(javafx.event.ActionEvent event) {
+    protected void confirmBtnAction(javafx.event.ActionEvent event) {
         try {
             Book bookModified = new Book(titleTF.getText(), getAuthorsListPopup(), bookCodeTF.getText(), Integer.parseInt(publishYearTF.getText()), Integer.parseInt(copiesTF.getText()));
 
             bookRegisterModifier.modify(bookToModify, bookModified);
-            // Chiudi la finestra
+
             Stage stage = (Stage) confirmBtn.getScene().getWindow();
             stage.close();
         } catch (IllegalArgumentException e) {
             showAlert(Alert.AlertType.ERROR, "Errore", "Dati non validi", e.getMessage());
         }
     }
+    
 }

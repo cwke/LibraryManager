@@ -29,7 +29,7 @@ import softeng.librarymanager.models.Student;
 /**
  * @class LoanInsertPopupController
  * @brief Classe controller per la gestione del popup di inserimento prestiti.
- * @details Estende {@link LoanPopupController}. Si occupa di popolare le ComboBox
+ * @details Estende {@link LoanPopupController}. Si occupa di popolare le ListView
  *          recuperando le liste di studenti e libri tramite {@link RegisterObtainer} e
  *          di aggiungere il nuovo prestito tramite {@link RegisterAdder}.
  */
@@ -39,7 +39,14 @@ public class LoanInsertPopupController extends LoanPopupController {
     private final RegisterObtainer<Book> bookRegisterObtainer;
     private final RegisterObtainer<Student> studentRegisterObtainer;
     private final RegisterValidator<Loan> loanRegisterValidator;
-
+    
+    /**
+     * @brief Costruttore del controller.
+     * @param[in] loanRegisterAdder L'oggetto {@link RegisterAdder} per aggiungere il prestito al registro.
+     * @param[in] bookRegisterObtainer L'oggetto {@link RegisterObtainer} per ottenere la lista dei libri.
+     * @param[in] studentRegisterObtainer L'oggetto {@link RegisterObtainer} per ottenere la lista degli studenti.
+     * @param[in] loanRegisterValidator L'oggetto {@link RegisterValidator} per validare il prestito.
+     */
     public LoanInsertPopupController(RegisterAdder<Loan> loanRegisterAdder, RegisterObtainer<Book> bookRegisterObtainer, RegisterObtainer<Student> studentRegisterObtainer, RegisterValidator<Loan> loanRegisterValidator) {
         this.loanRegisterAdder = loanRegisterAdder;
         this.bookRegisterObtainer = bookRegisterObtainer;
@@ -49,18 +56,17 @@ public class LoanInsertPopupController extends LoanPopupController {
 
     /**
      * @brief Inizializza il controller.
-     * @details Richiama l'inizializzazione della superclasse.
+     * @details Inizializza ListView per la ricerca e la selezione di studenti e libri,
+     *          imposta la data di prestito come la data attuale + 1 mese
+     *          e aggiunge un binding per la disabilitazione del pulsante di conferma se non sono selezionati un libro e uno studente.
      */
     @FXML
     public void initialize() {
-        super.initialize();
         setupStudentInsert();
         setupBookInsert();
         
-        // Inizializza la data di prestito come la data attuale + 1 mese.
         dateDP.setValue(LocalDate.now().plusMonths(1));
         
-        // Binding per la disabilitazione del pulsante di conferma se non sono selezionati un libro e uno studente.
         BooleanBinding studentNotSelectedBinding = studentListView.getSelectionModel().selectedItemProperty().isNull();
         BooleanBinding bookNotSelectedBinding = bookListView.getSelectionModel().selectedItemProperty().isNull();
         
@@ -141,7 +147,7 @@ public class LoanInsertPopupController extends LoanPopupController {
      * @param[in] event L'evento click.
      */
     @Override
-    public void confirmBtnAction(ActionEvent event) {
+    protected void confirmBtnAction(ActionEvent event) {
         Student selectedStudent = studentListView.getSelectionModel().getSelectedItem();
         Book selectedBook = bookListView.getSelectionModel().getSelectedItem();
         LocalDate selectedDate = dateDP.getValue();

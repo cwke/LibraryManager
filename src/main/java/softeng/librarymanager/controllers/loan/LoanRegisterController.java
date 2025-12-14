@@ -45,16 +45,25 @@ import softeng.librarymanager.controllers.SideBarController;
  */
 public class LoanRegisterController {
 
-    @FXML private TableView<Loan> loanTable;
-    @FXML private TableColumn<Loan, String> studentNameClm;
-    @FXML private TableColumn<Loan, String> studentSurnameClm;
-    @FXML private TableColumn<Loan, String> studentIdClm;
-    @FXML private TableColumn<Loan, String> bookNameClm;
-    @FXML private TableColumn<Loan, String> bookIdClm;
-    @FXML private TableColumn<Loan, LocalDate> loanEndClm;
-    @FXML private TableColumn<Loan, String> returnedClm;
+    @FXML 
+    private TableView<Loan> loanTable;
+    @FXML 
+    private TableColumn<Loan, String> studentNameClm;
+    @FXML 
+    private TableColumn<Loan, String> studentSurnameClm;
+    @FXML 
+    private TableColumn<Loan, String> studentIdClm;
+    @FXML 
+    private TableColumn<Loan, String> bookNameClm;
+    @FXML 
+    private TableColumn<Loan, String> bookIdClm;
+    @FXML 
+    private TableColumn<Loan, LocalDate> loanEndClm;
+    @FXML 
+    private TableColumn<Loan, String> returnedClm;
     
-    @FXML private SideBarController sideBarController;
+    @FXML 
+    private SideBarController sideBarController;
 
     private final Library library;
     
@@ -69,9 +78,8 @@ public class LoanRegisterController {
 
     /**
      * @brief Metodo di inizializzazione del controller JavaFX.
-     * @details Configura le colonne della tabella e associa i listener agli eventi
-     *          dei bottoni della SideBar (Aggiungi, Modifica, Rimuovi).
-     *
+     * @details Configura le colonne della tabella, e aggiunge i colori alle righe, 
+     *          binding per disabilitare i pulsanti modifica e rimuovi e inizializza la ricerca.
      */
     @FXML
     public void initialize() {
@@ -130,10 +138,6 @@ public class LoanRegisterController {
         
     }
 
-    /**
-     * @brief Apre il popup per la creazione di un nuovo prestito.
-     * @details Invocato alla pressione del tasto "Aggiungi" nella SideBar.
-     */
     private void openInsertPopup() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/softeng/librarymanager/fxml/LoanPopupView.fxml"));
@@ -161,15 +165,9 @@ public class LoanRegisterController {
             e.printStackTrace();
         }
         
-        // Aggiorna la tabella alla chiusura del popup
         updateTableView();
     }
 
-    /**
-     * @brief Apre il popup per la modifica del prestito selezionato.
-     * @details Invocato alla pressione del tasto "Modifica" nella SideBar.
-     *          Recupera l'elemento selezionato nella TableView e lo passa al popup.
-     */
     private void openModifyPopup() {
         Loan selectedLoan = loanTable.getSelectionModel().getSelectedItem();
         if (selectedLoan == null) return;
@@ -179,7 +177,6 @@ public class LoanRegisterController {
             
             loader.setController(new LoanModifyPopupController(
                     (old, newObj) -> library.getLoanRegister().modify(old, newObj),
-                    (toVerify) -> library.getLoanRegister().isUnique(toVerify),
                     selectedLoan
             ));
             
@@ -202,10 +199,6 @@ public class LoanRegisterController {
         updateTableView();
     }
 
-    /**
-     * @brief Rimuove il prestito selezionato dal registro.
-     * @details Invocato alla pressione del tasto "Rimuovi" nella SideBar.
-     */
     private void removeFromRegister() {
         Loan selectedLoan = loanTable.getSelectionModel().getSelectedItem();
         if (selectedLoan == null) return;
@@ -228,7 +221,6 @@ public class LoanRegisterController {
         }
     }
 
-
     private void updateTableView() {
         loanTable.setItems(FXCollections.observableArrayList(library.getLoanRegister().getRegisterList()));
         loanTable.refresh();
@@ -250,13 +242,12 @@ public class LoanRegisterController {
             String studentName = loan.getStudent().getName().toLowerCase();
             String studentSurname = loan.getStudent().getSurname().toLowerCase();
             String studentId = loan.getStudent().getStudentId();
-            // Cerca per Nome, Cognome o Matricola
             String fullName = studentName + " " + studentSurname;
             String fullNameReverse = studentSurname + " " + studentName;
             
             if (fullName.contains(lowerCaseSearchText) ||
                 fullNameReverse.contains(lowerCaseSearchText) ||
-                loan.getStudent().getStudentId().contains(lowerCaseSearchText) ||
+                studentId.contains(lowerCaseSearchText) ||
                 loan.getBook().getTitle().toLowerCase().contains(lowerCaseSearchText) ||
                 String.join(", ", loan.getBook().getAuthors()).toLowerCase().contains(lowerCaseSearchText) ||
                 loan.getBook().getBookId().contains(lowerCaseSearchText)) {

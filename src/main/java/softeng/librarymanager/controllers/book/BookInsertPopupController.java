@@ -26,8 +26,8 @@ import softeng.librarymanager.models.RegisterValidator;
 public class BookInsertPopupController extends BookPopupController {
 
 
-    private RegisterAdder<Book> bookRegisterAdder;
-    private RegisterValidator<Book> bookRegisterValidator;
+    private final RegisterAdder<Book> bookRegisterAdder;
+    private final RegisterValidator<Book> bookRegisterValidator;
 
     public BookInsertPopupController(RegisterAdder<Book> bookRegisterAdder, RegisterValidator<Book> bookRegisterValidator) {
         this.bookRegisterAdder = bookRegisterAdder;
@@ -49,7 +49,7 @@ public class BookInsertPopupController extends BookPopupController {
      * @param[in] event L'evento click.
      */
     @Override
-    public void confirmBtnAction(ActionEvent event) {
+    protected void confirmBtnAction(ActionEvent event) {
         try {
             Book bookToAdd = new Book(titleTF.getText(), getAuthorsListPopup(), bookCodeTF.getText(), Integer.parseInt(publishYearTF.getText()), Integer.parseInt(copiesTF.getText()));
 

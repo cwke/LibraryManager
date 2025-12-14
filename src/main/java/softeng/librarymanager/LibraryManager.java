@@ -13,6 +13,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 /**
@@ -40,6 +41,9 @@ public class LibraryManager extends Application {
         stage.setScene(scene);
         stage.setMinWidth(620);
         stage.setMinHeight(480);
+        stage.setTitle("Library Manager");
+        //System.out.println(getClass().getResource("./"));
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("assets/logo.png")));
         stage.show();
     }
 

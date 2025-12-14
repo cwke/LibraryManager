@@ -26,12 +26,10 @@ import softeng.librarymanager.models.RegisterValidator;
 public class LoanModifyPopupController extends LoanPopupController {
 
     private final RegisterModifier<Loan> loanRegisterModifier;
-    private RegisterValidator<Loan> loanRegisterValidator;
     private Loan loanToModify;
 
-    public LoanModifyPopupController(RegisterModifier<Loan> loanRegisterModifier, RegisterValidator<Loan> loanRegisterValidator, Loan loanToModify) {
+    public LoanModifyPopupController(RegisterModifier<Loan> loanRegisterModifier, Loan loanToModify) {
         this.loanRegisterModifier = loanRegisterModifier;
-        this.loanRegisterValidator = loanRegisterValidator;
         this.loanToModify = loanToModify;
     }
 
@@ -61,7 +59,7 @@ public class LoanModifyPopupController extends LoanPopupController {
      * @param[in] event L'evento click.
      */
     @Override
-    public void confirmBtnAction(ActionEvent event) {
+    protected void confirmBtnAction(ActionEvent event) {
         try {
             Loan loanModified = new Loan(loanToModify.getStudent(), loanToModify.getBook(), dateDP.getValue());
 

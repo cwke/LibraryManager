@@ -21,7 +21,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,15 +35,29 @@ import java.util.List;
  */
 public abstract class BookPopupController {
 
-    @FXML protected TextField titleTF;
-    @FXML protected VBox authorsListVBox;
-    @FXML protected TextField Author1TF;
-    @FXML protected TextField publishYearTF;
-    @FXML protected TextField copiesTF;
-    @FXML protected TextField bookCodeTF;
-    @FXML protected Button confirmBtn;
-    @FXML protected Button cancelBtn;
-    @FXML protected Button addAuthorsBtn;
+    @FXML 
+    protected TextField titleTF;
+    @FXML 
+    protected VBox authorsListVBox;
+    @FXML 
+    protected TextField Author1TF;
+    @FXML 
+    protected TextField publishYearTF;
+    @FXML 
+    protected TextField copiesTF;
+    @FXML 
+    protected TextField bookCodeTF;
+    @FXML 
+    protected Button confirmBtn;
+    @FXML 
+    protected Button cancelBtn;
+    @FXML 
+    protected Button addAuthorsBtn;
+    
+    protected List<TextField> dynamicAuthorFields = new ArrayList<>();
+
+    private final Image removeImg = new Image(
+            getClass().getResourceAsStream("/softeng/librarymanager/assets/remove.png"));
 
     /**
      * @brief Inizializzazione base del controller.
@@ -55,13 +68,6 @@ public abstract class BookPopupController {
             addAuthorsBtn.disableProperty().bind(Bindings.size(authorsListVBox.getChildren()).greaterThanOrEqualTo(3));
         }
     }
-
-    // PARTE DI CODICE PER AUTOR
-
-    protected List<TextField> dynamicAuthorFields = new ArrayList<>();
-
-    private final Image removeImg = new Image(
-            getClass().getResourceAsStream("/softeng/librarymanager/assets/remove.png"));
 
     @FXML
     private HBox createAuthorRow(int authorNum) {
@@ -119,24 +125,11 @@ public abstract class BookPopupController {
         authorsListVBox.getChildren().add(createAuthorRow(nextAuthorNum));
     }
 
-    // FINE PARTE DI CODICE PER AUTORI
-
-    /**
-     * @brief Gestisce l'evento di click sul bottone di conferma.
-     * @details Metodo astratto da implementare nelle sottoclassi per definire
-     *          la logica specifica (Inserimento o Modifica).
-     * @param[in] event L'evento generato dal click.
-     */
     @FXML
-    public abstract void confirmBtnAction(ActionEvent event);
+    protected abstract void confirmBtnAction(ActionEvent event);
 
-    /**
-     * @brief Gestisce l'evento di click sul bottone di annullamento.
-     * @details Chiude la finestra corrente senza salvare le modifiche.
-     * @param[in] event L'evento generato dal click.
-     */
     @FXML
-    public void cancelBtnAction(ActionEvent event) {
+    protected void cancelBtnAction(ActionEvent event) {
         // 1. Recuperiamo il componente che ha scatenato l'evento (il pulsante)
         Node source = (Node) event.getSource();
 
@@ -157,4 +150,5 @@ public abstract class BookPopupController {
         alert.getDialogPane().getStylesheets().add(getClass().getResource("/softeng/librarymanager/style.css").toExternalForm());
         alert.showAndWait();
     }
+    
 }
