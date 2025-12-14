@@ -24,6 +24,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.Optional;
+import javafx.beans.property.SimpleIntegerProperty;
 import softeng.librarymanager.models.Register;
 import softeng.librarymanager.models.Student;
 import softeng.librarymanager.controllers.SideBarController;
@@ -43,7 +44,7 @@ public class StudentRegisterController {
     @FXML private TableColumn<Student, String> surnameClm;
     @FXML private TableColumn<Student, String> studentIdClm;
     @FXML private TableColumn<Student, String> emailClm;
-
+    @FXML private TableColumn<Student, Integer> activeLoansCountClm;
     @FXML private SideBarController sideBarController;
     
     private final Register<Student> studentRegister;
@@ -69,6 +70,7 @@ public class StudentRegisterController {
         surnameClm.setCellValueFactory(row -> new SimpleStringProperty(row.getValue().getSurname()));
         studentIdClm.setCellValueFactory(row -> new SimpleStringProperty(row.getValue().getStudentId()));
         emailClm.setCellValueFactory(row -> new SimpleStringProperty(row.getValue().getEmail()));
+        activeLoansCountClm.setCellValueFactory(row -> new SimpleIntegerProperty(row.getValue().getActiveLoans().size()).asObject());
 
         // Sidebar Event Listeners
         sideBarController.getAddBtn().setOnAction(event -> openInsertPopup());
@@ -179,6 +181,8 @@ public class StudentRegisterController {
 
     private void searchBook() {
         String searchText = sideBarController.getSearchBarTF().getText();
+        
+
 
         // Se la ricerca è vuota, mostra tutto
         if (searchText == null || searchText.isEmpty()) {
@@ -190,13 +194,19 @@ public class StudentRegisterController {
         String lowerCaseSearchText = searchText.toLowerCase();
         ObservableList<Student> filteredStudents = FXCollections.observableArrayList();
 
-        for (Student Student : allStudents) {
+        for (Student student : allStudents) {
+            String studentName = student.getName().toLowerCase();
+            String studentSurname = student.getSurname().toLowerCase();
+            String studentId = student.getStudentId();
             // Cerca per Nome, Cognome o Matricola
-            if (Student.getName().toLowerCase().contains(lowerCaseSearchText) ||
-                    Student.getSurname().toLowerCase().contains(lowerCaseSearchText) ||
-                    Student.getStudentId().toLowerCase().contains(lowerCaseSearchText)) {
-                filteredStudents.add(Student);
-            }
+            String fullName = studentName + " " + studentSurname;
+            String fullNameReverse = studentSurname + " " + studentName;
+                
+           if (fullName.contains(lowerCaseSearchText) ||
+                   fullNameReverse.contains(lowerCaseSearchText) ||
+                   studentId.contains(lowerCaseSearchText)) {
+               filteredStudents.add(student);
+           }
         }
         studentTable.setItems(filteredStudents);
     }

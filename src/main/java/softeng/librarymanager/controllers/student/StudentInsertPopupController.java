@@ -26,8 +26,8 @@ import softeng.librarymanager.models.Student;
  */
 public class StudentInsertPopupController extends StudentPopupController {
 
-    private RegisterAdder<Student> studentRegisterAdder;
-    private RegisterValidator<Student> studentRegisterValidator;
+    private final RegisterAdder<Student> studentRegisterAdder;
+    private final RegisterValidator<Student> studentRegisterValidator;
 
     /**
      * @brief Costruttore.

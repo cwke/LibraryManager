@@ -247,11 +247,19 @@ public class LoanRegisterController {
         ObservableList<Loan> filteredLoans = FXCollections.observableArrayList();
         
         for (Loan loan : allLoans) {
-            if (loan.getStudent().getName().toLowerCase().contains(lowerCaseSearchText) ||
-                loan.getStudent().getSurname().toLowerCase().contains(lowerCaseSearchText) ||
-                loan.getStudent().getStudentId().toLowerCase().contains(lowerCaseSearchText) ||
+            String studentName = loan.getStudent().getName().toLowerCase();
+            String studentSurname = loan.getStudent().getSurname().toLowerCase();
+            String studentId = loan.getStudent().getStudentId();
+            // Cerca per Nome, Cognome o Matricola
+            String fullName = studentName + " " + studentSurname;
+            String fullNameReverse = studentSurname + " " + studentName;
+            
+            if (fullName.contains(lowerCaseSearchText) ||
+                fullNameReverse.contains(lowerCaseSearchText) ||
+                loan.getStudent().getStudentId().contains(lowerCaseSearchText) ||
                 loan.getBook().getTitle().toLowerCase().contains(lowerCaseSearchText) ||
-                loan.getBook().getBookId().toLowerCase().contains(lowerCaseSearchText)) {
+                String.join(", ", loan.getBook().getAuthors()).toLowerCase().contains(lowerCaseSearchText) ||
+                loan.getBook().getBookId().contains(lowerCaseSearchText)) {
                 filteredLoans.add(loan);
             }
         }

@@ -5,7 +5,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="720.0" prefWidth="1280.0" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <SplitPane dividerPositions="0.85" prefHeight="596.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <items>
@@ -16,10 +16,11 @@
                                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                             </columnResizePolicy>
                             <columns>
-                                <TableColumn fx:id="nameClm" minWidth="100.0" text="Nome" />
-                                <TableColumn fx:id="surnameClm" minWidth="100.0" text="Cognome" />
-                                <TableColumn fx:id="studentIdClm" minWidth="100.0" text="Matricola" />
-                                <TableColumn fx:id="emailClm" minWidth="150.0" text="Mail" />
+                                <TableColumn fx:id="nameClm" minWidth="100.0" prefWidth="203.20000916719437" text="Nome" />
+                                <TableColumn fx:id="surnameClm" minWidth="100.0" prefWidth="309.59999084472656" text="Cognome" />
+                                <TableColumn fx:id="studentIdClm" minWidth="100.0" prefWidth="164.800048828125" text="Matricola" />
+                                <TableColumn fx:id="emailClm" minWidth="150.0" prefWidth="310.39996337890625" text="Mail" />
+                        <TableColumn fx:id="activeLoansCountClm" prefWidth="103.99993896484375" text="Prestiti attivi" />
                             </columns>
                         </TableView>
                     </children>

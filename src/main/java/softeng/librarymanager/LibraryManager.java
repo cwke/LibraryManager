@@ -23,11 +23,7 @@ import javafx.stage.Stage;
  */
 public class LibraryManager extends Application {
 
-    /**
-     * @brief Riferimento statico alla scena principale dell'applicazione.
-     */
     private static Scene scene;
-    private static softeng.librarymanager.models.Library library;
 
     /**
      * @brief Metodo di avvio dell'applicazione JavaFX.
@@ -38,7 +34,6 @@ public class LibraryManager extends Application {
      */
     @Override
     public void start(Stage stage) throws IOException {
-        library = new softeng.librarymanager.models.Library();
         scene = new Scene(loadFXML("MainView"), 1280, 720);
         String cssPath = getClass().getResource("style.css").toExternalForm();
         scene.getStylesheets().add(cssPath);
@@ -48,34 +43,15 @@ public class LibraryManager extends Application {
         stage.show();
     }
 
-    /**
-     * @brief Cambia il nodo radice della scena corrente.
-     * @details Metodo di utilità per navigare tra diverse viste (View Switching)
-     *          senza chiudere la finestra principale.
-     * @param[in] fxml Il nome del file FXML (senza estensione) da caricare come nuova radice.
-     * @throws IOException Se il file FXML specificato non viene trovato o non può essere caricato.
-     */
     static void setRoot(String fxml) throws IOException {
         scene.setRoot(loadFXML(fxml));
     }
 
-    /**
-     * @brief Carica un file FXML e restituisce il nodo genitore (Parent).
-     * @details Cerca il file nella directory delle risorse "fxml/".
-     * @param[in] fxml Il nome del file FXML da caricare.
-     * @return Parent Il nodo radice della gerarchia di oggetti caricata dal file FXML.
-     * @throws IOException Se si verifica un errore di I/O durante il caricamento.
-     */
     private static Parent loadFXML(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(LibraryManager.class.getResource("fxml/" + fxml + ".fxml"));
         return fxmlLoader.load();
     }
 
-    /**
-     * @brief Punto di ingresso principale (Main) per l'applicazione Java.
-     * @details Lancia il runtime JavaFX chiamando il metodo launch().
-     * @param[in] args Argomenti da riga di comando passati all'applicazione.
-     */
     public static void main(String[] args) {
         launch();
     }

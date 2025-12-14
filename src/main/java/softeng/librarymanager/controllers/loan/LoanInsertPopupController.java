@@ -149,7 +149,6 @@ public class LoanInsertPopupController extends LoanPopupController {
         try {
             Loan loanToADd = new Loan(selectedStudent, selectedBook, selectedDate);
             if (loanRegisterValidator.isUnique(loanToADd)) {
-                loanToADd.activateLoan();
                 loanRegisterAdder.add(loanToADd);
                 Stage stage = (Stage) confirmBtn.getScene().getWindow();
                 stage.close();

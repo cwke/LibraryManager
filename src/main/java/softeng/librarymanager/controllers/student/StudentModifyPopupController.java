@@ -8,6 +8,7 @@
 
 package softeng.librarymanager.controllers.student;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
@@ -26,8 +27,8 @@ import softeng.librarymanager.models.Student;
  */
 public class StudentModifyPopupController extends StudentPopupController {
 
-    private RegisterModifier<Student> studentRegisterModifier;
-    private Student studentToModify;
+    private final RegisterModifier<Student> studentRegisterModifier;
+    private final Student studentToModify;
 
     /**
      * @brief Costruttore.
@@ -66,7 +67,7 @@ public class StudentModifyPopupController extends StudentPopupController {
      * @param[in] event L'evento click.
      */
     @Override
-    public void confirmBtnAction(javafx.event.ActionEvent event) {
+    public void confirmBtnAction(ActionEvent event) {
         try {
             Student studentModified = new Student(nameTF.getText(), surnameTF.getText(), studentIdTF.getText(),
                     emailTF.getText());
