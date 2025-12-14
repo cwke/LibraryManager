@@ -44,8 +44,8 @@ public class LoanRegister implements Register<Loan>, Serializable {
      */
     @Override
     public void add(Loan toAdd) {
-        loanRegister.add(toAdd);
         toAdd.activateLoan();
+        loanRegister.add(toAdd);
     }
 
     /**
