@@ -146,7 +146,7 @@ public class LoanRegisterController {
             ));
             
             Parent root = loader.load();
-            Scene scene = new Scene(root, 480, 720);
+            Scene scene = new Scene(root, 620, 480);
             
             // CSS
             scene.getStylesheets().add(getClass().getResource("/softeng/librarymanager/style.css").toExternalForm());
@@ -184,7 +184,7 @@ public class LoanRegisterController {
             ));
             
             Parent root = loader.load();
-            Scene scene = new Scene(root, 480, 720);
+            Scene scene = new Scene(root, 620, 480);
             
             // CSS
             scene.getStylesheets().add(getClass().getResource("/softeng/librarymanager/style.css").toExternalForm());
@@ -217,6 +217,8 @@ public class LoanRegisterController {
                 + " " + selectedLoan.getStudent().getName()
         );
         alert.setContentText("L'operazione restituirà il prestito del libro " + selectedLoan.getBook().getTitle());
+        alert.setGraphic(null);
+        alert.getDialogPane().getStylesheets().add(getClass().getResource("/softeng/librarymanager/style.css").toExternalForm());
 
         Optional<ButtonType> result = alert.showAndWait();
 

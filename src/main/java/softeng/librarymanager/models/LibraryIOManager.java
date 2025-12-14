@@ -9,7 +9,7 @@
 package softeng.librarymanager.models;
 
 
-import softeng.librarymanager.controllers.student.ResultActions;
+import softeng.librarymanager.controllers.ResultActions;
 
 import java.io.*;
 import java.nio.file.Files;

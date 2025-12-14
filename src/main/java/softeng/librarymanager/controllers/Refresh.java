@@ -1,4 +1,4 @@
-package softeng.librarymanager.controllers.student;
+package softeng.librarymanager.controllers;
 
 import softeng.librarymanager.models.Library;
 

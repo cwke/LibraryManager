@@ -96,7 +96,7 @@ public class StudentRegisterController {
                     (Student toVerify) -> studentRegister.isUnique(toVerify)));
 
             Parent root = loader.load();
-            Scene scene = new Scene(root, 480, 720);
+            Scene scene = new Scene(root, 620, 480);
 
             // CSS
             scene.getStylesheets().add(getClass().getResource("/softeng/librarymanager/style.css").toExternalForm());
@@ -130,7 +130,7 @@ public class StudentRegisterController {
                     selectedStudent));
 
             Parent root = loader.load();
-            Scene scene = new Scene(root, 480, 720);
+            Scene scene = new Scene(root, 620, 480);
 
             // CSS
             scene.getStylesheets().add(getClass().getResource("/softeng/librarymanager/style.css").toExternalForm());

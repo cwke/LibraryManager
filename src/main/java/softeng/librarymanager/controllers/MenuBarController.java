@@ -9,12 +9,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.MenuBar;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
-import softeng.librarymanager.controllers.student.Refresh;
-import softeng.librarymanager.controllers.student.ResultActions;
 import softeng.librarymanager.models.Library;
 import softeng.librarymanager.models.LibraryIOManager;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
+
 import java.io.File;
 
 public class MenuBarController implements ResultActions {

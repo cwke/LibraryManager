@@ -42,18 +42,22 @@ public class LoanModifyPopupController extends LoanPopupController {
     @FXML
     public void initialize() {
         studentListView.setVisible(false);
+        studentListView.setManaged(false);
         studentSearchTF.setText(loanToModify.getStudent().getName() + " " + loanToModify.getStudent().getSurname() + " (" + loanToModify.getStudent().getStudentId() + ")");
         studentSearchTF.setDisable(true);
-        
+
         bookListView.setVisible(false);
+        bookListView.setManaged(false);
         bookSearchTF.setText(loanToModify.getBook().getTitle() + " (" + loanToModify.getBook().getBookId() + ")");
         bookSearchTF.setDisable(true);
-        
+
         dateDP.setValue(loanToModify.getLoanEnd());
     }
+
     /**
      * @brief Gestisce l'azione di conferma per la modifica.
-     * @details Raccoglie i dati modificati, valida l'oggetto e applica le modifiche.
+     * @details Raccoglie i dati modificati, valida l'oggetto e applica le
+     *          modifiche.
      * @param[in] event L'evento click.
      */
     @Override

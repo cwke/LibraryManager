@@ -21,6 +21,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.Modality;
@@ -31,23 +32,34 @@ import softeng.librarymanager.models.Register;
 
 /**
  * @class BookRegisterController
- * @brief Classe controller per la gestione dell'interfaccia utente del catalogo libri.
- * @details Questa classe gestisce la visualizzazione tabellare dei libri, l'interazione
- *          con la barra laterale (SideBar) e coordina l'apertura dei popup per l'inserimento
+ * @brief Classe controller per la gestione dell'interfaccia utente del catalogo
+ *        libri.
+ * @details Questa classe gestisce la visualizzazione tabellare dei libri,
+ *          l'interazione
+ *          con la barra laterale (SideBar) e coordina l'apertura dei popup per
+ *          l'inserimento
  *          e la modifica dei libri.
- *          Si occupa inoltre di collegare la vista al modello dati {@link Register}<Book>.
+ *          Si occupa inoltre di collegare la vista al modello dati
+ *          {@link Register}<Book>.
  */
 public class BookRegisterController {
 
-    @FXML private TableView<Book> bookTable;
-    @FXML private TableColumn<Book, String> titleClm;
-    @FXML private TableColumn<Book, String> authorsClm;
-    @FXML private TableColumn<Book, Integer> publishmentYearClm;
-    @FXML private TableColumn<Book, String> bookIdClm;
-    @FXML private TableColumn<Book, Integer> availableCopiesClm;
+    @FXML
+    private TableView<Book> bookTable;
+    @FXML
+    private TableColumn<Book, String> titleClm;
+    @FXML
+    private TableColumn<Book, String> authorsClm;
+    @FXML
+    private TableColumn<Book, Integer> publishmentYearClm;
+    @FXML
+    private TableColumn<Book, String> bookIdClm;
+    @FXML
+    private TableColumn<Book, Integer> availableCopiesClm;
 
-    @FXML private SideBarController sideBarController;
-    
+    @FXML
+    private SideBarController sideBarController;
+
     private final Register<Book> bookRegister;
 
     /**
@@ -69,15 +81,17 @@ public class BookRegisterController {
         // Configurazione Colonne:
         titleClm.setCellValueFactory(row -> new SimpleStringProperty(row.getValue().getTitle()));
         authorsClm.setCellValueFactory(row -> new SimpleStringProperty(String.join(", ", row.getValue().getAuthors())));
-        publishmentYearClm.setCellValueFactory(row -> new SimpleIntegerProperty(row.getValue().getPublishmentYear()).asObject());
+        publishmentYearClm
+                .setCellValueFactory(row -> new SimpleIntegerProperty(row.getValue().getPublishmentYear()).asObject());
         bookIdClm.setCellValueFactory(row -> new SimpleStringProperty(row.getValue().getBookId()));
-        availableCopiesClm.setCellValueFactory(row -> new SimpleIntegerProperty(row.getValue().getAvailableCopies()).asObject());
+        availableCopiesClm
+                .setCellValueFactory(row -> new SimpleIntegerProperty(row.getValue().getAvailableCopies()).asObject());
 
         // Sidebar Event Listeners
         sideBarController.getAddBtn().setOnAction(event -> openInsertPopup());
         sideBarController.getModifyBtn().setOnAction(event -> openModifyPopup());
         sideBarController.getRemoveBtn().setOnAction(event -> removeFromRegister());
-        
+
         // Listener per la barra di ricerca
         sideBarController.getSearchBarTF().textProperty().addListener((observable, oldValue, newValue) -> searchBook());
 
@@ -89,25 +103,27 @@ public class BookRegisterController {
 
     private void openInsertPopup() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/softeng/librarymanager/fxml/BookPopupView.fxml"));
-            
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/softeng/librarymanager/fxml/BookPopupView.fxml"));
+
             loader.setController(new BookInsertPopupController(
-                (Book toAdd) -> bookRegister.add(toAdd), 
-                (Book toVerify) -> bookRegister.isUnique(toVerify)
-            ));
-            
+                    (Book toAdd) -> bookRegister.add(toAdd),
+                    (Book toVerify) -> bookRegister.isUnique(toVerify)));
+
             Parent root = loader.load();
-            Scene scene = new Scene(root, 480, 720);
-            
+            ScrollPane scrollPane = new ScrollPane(root);
+            scrollPane.setFitToWidth(true);
+            Scene scene = new Scene(scrollPane, 620, 480);
+
             // CSS
             scene.getStylesheets().add(getClass().getResource("/softeng/librarymanager/style.css").toExternalForm());
-            
+
             Stage popup = new Stage();
             popup.setTitle("Inserimento Libro");
             popup.initModality(Modality.APPLICATION_MODAL);
             popup.setScene(scene);
             popup.showAndWait();
-            
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -117,18 +133,21 @@ public class BookRegisterController {
 
     private void openModifyPopup() {
         Book selectedBook = bookTable.getSelectionModel().getSelectedItem();
-        if (selectedBook == null) return;
+        if (selectedBook == null)
+            return;
 
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/softeng/librarymanager/fxml/BookPopupView.fxml"));
-            
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/softeng/librarymanager/fxml/BookPopupView.fxml"));
+
             loader.setController(new BookModifyPopupController(
-                (Book old, Book newObj) -> bookRegister.modify(old, newObj),
-                selectedBook
-            ));
-            
+                    (Book old, Book newObj) -> bookRegister.modify(old, newObj),
+                    selectedBook));
+
             Parent root = loader.load();
-            Scene scene = new Scene(root, 480, 720);
+            ScrollPane scrollPane = new ScrollPane(root);
+            scrollPane.setFitToWidth(true);
+            Scene scene = new Scene(scrollPane, 620, 480);
             scene.getStylesheets().add(getClass().getResource("/softeng/librarymanager/style.css").toExternalForm());
 
             Stage popup = new Stage();
@@ -136,17 +155,18 @@ public class BookRegisterController {
             popup.initModality(Modality.APPLICATION_MODAL);
             popup.setScene(scene);
             popup.showAndWait();
-            
+
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
+
         updateTableView();
     }
 
     private void removeFromRegister() {
         Book selectedBook = bookTable.getSelectionModel().getSelectedItem();
-        if (selectedBook == null) return;
+        if (selectedBook == null)
+            return;
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Conferma rimozione");
@@ -174,7 +194,7 @@ public class BookRegisterController {
 
     private void searchBook() {
         String searchText = sideBarController.getSearchBarTF().getText();
-        
+
         // Se la ricerca è vuota, mostra tutto
         if (searchText == null || searchText.isEmpty()) {
             updateTableView();
@@ -188,8 +208,8 @@ public class BookRegisterController {
         for (Book book : allBooks) {
             // Cerca per Titolo, Autore o ISBN
             if (book.getTitle().toLowerCase().contains(lowerCaseSearchText) ||
-                String.join(", ", book.getAuthors()).toLowerCase().contains(lowerCaseSearchText) ||
-                book.getBookId().toLowerCase().contains(lowerCaseSearchText)) {
+                    String.join(", ", book.getAuthors()).toLowerCase().contains(lowerCaseSearchText) ||
+                    book.getBookId().toLowerCase().contains(lowerCaseSearchText)) {
                 filteredBooks.add(book);
             }
         }
