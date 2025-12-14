@@ -12,7 +12,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
-
 import softeng.librarymanager.models.RegisterModifier;
 import softeng.librarymanager.models.Student;
 
@@ -20,10 +19,8 @@ import softeng.librarymanager.models.Student;
  * @class StudentModifyPopupController
  * @brief Classe controller per la gestione del popup di modifica studenti.
  * @details Estende {@link StudentPopupController}. Gestisce il popolamento dei
- *          campi
- *          con i dati dello studente esistente e l'aggiornamento nel registro
- *          tramite
- *          {@link RegisterModifier}.
+ *          campi con i dati dello studente esistente e l'aggiornamento nel registro
+ *          tramite {@link RegisterModifier}.
  */
 public class StudentModifyPopupController extends StudentPopupController {
 
@@ -42,6 +39,7 @@ public class StudentModifyPopupController extends StudentPopupController {
 
     /**
      * @brief Inizializza il controller.
+     * @details Aggiunge i placeholder ai campi e rende non modificabile la matricola
      */
     @Override
     @FXML
@@ -69,15 +67,14 @@ public class StudentModifyPopupController extends StudentPopupController {
     @Override
     public void confirmBtnAction(ActionEvent event) {
         try {
-            Student studentModified = new Student(nameTF.getText(), surnameTF.getText(), studentIdTF.getText(),
-                    emailTF.getText());
+            Student studentModified = new Student(nameTF.getText(), surnameTF.getText(), studentIdTF.getText(), emailTF.getText());
 
             studentRegisterModifier.modify(studentToModify, studentModified);
-            // Chiudi la finestra
             Stage stage = (Stage) confirmBtn.getScene().getWindow();
             stage.close();
         } catch (IllegalArgumentException e) {
             showAlert(Alert.AlertType.ERROR, "Errore", "Dati non validi", e.getMessage());
         }
     }
+
 }

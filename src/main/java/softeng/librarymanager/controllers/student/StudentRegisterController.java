@@ -39,13 +39,20 @@ import softeng.librarymanager.controllers.SideBarController;
  */
 public class StudentRegisterController {
 
-    @FXML private TableView<Student> studentTable;
-    @FXML private TableColumn<Student, String> nameClm;
-    @FXML private TableColumn<Student, String> surnameClm;
-    @FXML private TableColumn<Student, String> studentIdClm;
-    @FXML private TableColumn<Student, String> emailClm;
-    @FXML private TableColumn<Student, Integer> activeLoansCountClm;
-    @FXML private SideBarController sideBarController;
+    @FXML
+    private TableView<Student> studentTable;
+    @FXML
+    private TableColumn<Student, String> nameClm;
+    @FXML
+    private TableColumn<Student, String> surnameClm;
+    @FXML
+    private TableColumn<Student, String> studentIdClm;
+    @FXML
+    private TableColumn<Student, String> emailClm;
+    @FXML
+    private TableColumn<Student, Integer> activeLoansCountClm;
+    @FXML
+    private SideBarController sideBarController;
     
     private final Register<Student> studentRegister;
     
@@ -59,6 +66,8 @@ public class StudentRegisterController {
 
     /**
      * @brief Metodo di inizializzazione del controller JavaFX.
+     * @details Viene chiamato automaticamente da JavaFX dopo il caricamento dell'FXML.
+     *          Inizializza la tableview, configura i bindings e listeners.
      */
     @FXML
     public void initialize() {
@@ -88,11 +97,8 @@ public class StudentRegisterController {
 
     private void openInsertPopup() {
         try {
-            // Usa il percorso assoluto che avevi nella branch per sicurezza
-            FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/softeng/librarymanager/fxml/StudentPopupView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/softeng/librarymanager/fxml/StudentPopupView.fxml"));
 
-            // Passa le lambda expression per le callback (add e isValid)
             loader.setController(new StudentInsertPopupController(
                     (Student toAdd) -> studentRegister.add(toAdd),
                     (Student toVerify) -> studentRegister.isUnique(toVerify)));
@@ -122,11 +128,8 @@ public class StudentRegisterController {
             return;
 
         try {
-            // Usa il percorso assoluto che avevi nella branch per sicurezza
-            FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/softeng/librarymanager/fxml/StudentPopupView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/softeng/librarymanager/fxml/StudentPopupView.fxml"));
 
-            // Passa le callback per modify e isValid, più il libro selezionato
             loader.setController(new StudentModifyPopupController(
                     (Student old, Student newObj) -> studentRegister.modify(old, newObj),
                     selectedStudent));
@@ -181,8 +184,6 @@ public class StudentRegisterController {
 
     private void searchBook() {
         String searchText = sideBarController.getSearchBarTF().getText();
-        
-
 
         // Se la ricerca è vuota, mostra tutto
         if (searchText == null || searchText.isEmpty()) {
@@ -198,7 +199,6 @@ public class StudentRegisterController {
             String studentName = student.getName().toLowerCase();
             String studentSurname = student.getSurname().toLowerCase();
             String studentId = student.getStudentId();
-            // Cerca per Nome, Cognome o Matricola
             String fullName = studentName + " " + studentSurname;
             String fullNameReverse = studentSurname + " " + studentName;
                 
@@ -210,4 +210,5 @@ public class StudentRegisterController {
         }
         studentTable.setItems(filteredStudents);
     }
+
 }
