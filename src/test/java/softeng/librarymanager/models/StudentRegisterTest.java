@@ -10,119 +10,126 @@ import static org.junit.jupiter.api.Assertions.*;
 class StudentRegisterTest {
 
     private StudentRegister studentRegister;
-    private Student newStudent;
-    private Student oldStudent;
+    private Student student1;
+    private Student student2;
+    private Student student3;
 
-    /*
-     * Inizializzo due studenti che utilizzerò per verificare le diverse
-     * operazioni messe a disposizione dallo StudentRegister.
-     * */
     @BeforeEach
     void setUp(){
         studentRegister = new StudentRegister();
-        newStudent = new Student("Fabrizio", "Acerra", "0612709404", "f.acerra4@studenti.unisa.it");
-        oldStudent = new Student("Natale", "Affinita", "0612709745", "n.affinita@studenti.unisa.it");
+        student1 = new Student("Fabrizio", "Acerra", "0000000004", "f.acerra4@studenti.unisa.it");
+        student2 = new Student("Fabrizio", "Arreca", "0000000001", "n.affinita@studenti.unisa.it");
+        student3 = new Student("Fabrizio", "Acerra", "0000000003", "j.cwiertka@studenti.unisa.it");
     }
 
     /*
-     * Questo metodo deve garantire che la List restituita contenga tutti gli elementi presenti
-     * nel catalogo, ordinati prima per nome e poi per cognome.
+     * Il metodo getRegisterList() deve garantire che la List<Student> restituita contenga tutti gli studenti aggiunti al catalogo
+     * e che questi siano ordinati secondo Nome, Cognome e Matricola.
      * */
     @Test
     void testGetValuesList() {
-        studentRegister.add(oldStudent);
-        studentRegister.add(newStudent);
-        List<Student> list = studentRegister.getRegisterList();
-        assertEquals(2, list.size());
-        assertTrue(list.contains(newStudent));
-        assertTrue(list.contains(oldStudent));
+        studentRegister.add(student2);
+        studentRegister.add(student3);
+        studentRegister.add(student1);
 
-        /*
-         * Se il metodo funziona correttamente, per il rispetto dell'ordinamento alfabetico l'ordine
-         * di oldStudent e newStudent nella List dev'essere invertito.
-         * */
-        assertEquals(list.get(0), newStudent);
-        assertEquals(list.get(1), oldStudent);
+        List<Student> list = studentRegister.getRegisterList();
+        assertEquals(3, list.size());
+        assertTrue(list.contains(student1));
+        assertTrue(list.contains(student2));
+        assertTrue(list.contains(student3));
+
+        assertEquals(list.get(0), student3);
+        assertEquals(list.get(1), student1);
+        assertEquals(list.get(2), student2);
     }
 
     /*
      * Il costruttore deve garantire 1) Le invarianti alla fine dell'operazione -> studentRegisteR != null
-     * 2) Che il catalogo studenti sia vuoto.
+     * 2) Che il catalogo libri sia vuoto.
      * */
     @Test
     void testStudentRegister(){
-        assertNotNull(studentRegister);
-        List<Student> list = studentRegister.getRegisterList();
+        StudentRegister studentRegisterConstructorTest = new StudentRegister();
+        assertNotNull(studentRegisterConstructorTest);
+        List<Student> list = studentRegisterConstructorTest.getRegisterList();
         assertTrue(list.isEmpty());
     }
 
     /*
-     * Dato un ingresso != null valido secondo RegisterValidator (dunque unico, non ancora inserito
-     * nel catalogo) il metodo add() deve garantire che, al termine dell'operazione, lo studente sia stato
-     * effettivamente inserito nel catalogo. Si noti che utilizzo il metodo getRegisterList() per quest'operazione e le seguenti
-     * poiché il relativo caso di test mi garantisce la corrispondenza tra la List restituita da suddetto metodo ed il catalogo studenti
-     * (salvo ulteriori operazioni sul catalogo successive rispetto all'invocazione del metodo).
+     * Il metodo "add()" deve garantire che, dato un ingresso "student1" != null che risulti valido secondo
+     * isUnique(), quest'ultimo sia presente nel catalogo al termine dell'operazione.
      * */
     @Test
     void testAdd() {
-        studentRegister.add(newStudent);
+        assertTrue(studentRegister.isUnique(student1));
+        assertNotNull(student1);
+        studentRegister.add(student1);
         List<Student> list = studentRegister.getRegisterList();
         assertEquals(1, list.size());
-        assertTrue(list.contains(newStudent));
+        assertTrue(list.contains(student1));
     }
 
     /*
-     * Dato un ingresso "newStudent" != null ed un libro "oldStudent" già presente nel catalogo, modify() deve
-     * garantire che al termine dell'operazione il riferimento allo studente "oldStudent" già presente resti invariato e che
-     * i suoi dati (tranne i non modificabili, quindi tutti tranne il studentId) risultino pari a quelli di newBook.
-     * Anche in questo metodo utilizzo il metodo getRegisterList() per i motivi citati nel commento del metodo di test precedente.
+     * Il metodo "modify()" deve garantire che, dato un parametro 'old' già presente nel catalogo e un
+     * parametro 'newObj' non nullo, gli attributi modificabili (quindi nome, cognome, email) di 'old'
+     * risultino pari a quelli di 'newObj' al termine dell'operazione. Si noti che il riferimento di 'old' presente
+     * nel catalogo al termine dell'operazione deve rimanere invariato (non è una sostituzione, bensì una copia valore per valore
+     * degli attributi modificabili).
      * */
     @Test
     void testModify() {
-        studentRegister.add(oldStudent);
-        String oldStudId = oldStudent.getStudentId();
-        studentRegister.modify(oldStudent, newStudent);
+        studentRegister.add(student2);
         List<Student> list = studentRegister.getRegisterList();
+        assertTrue(list.contains(student2));
+        String oldStudId = student2.getStudentId();
+        assertNotNull(student3);
+        studentRegister.modify(student2, student3);
+        list = studentRegister.getRegisterList();
 
         assertEquals(1, list.size());
 
         Student modifiedStudent = list.get(0);
 
-        assertEquals(newStudent.getEmail(), modifiedStudent.getEmail());
-        assertEquals(newStudent.getName(), modifiedStudent.getName());
-        assertEquals(newStudent.getSurname(), modifiedStudent.getSurname());
+        assertEquals(student3.getEmail(), modifiedStudent.getEmail());
+        assertEquals(student3.getName(), modifiedStudent.getName());
+        assertEquals(student3.getSurname(), modifiedStudent.getSurname());
         assertEquals(oldStudId, modifiedStudent.getStudentId());
-        assertTrue(modifiedStudent == oldStudent);
+        assertSame(modifiedStudent, student2);
     }
 
     /*
-     * Dato un ingresso "toRemove" (in questo caso oldStudent) già presente nel catalogo, il metodo
-     * remove() deve garantire che al termine dell'operazione lo studente non sia più presente nel catalogo.
+     * Il metodo remove() deve garantire che, dato un parametro 'toRemove' presente nel catalogo, quest'ultimo
+     * non risulti più presente nel catalogo al termine dell'operazione.
      * */
     @Test
-    void testRemove1() {
-        studentRegister.add(oldStudent);
-        studentRegister.add(newStudent);
-        studentRegister.remove(oldStudent);
+    void testRemove() {
+        studentRegister.add(student2);
+        studentRegister.add(student1);
+
         List<Student> list = studentRegister.getRegisterList();
+        assertTrue(list.contains(student2));
+        studentRegister.remove(student2);
+
+        list = studentRegister.getRegisterList();
         assertEquals(1, list.size());
-        assertTrue(list.contains(newStudent));
+        assertFalse(list.contains(student2));
     }
+
 
     /*
-     * Dato un ingresso !null con attributi !null (garantito dal costrutture di Student)
-     * questo metodo deve restituire "false" se uno studente identico (quindi con stesso studentId) è
-     * già presente nel catalogo, true altrimenti.
+     * Il metodo isUnique() deve garantire che, dato un ingresso toVerify != null, sia restituito "false" se
+     * 'toVerify' è già presente nel catalogo, altrimenti "true".
      * */
     @Test
-    void testIsUnique1() {
-        studentRegister.add(newStudent);
-        assertFalse(studentRegister.isUnique(new Student("a", "b", newStudent.getStudentId(), "a@studenti.unisa.it")));
+    void testIsUnique() {
+        assertNotNull(student2);
+        assertNotNull(student3);
+
+        studentRegister.add(student2);
+
+        assertFalse(studentRegister.isUnique(new Student("a", "b", student2.getStudentId(), "a@studenti.unisa.it")));
+        assertTrue(studentRegister.isUnique(student3));
     }
 
-    @Test
-    void testIsUnique2() {
-        assertTrue(studentRegister.isUnique(newStudent));
-    }
 
 }

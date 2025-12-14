@@ -11,20 +11,35 @@ import static org.junit.jupiter.api.Assertions.*;
 class BookRegisterTest {
 
     private BookRegister bookRegister;
-    private Book newBook;
-    private Book oldBook;
+    private Book book1;
+    private Book book2;
+    private Book book3;
+    private Book book4;
+    private Book book5;
+    private Book book6;
+    private Book book7;
+    private Book book8;
 
-    /*
-    * Inizializzo due libri che utilizzerò per verificare le diverse
-    * operazioni messe a disposizione dal BookRegister.
-    * */
     @BeforeEach
     void setUp(){
         bookRegister = new BookRegister();
-        List<String> newAuthors = new ArrayList<>(); newAuthors.add("Natale Affinita"); newAuthors.add("Hermann Galluccio");
-        List<String> oldAuthors = new ArrayList<>(); oldAuthors.add("Natale Affinita"); oldAuthors.add("Fabrizio Acerra");
-        newBook = new Book("Libro", newAuthors, "0000000000000", 1900, 1400);
-        oldBook = new Book("orbiL", oldAuthors, "1111111111111", 1090, 41000);
+        List<String> authors1 = new ArrayList<>(); authors1.add("Natale Affinita"); authors1.add("Hermann Galluccio");
+        List<String> authors2 = new ArrayList<>(); authors2.add("Jakub Cwiertka"); authors2.add("Fabrizio Acerra");
+        List<String> authors3 = new ArrayList<>(); authors3.add("Jakub Cwiertka"); authors3.add("Natale Affinita");
+        List<String> authors4 = new ArrayList<>(); authors4.add("Hermann Galluccio"); authors4.add("Fabrizio Acerra");
+        List<String> authors5 = new ArrayList<>(); authors5.add("Mario Rossi");
+        List<String> authors6 = new ArrayList<>(); authors6.add("Luca Verdi"); authors6.add("Giuseppe Bianchi"); authors6.add("Autore Casuale");
+        List<String> authors7 = new ArrayList<>(); authors7.add("Andrea Neri");
+        List<String> authors8 = new ArrayList<>(); authors8.add("Francesco Verdi"); authors8.add("Fabrizio Acerra");
+        book1 = new Book("Libro", authors1, "0000000000000", 1900, 1400);
+        book2 = new Book("Romanzo", authors2, "1110011111111", 2020, 410);
+        book3 = new Book("Fumetto", authors3, "1111111000111", 2021, 323);
+        book4 = new Book("Altro Libro", authors4, "1111111111101", 2000, 33);
+        book5 = new Book("Altro Romanzo", authors5, "1101111111111", 1999, 0);
+        book6 = new Book("Altro Fumetto", authors6, "3331111111111", 1878, 1);
+        book7 = new Book("Libro", authors7, "1111144441111", 2012, 4);
+        book8 = new Book("Romanzo", authors8, "1111555555511", 2034, 555);
+
     }
 
     /*
@@ -33,101 +48,116 @@ class BookRegisterTest {
     * */
     @Test
     void testBookRegister(){
-        assertNotNull(bookRegister);
-        List<Book> list = bookRegister.getRegisterList();
+        BookRegister bookRegisterConstructorTest = new BookRegister();
+        assertNotNull(bookRegisterConstructorTest);
+        List<Book> list = bookRegisterConstructorTest.getRegisterList();
         assertTrue(list.isEmpty());
     }
 
     /*
-    * Dato un ingresso != null valido secondo RegisterValidator (dunque unico, non ancora inserito
-    * nel catalogo) il metodo add() deve garantire che, al termine dell'operazione, il libro sia stato
-    * effettivamente inserito nel catalogo. Si noti che utilizzo il metodo getRegisterList() per quest'operazione e le seguenti
-    * poiché il relativo caso di test mi garantisce la corrispondenza tra la List restituita da suddetto metodo ed il catalogo studenti
-    * (salvo ulteriori operazioni sul catalogo successive rispetto all'invocazione del metodo).
+    * Il metodo "add()" deve garantire che, dato un ingresso "book1" != null che risulti valido secondo
+    * isUnique(), quest'ultimo sia presente nel catalogo al termine dell'operazione.
     * */
     @Test
     void testAdd() {
-        bookRegister.add(newBook); //non avendo ancora inserito alcun libro, newBook rispetta certamente la condizione di validità di RegisterValidator
+        assertTrue(bookRegister.isUnique(book1));
+        assertNotNull(book1);
+        bookRegister.add(book1);
         List<Book> list = bookRegister.getRegisterList();
-        assertEquals(1, list.size());//questa assert e la successiva mi garantiscono (insieme) il corretto inserimento
-        assertTrue(list.contains(newBook));  //del libro nel catalogo.
+        assertEquals(1, list.size());
+        assertTrue(list.contains(book1));
     }
 
     /*
-    * Dato un ingresso "newBook" != null ed un libro "oldBook" già presente nel catalogo, modify() deve
-    * garantire che al termine dell'operazione il riferimento al libro "oldBook" già presente resti invariato e che
-    * i suoi dati (tranne i non modificabili, quindi tutti tranne il bookId) risultino pari a quelli di newBook.
-    * Anche in questo metodo utilizzo il metodo getRegisterList() per i motivi citati nel commento del metodo di test precedente.
+    * Il metodo "modify()" deve garantire che, dato un parametro 'old' già presente nel catalogo e un
+    * parametro 'newObj' non nullo, gli attributi modificabili (quindi titolo, autori, anno, copie) di 'old'
+    * risultino pari a quelli di 'newObj' al termine dell'operazione. Si noti che il riferimento di 'old' presente
+    * nel catalogo al termine dell'operazione deve rimanere invariato (non è una sostituzione, bensì una copia valore per valore
+    * degli attributi modificabili).
     * */
     @Test
     void testModify() {
-        bookRegister.add(oldBook);
-        String oldBookId = oldBook.getBookId();
-        bookRegister.modify(oldBook, newBook);
+        bookRegister.add(book2);
         List<Book> list = bookRegister.getRegisterList();
+        assertTrue(list.contains(book2));
+        String oldBookId = book2.getBookId();
+        assertNotNull(book3);
+        bookRegister.modify(book2, book3);
+        list = bookRegister.getRegisterList();
 
         assertEquals(1, list.size());
 
         Book modifiedBook = list.get(0);
 
-        assertEquals(newBook.getTitle(), modifiedBook.getTitle());
-        assertEquals(oldBookId, modifiedBook.getBookId()); //l'id deve rimanere invariato
-        assertEquals(newBook.getAvailableCopies(), modifiedBook.getAvailableCopies());
-        assertEquals(newBook.getAuthors(), modifiedBook.getAuthors());
-        assertEquals(newBook.getPublishmentYear(), modifiedBook.getPublishmentYear());
-        assertTrue(modifiedBook == oldBook); //verifica sul riferimento invariato
+        assertEquals(book3.getTitle(), modifiedBook.getTitle());
+        assertEquals(oldBookId, modifiedBook.getBookId());
+        assertEquals(book3.getAvailableCopies(), modifiedBook.getAvailableCopies());
+        assertEquals(book3.getAuthors(), modifiedBook.getAuthors());
+        assertEquals(book3.getPublishmentYear(), modifiedBook.getPublishmentYear());
+        assertSame(modifiedBook, book2);
     }
 
+
     /*
-    * Dato un ingresso "toRemove" (in questo caso oldBook) già presente nel catalogo, il metodo
-    * remove() deve garantire che al termine dell'operazione il libro non sia più presente nel catalogo.
+    * Il metodo remove() deve garantire che, dato un parametro 'toRemove' presente nel catalogo, quest'ultimo
+    * non risulti più presente nel catalogo al termine dell'operazione.
     * */
     @Test
-    void testRemove1() {
-        bookRegister.add(oldBook);
-        bookRegister.add(newBook);
-        bookRegister.remove(oldBook);
+    void testRemove() {
+        bookRegister.add(book2);
+        bookRegister.add(book1);
+
         List<Book> list = bookRegister.getRegisterList();
-        assertEquals(1, list.size());
-        assertTrue(list.contains(newBook));
+        assertTrue(list.contains(book2));
+        bookRegister.remove(book2);
+        list = bookRegister.getRegisterList();
+        assertFalse(list.contains(book2));
     }
 
     /*
-    * Dato un ingresso !null con attributi !null (garantito dal costrutture di Book)
-    * questo metodo deve restituire "false" se un libro identico (quindi con stesso bookId) è
-    * già presente nel catalogo, true altrimenti.
+    * Il metodo isUnique() deve garantire che, dato un ingresso toVerify != null, sia restituito "false" se
+    * 'toVerify' è già presente nel catalogo, altrimenti "true".
     * */
     @Test
-    void testIsUnique1() {
-        bookRegister.add(newBook);
+    void testIsUnique() {
+        assertNotNull(book1);
+        assertNotNull(book4);
+
+        bookRegister.add(book1);
+
         List<String> testAuth = new ArrayList<>();
         testAuth.add("testAutore");
-        assertFalse(bookRegister.isUnique(new Book("a", testAuth, newBook.getBookId(), 10, 10)));
-    }
-
-    @Test
-    void testIsUnique2() {
-        assertTrue(bookRegister.isUnique(newBook));
+        assertFalse(bookRegister.isUnique(new Book("a", testAuth, book1.getBookId(), 10, 10)));
+        assertTrue(bookRegister.isUnique(book4));
     }
 
     /*
-    * Questo metodo deve garantire che la List restituita contenga tutti gli elementi presenti
-    * nel catalogo, ordinati prima per titolo e poi per autori.
+    * Il metodo getRegisterList() deve garantire che la List<Book> restituita contenga tutti i libri aggiunti al catalogo
+    * e che questi siano ordinati secondo Titolo e Autori.
     * */
     @Test
     void testGetValuesList() {
-        bookRegister.add(oldBook);
-        bookRegister.add(newBook);
-        List<Book> list = bookRegister.getRegisterList();
-        assertEquals(2, list.size());
-        assertTrue(list.contains(newBook));
-        assertTrue(list.contains(oldBook));
+        bookRegister.add(book2);
+        bookRegister.add(book1);
+        bookRegister.add(book5);
+        bookRegister.add(book6);
+        bookRegister.add(book8);
+        bookRegister.add(book7);
 
-        /*
-        * Se il metodo funziona correttamente, per il rispetto dell'ordinamento alfabetico l'ordine
-        * di oldBook e newBook nella List dev'essere invertito.
-        * */
-        assertEquals(list.get(0), newBook);
-        assertEquals(list.get(1), oldBook);
+        List<Book> list = bookRegister.getRegisterList();
+        assertEquals(6, list.size());
+        assertTrue(list.contains(book1));
+        assertTrue(list.contains(book2));
+        assertTrue(list.contains(book5));
+        assertTrue(list.contains(book6));
+        assertTrue(list.contains(book7));
+        assertTrue(list.contains(book8));
+
+        assertEquals(list.get(0), book6);
+        assertEquals(list.get(1), book5);
+        assertEquals(list.get(2), book7);
+        assertEquals(list.get(3), book1);
+        assertEquals(list.get(4), book8);
+        assertEquals(list.get(5), book2);
     }
 }

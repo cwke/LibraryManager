@@ -13,118 +13,143 @@ import static org.junit.jupiter.api.Assertions.*;
 class LoanRegisterTest {
 
     private LoanRegister loanRegister;
-    private Loan oldLoan;
-    private Loan newLoan;
-    private Student newStudent;
-    private Student oldStudent;
-    private Book newBook;
-    private Book oldBook;
+    private Loan loan1;
+    private Loan loan2;
+    private Loan loan3;
+    private Loan loan4;
+    private Student student1;
+    private Student student2;
+    private Student student3;
+    private Student student4;
+    private Book book1;
+    private Book book2;
+    private Book book3;
+    private Book book4;
 
-    /*
-     * Inizializzo due Loan che utilizzerò per verificare le diverse
-     * operazioni messe a disposizione dallo StudentRegister.
-     * */
     @BeforeEach
     void setUp(){
         loanRegister = new LoanRegister();
 
-        newStudent = new Student("Fabrizio", "Acerra", "0612709404", "f.acerra4@studenti.unisa.it");
-        List<String> newAuthors = new ArrayList<>(); newAuthors.add("Natale Affinita"); newAuthors.add("Hermann Galluccio");
-        List<String> oldAuthors = new ArrayList<>(); oldAuthors.add("Natale Affinita"); oldAuthors.add("Fabrizio Acerra");
-        newBook = new Book("Libro", newAuthors, "0000000000000", 1900, 1400);
-        oldBook = new Book("orbiL", oldAuthors, "1111111111111", 1090, 41000);oldStudent = new Student("Natale", "Affinita", "0612709745", "n.affinita@studenti.unisa.it");
+        student1 = new Student("Fabrizio", "Acerra", "1234564543", "f.acerra4@studenti.unisa.it");
+        student2 = new Student("Natale", "Affinita", "2312342345", "n.affinita@studenti.unisa.it");
+        student3 = new Student("Hermann", "Galluccio", "0001110001", "h.galluccio@studenti.unisa.it");
+        student4 = new Student("Jakub", "Cwiertka", "0000102933", "j.cwiertka@studenti.unisa.it");
+        List<String> authors1 = new ArrayList<>(); authors1.add("Luca Rossi"); authors1.add("Paolo Verdi");
+        List<String> authors2 = new ArrayList<>(); authors2.add("Andrea Bianchi");
+        book1 = new Book("Libro", authors1, "0000000000000", 1900, 1400);
+        book2 = new Book("Manuale", authors2, "2222222222222", 1090, 41000);
+        book3 = new Book("Romanzo", authors2, "3333333333333", 1090, 41000);
+        book4 = new Book("Fiaba", authors1, "1111111111111", 1090, 41000);
 
-        oldLoan = new Loan(oldStudent, oldBook, LocalDate.of(2025, 12, 12));
-        newLoan = new Loan(newStudent, newBook, LocalDate.of(2026, 10, 12));
+        loan1 = new Loan(student2, book2, LocalDate.of(2025, 12, 12));
+        loan2 = new Loan(student1, book1, LocalDate.of(2026, 10, 12));
+        loan3 = new Loan(student3, book3, LocalDate.of(2020, 8, 4));
+        loan4 = new Loan(student4, book4, LocalDate.of(2018, 8, 4));
     }
 
     /*
-     * Il costruttore deve garantire 1) Le invarianti alla fine dell'operazione -> studentRegisteR != null
-     * 2) Che il catalogo studenti sia vuoto.
+     * Il costruttore deve garantire 1) Le invarianti alla fine dell'operazione -> loanRegister != null
+     * 2) Che il catalogo prestiti sia vuoto.
      * */
     @Test
     void testLoanRegister(){
-        assertNotNull(loanRegister);
-        List<Loan> list = loanRegister.getRegisterList();
+        LoanRegister loanRegisterConstructorTest = new LoanRegister();
+        assertNotNull(loanRegisterConstructorTest);
+        List<Loan> list = loanRegisterConstructorTest.getRegisterList();
         assertTrue(list.isEmpty());
     }
 
     /*
-     * Dato un ingresso != null valido secondo RegisterValidator il metodo add() deve garantire che, al termine dell'operazione, il prestito sia stato
-     * effettivamente inserito nel catalogo. Si noti che utilizzo il metodo getRegisterList() per quest'operazione e le seguenti
-     * poiché il relativo caso di test mi garantisce la corrispondenza tra la List restituita da suddetto metodo ed il catalogo prestiti
-     * (salvo ulteriori operazioni sul catalogo successive rispetto all'invocazione del metodo).
+     * Il metodo "add()" deve garantire che, dato un ingresso "loan2" != null che risulti valido secondo
+     * isUnique(), quest'ultimo sia presente nel catalogo al termine dell'operazione.
      * */
     @Test
     void testAdd() {
-        loanRegister.add(newLoan);
+        assertTrue(loanRegister.isUnique(loan2));
+        assertNotNull(loan2);
+        loanRegister.add(loan2);
         List<Loan> list = loanRegister.getRegisterList();
         assertEquals(1, list.size());
-        assertTrue(list.contains(newLoan));
+        assertTrue(list.contains(loan2));
     }
 
     /*
-     * Dato un ingresso "newLoan" != null ed un prestito "oldLoan" già presente nel catalogo, modify() deve
-     * garantire che al termine dell'operazione il riferimento al Loan "oldLoan" già presente resti invariato e che
-     * i suoi dati (tranne i non modificabili, quindi tutti tranne il studentId) risultino pari a quelli di newBook.
-     * Anche in questo metodo utilizzo il metodo getRegisterList() per i motivi citati nel commento del metodo di test precedente.
+     * Il metodo "modify()" deve garantire che, dato un parametro 'old' già presente nel catalogo e un
+     * parametro 'newObj' non nullo, gli attributi modificabili (quindi data di restituzione o "returned" se ancora non estinto) di 'old'
+     * risultino pari a quelli di 'newObj' al termine dell'operazione. Si noti che il riferimento di 'old' presente
+     * nel catalogo al termine dell'operazione deve rimanere invariato (non è una sostituzione, bensì una copia valore per valore
+     * degli attributi modificabili).
      * */
     @Test
     void testModify() {
-        loanRegister.add(oldLoan);
-        loanRegister.modify(oldLoan, newLoan);
+        loanRegister.add(loan1);
         List<Loan> list = loanRegister.getRegisterList();
+        assertTrue(list.contains(loan1));
+        Student oldStud = loan1.getStudent();
+        Book oldBook = loan1.getBook();
+        assertNotNull(loan2);
+        loanRegister.modify(loan1, loan2);
 
         assertEquals(1, list.size());
 
         Loan modifiedLoan = list.get(0);
-        assertEquals(newLoan.getLoanEnd(), modifiedLoan.getLoanEnd());
-        assertEquals(oldLoan.getStudent(), modifiedLoan.getStudent());
-        assertEquals(oldLoan.getBook(), modifiedLoan.getBook());
-        assertTrue(modifiedLoan == oldLoan);
+        assertEquals(loan2.getLoanEnd(), modifiedLoan.getLoanEnd());
+        assertEquals(oldStud, modifiedLoan.getStudent());
+        assertEquals(oldBook, modifiedLoan.getBook());
+        assertSame(modifiedLoan, loan1);
     }
 
     /*
-     * Dato un ingresso "toRemove" (in questo caso oldLoan) già presente nel catalogo, il metodo
-     * remove() deve garantire che al termine dell'operazione il prestito non sia più presente nel catalogo.
+     * Il metodo remove() deve garantire che, dato un parametro 'toRemove' presente nel catalogo, quest'ultimo
+     * non risulti più presente nel catalogo al termine dell'operazione.
      * */
     @Test
     void testRemove1() {
-        loanRegister.add(oldLoan);
-        loanRegister.add(newLoan);
-        loanRegister.remove(oldLoan);
-        List<Loan> list = loanRegister.getRegisterList();
-        assertEquals(1, list.size());
-        assertTrue(list.contains(newLoan));
-    }
+        loanRegister.add(loan1);
+        loanRegister.add(loan2);
 
+        List<Loan> list = loanRegister.getRegisterList();
+        assertTrue(list.contains(loan1));
+        loanRegister.remove(loan1);
+        list = loanRegister.getRegisterList();
+        assertFalse(list.contains(loan1));
+    }
     /*
-     * Dato un ingresso !null con attributi !null (garantito dal costrutture di Book)
-     * questo metodo deve restituire "false" se un loan identico (quindi con stesso Student, Book e non ancora terminato) è
-     * già presente nel catalogo, true altrimenti.
+     * Il metodo isUnique() deve garantire che, dato un ingresso toVerify != null, sia restituito "false" se
+     * 'toVerify' è già presente nel catalogo (che in questo caso significa "è già presente un prestito ATTIVO che coinvolge
+     * la stessa coppia studente-libro), altrimenti "true".
      * */
     @Test
     void testIsUnique1() {
-        loanRegister.add(newLoan);
-        assertFalse(loanRegister.isUnique(newLoan));
-    }
+        assertNotNull(loan3);
+        assertNotNull(loan4);
 
-    @Test
-    void testIsUnique2() {
-        assertTrue(loanRegister.isUnique(newLoan));
+        loanRegister.add(loan3);
+
+        assertTrue(loanRegister.isUnique(loan4));
+        assertFalse(loanRegister.isUnique(new Loan(loan3.getStudent(), loan3.getBook(), LocalDate.of(2016, 8, 4))));
     }
 
     /*
-     * Questo metodo deve garantire che la List restituita contenga tutti gli elementi presenti
-     * nel catalogo, ordinati prima per titolo e poi per autori.
+     * Il metodo getRegisterList() deve garantire che la List<Loan> restituita contenga tutti i prestiti aggiunti al catalogo
+     * e che questi siano ordinati secondo la data ultima di restituzione.
      * */
     @Test
     void testGetValuesList() {
-        loanRegister.add(newLoan);
-        loanRegister.add(oldLoan);
+        loanRegister.add(loan1);
+        loanRegister.add(loan2);
+        loanRegister.add(loan3);
+        loanRegister.add(loan4);
         List<Loan> list = loanRegister.getRegisterList();
-        assertEquals(2, list.size());
-        assertTrue(list.contains(newLoan));
-        assertTrue(list.contains(oldLoan));
+        assertEquals(4, list.size());
+        assertTrue(list.contains(loan4));
+        assertTrue(list.contains(loan3));
+        assertTrue(list.contains(loan1));
+        assertTrue(list.contains(loan2));
+
+        assertEquals(list.get(0), loan4);
+        assertEquals(list.get(1), loan3);
+        assertEquals(list.get(2), loan1);
+        assertEquals(list.get(3), loan2);
     }
 }
