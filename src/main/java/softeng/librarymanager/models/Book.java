@@ -109,31 +109,6 @@ public class Book implements Comparable<Book>, Serializable {
     }
 
     /**
-     * @brief Imposta il titolo del libro.
-     * @param[in] title Il nuovo titolo da impostare.
-     */
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    /**
-     * @brief Imposta gli autori del libro.
-     * @param[in] authors I nuovi autori da impostare.
-     */
-    public void setAuthors(List<String> authors) {
-        this.authors = authors;
-    }
-
-    /**
-     * @brief Imposta l'anno di pubblicazione.
-     * @param[in] publishmentYear Il nuovo anno da impostare.
-     * @post Se le invarianti non sono rispettate (es. anno negativo) viene lanciata una IllegalArgumentException.
-     */
-    public void setPublishmentYear(int publishmentYear) {
-        this.publishmentYear = publishmentYear;
-    }
-
-    /**
      * @brief Imposta il numero di copie disponibili.
      * @param[in] availableCopies Il nuovo numero di copie.
      * @post Se le invarianti non sono rispettate (es. copie negative) viene lanciata una IllegalArgumentException.
