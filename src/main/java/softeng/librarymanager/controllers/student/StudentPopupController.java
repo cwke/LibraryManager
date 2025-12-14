@@ -24,26 +24,27 @@ import javafx.stage.Stage;
  */
 public abstract class StudentPopupController {
 
-    @FXML protected TextField nameTF;
-    @FXML protected TextField surnameTF;
-    @FXML protected TextField studentIdTF;
-    @FXML protected TextField emailTF;
-    @FXML protected Button confirmBtn;
-    @FXML protected Button cancelBtn;
+    @FXML
+    protected TextField nameTF;
+    @FXML
+    protected TextField surnameTF;
+    @FXML
+    protected TextField studentIdTF;
+    @FXML
+    protected TextField emailTF;
+    @FXML
+    protected Button confirmBtn;
+    @FXML
+    protected Button cancelBtn;
 
     /**
      * @brief Inizializzazione base del controller.
+     * @details Viene chiamato automaticamente da JavaFX dopo il caricamento dell'FXML.
      */
     @FXML
     public void initialize() {
     }
 
-    /**
-     * @brief Gestisce l'evento di click sul bottone di conferma.
-     * @details Metodo astratto da implementare nelle sottoclassi per definire
-     *          la logica specifica (Inserimento o Modifica).
-     * @param[in] event L'evento generato dal click.
-     */
     @FXML
     public abstract void confirmBtnAction(ActionEvent event);
 
@@ -54,17 +55,18 @@ public abstract class StudentPopupController {
      */
     @FXML
     public void cancelBtnAction(ActionEvent event) {
-        // 1. Recuperiamo il componente che ha scatenato l'evento (il pulsante)
         Node source = (Node) event.getSource();
-
-        // 2. Dal pulsante, otteniamo la Scena, e dalla Scena otteniamo la Finestra
-        // (Stage)
         Stage stage = (Stage) source.getScene().getWindow();
-
-        // 3. Chiudiamo la finestra
         stage.close();
     }
 
+    /**
+     * @brief Mostra un alert con il tipo, titolo, testo e contenuto specificati.
+     * @param[in] type Il tipo di alert.
+     * @param[in] title Il titolo dell'alert.
+     * @param[in] header Il testo dell'intestazione dell'alert.
+     * @param[in] content Il contenuto dell'alert.
+     */
     protected void showAlert(Alert.AlertType type, String title, String header, String content) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
@@ -74,4 +76,5 @@ public abstract class StudentPopupController {
         alert.getDialogPane().getStylesheets().add(getClass().getResource("/softeng/librarymanager/style.css").toExternalForm());
         alert.showAndWait();
     }
+
 }

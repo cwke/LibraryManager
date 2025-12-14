@@ -23,11 +23,16 @@ import javafx.scene.layout.VBox;
  */
 public class SideBarController {
 
-    @FXML private Button addBtn;
-    @FXML private TextField searchBarTF;
-    @FXML private Button removeBtn;
-    @FXML private Button modifyBtn;
-    @FXML private VBox sideBarVBox;
+    @FXML
+    private Button addBtn;
+    @FXML
+    private TextField searchBarTF;
+    @FXML
+    private Button removeBtn;
+    @FXML
+    private Button modifyBtn;
+    @FXML
+    private VBox sideBarVBox;
 
     /**
      * @brief Restituisce il riferimento al bottone di aggiunta.
@@ -60,7 +65,11 @@ public class SideBarController {
     public Button getModifyBtn() {
         return this.modifyBtn;
     }
-    
+
+    /**
+     * @brief Restituisce il riferimento al bottone di restituzione.
+     * @return Button Il bottone "Restituisci".
+     */
     public Button createReturnBtn() {
         Button returnBtn = new Button("Restituisci");
         sideBarVBox.getChildren().add(returnBtn);
