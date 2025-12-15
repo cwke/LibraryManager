@@ -1,19 +1,77 @@
-\section{Diagrammi delle classi}
-	\subsection{Gerarchia dei modelli}
+\section{Principi di buona progettazione}
+	\subsection{Progettazione di dettaglio}
+		È stata applicata una decomposizione \textbf{Object-Oriented} attorno le entità del dominio (\textit{Book}, \textit{Student}, \textit{Loan}). Ogni modulo è concepito come un oggetto che incapsula sia lo stato che i comportamento specifici, garantendo un'alta coesione interna. L'architettura sfrutta meccanismi di astrazione come \textit{Interfacce}, \textit{Generics} ed \textit{Ereditarietà}, permettendo di definire logiche di gestione comuni che vengono specializzate per ogni tipo di dato (evidenti nell'interfaccia \verb|Register<T>|).
+		
+	\subsection{Principio della minima sorpresa}
+		Il codice è stato progettato per garantire intuitività e prevedibilità attraverso l'adozione di una \textit{Naming Convention} coerente con gli standard Java, privilegiando identificatori che, sebbene talvolta estesi, risultano autoesplicativi nel definire scopo e responsabilità di classi, metodi e variabili, minimizzando così le ambiguità e facilitando l'immediata comprensione del sistema.
+		
+	\subsection{Principio della singola responsabilità}
+		Il principio è stato applicato a tutti i livelli dell'architettura per garantire alta coesione:
+		
+		\begin{itemize}
+			\item \textbf{Modelli:} Le classi Student, Book e Loan sono \textbf{POJO} (\textit{Plain Old Java Objects}) che hanno l'unica responsabilità di rappresentare i dati e garantirne la validità tramite controlli interni, senza contenere logica di business complessa o riferimenti alla GUI.
+			
+			\item \textbf{IOManager:} La gestione della persistenza è isolata nella classe \verb|LibraryIOManager|, che si occupa esclusivamente di serializzazione e deserializzazione, rimanendo totalmente disaccoppiata dalla logica operativa della biblioteca.
+			
+			\item \textbf{Controllers}: La gestione dell'interfaccia è suddivisa per contesti. I RegisterControllers (\textit{Student, Book, Loan}) gestiscono autonomamente i propri tab, mentre i PopupControllers si occupano esclusivamente degli eventi di inserimento/modifica, separando queste operazioni dalla visualizzazione tabellare principale.
+		\end{itemize}
+		
+	\subsection{Principio aperto/chiuso}
+		Il sistema è progettato per essere estendibile senza dover modificare il codice esistente:
+		
+		\begin{itemize}
+			\item \textbf{Gerarchia dei Popup:} L'uso di classi astratte (\verb|BookPopupController| ,\\\verb|StudentPopupController|, \verb|LoanPopupController|) definisce una struttura base comune. Se in futuro fosse necessario implementare nuove tipologie di popup (es. per la sola visualizzazione dettagli), basterebbe estendere la classe base senza alterare i controller già funzionanti.
+		\end{itemize}
+		
+	\subsection{Principio di segregazione delle interfacce}
+		Per evitare dipendenze inutili, è stato evitato il passaggio di oggetti "pesanti" ai componenti che necessitano solo di funzionalità limitate:
+		
+		\begin{itemize}
+			\item \textbf{Gestione Popup:} Invece di passare l'intero oggetto \verb|Register| ai popup di inserimento (dando accesso a metodi non necessari come la rimozione o la lettura), sono state definite interfacce funzionali specifiche e minimali (RegisterAdder, RegisterModifier). Questo riduce l'accoppiamento e aumenta la sicurezza del codice.
+			
+			\item\textbf{Gestione I/O:} La comunicazione tra il sideBarController e il MainController avviene tramite interfacce Refresh per 
+		\end{itemize}
+		
+	\subsection{Principio di inversione delle dipendenze}
+		I moduli di alto livello non dipendono dai dettagli implementativi di basso livello:
+		
+		\begin{itemize}
+			\item \textbf{Astrazione dei Registri:} I controller interagiscono con l'interfaccia generica \verb|Register<T>| e non con le implementazioni concrete (es. \verb!StudentRegister!). Questo permette di cambiare l'implementazione sottostante della struttura dati senza impattare sulla logica dell'interfaccia utente.
+		\end{itemize}
 	
-	\begin{figure}[H]
-		\begin{adjustwidth}{-\oddsidemargin-0.9in}{-\rightmargin}
+	\subsection{Separazione delle preoccupazioni}
+		Il sistema segue una netta divisione logica:
+		
+		\begin{itemize}
+			\item\textbf{Pattern MVC:}L'architettura permette una chiara separazione delle preoccupazioni: i \textbf{Controllers} assumono un ruolo di mediazione: il loro compito è limitato esclusivamente alla gestione dell'interazione tra l'utente e l'interfaccia grafica (\textbf{View}), recependo gli input e invocando le opportune funzioni dei \textbf{Models} senza eseguire logica di business.
+			
+			\item\textbf{Gestione I/O:} La logica di come salvare i dati è fisicamente separata dalla logica di cosa salvare, mantenendo il core dell'applicazione pulito da dettagli tecnici di I/O.
+		\end{itemize}
+		
+	\subsection{Don't Repeat Yourself (DRY)}
+		La duplicazione del codice è stata minimizzata tramite l'ereditarietà:
+		\begin{itemize}
+			\item \textbf{Logica condivisa nei Controller:} Le operazioni comuni, come la chiusura della finestra o gestione della UI, sono implementate una sola volta nelle classi astratte dei popup e riutilizzate automaticamente dalle sottoclassi di inserimento e modifica.
+		\end{itemize}
+		
+	\subsection{You Ain't Gonna Need It (YANGI)}
+		Lo sviluppo si è attenuto strettamente ai \hyperref[reqFun]{Requisiti Funzionali} evitando l’introduzione di funzionalità aggiuntive non richieste.
+		
+		
+	\clearpage
+	\subsection{Gerarchia dei modelli}
+	\begin{figure}[!h]
 			\centering
-			\includesvg[width=0.98\paperwidth]{../Class Diagrams/Model hierarchy/ModelsHierarchy.svg}
+			\includesvg[width=\linewidth]{../Class Diagrams/Detailed View/Diagrams without method parameters/ModelPerspective/ModelsPerspective.svg}
 			\caption{Diagramma delle classi per la gerarchia dei modelli.}
-		\end{adjustwidth}
 	\end{figure}
 	
+	\clearpage
 	\subsection{Prospettiva del MainController}
-	\begin{figure}[H]
-		\begin{adjustwidth}{-\oddsidemargin-0.9in}{-\rightmargin}
+	\begin{figure}[!h]
+		\begin{adjustwidth}{-\oddsidemargin-0.15in}{-\rightmargin}
 			\centering
-			\includesvg[width=0.98\paperwidth]{../Class Diagrams/Main Controller Perspective/MainControllerPerspective.svg}
+			\includesvg[width=0.8\paperwidth]{../Class Diagrams/Detailed View/Diagrams without method parameters/MainControllerPerspective/MainControllerPerspective.svg}
 			\caption{Diagramma delle classi per il MainController}
 		\end{adjustwidth}
 	\end{figure}
@@ -21,31 +79,32 @@
 	
 	\clearpage
 	\subsection{Prospettiva dei RegisterController}
-	
-	\begin{figure}[!ht]
-		\begin{adjustwidth}{-\oddsidemargin-0.9in}{-\rightmargin}
+	\begin{figure}[!h]
+		\begin{adjustwidth}{-\oddsidemargin-0.8in}{-\rightmargin}
 			\centering
-			\includesvg[width=0.98\paperwidth]{../Class Diagrams/Register Controllers Perspective/Book/BookControllerPerspective.svg}
+			\includesvg[width=0.9\paperwidth]{../Class Diagrams/Detailed View/Diagrams without method parameters/BookRegisterControllerPerspective/BookRegisterControllerPerspective.svg}
 			\caption{Diagramma delle classi dalla prospettiva del BookRegisterController}
 		\end{adjustwidth}
 	\end{figure}
 	
+
 	\begin{figure}[!ht]
 		\begin{adjustwidth}{-\oddsidemargin-0.9in}{-\rightmargin}
 			\centering
-			\includesvg[width=0.98\paperwidth]{../Class Diagrams/Register Controllers Perspective/Student/StudentControllerPerspective.svg}
+			\includesvg[width=0.98\paperwidth]{../Class Diagrams/Detailed View/Diagrams without method parameters/StudentRegisterControllerPerspective/StudentRegisterControllerPerspective.svg}
 			\caption{Diagramma delle classi dalla prospettiva del StudentRegisterController}
 		\end{adjustwidth}
 		
 	\end{figure}
 	
-	\begin{figure}[!ht]
+	\begin{figure}[!h]
 		\begin{adjustwidth}{-\oddsidemargin-0.9in}{-\rightmargin}
 			\centering
-			\includesvg[width=0.98\paperwidth]{../Class Diagrams/Register Controllers Perspective/Loan/LoanControllerPerspective.svg}
+			\includesvg[width=0.98\paperwidth]{../Class Diagrams/Detailed View/Diagrams without method parameters/LoanRegisterControllerPerspective/LoanRegisterControllerPerspective.svg}
 			\caption{Diagramma delle classi dalla prospettiva del LoanRegisterController}
 		\end{adjustwidth}
 	\end{figure}
+	
 	
 	
 	\clearpage
@@ -56,21 +115,23 @@
 % --- LIBRI ---
 \begin{figure}[h]
 	\centering
-	\includesvg[width=\linewidth]{../Sequence Diagrams/BookInteractions/Add/BookAdd.svg}
+	\includesvg[width=0.9\linewidth]{../Sequence Diagrams/BookInteractions/Add/BookAdd.svg}
 	\caption{Diagramma di sequenza per la registrazione di un libro \ref{UC-1}}
 \end{figure}
 
-\begin{figure}[H]
+\begin{figure}[!h]
+	\centering
+	\includesvg[width=0.8\linewidth]{../Sequence Diagrams/BookInteractions/Remove/BookRemove.svg}
+	\caption{Diagramma di sequenza per la rimozione di un libro \ref{UC-3}}
+\end{figure}
+
+\begin{figure}[h]
 	\centering
 	\includesvg[width=\linewidth]{../Sequence Diagrams/BookInteractions/Modify/BookModify.svg}
 	\caption{Diagramma di sequenza per la modifica di un libro \ref{UC-2}}
 \end{figure}
 
-\begin{figure}[h]
-	\centering
-	\includesvg[width=\linewidth]{../Sequence Diagrams/BookInteractions/Remove/BookRemove.svg}
-	\caption{Diagramma di sequenza per la rimozione di un libro \ref{UC-3}}
-\end{figure}
+
 % --------------
 
 % --- STUDENTI ----
@@ -113,7 +174,25 @@
 \end{figure}
 % -------------
 
+% --- ARCHIVIO ---
+\begin{figure}[h]
+	\centering
+	\includesvg[width=\linewidth]{../Sequence Diagrams/IOInteractions/SaveAs/SaveAs.svg}
+	\caption{Diagramma di sequenza per il salvataggio dell'archivio (con nome) \ref{UC-17}}
+\end{figure}
 
+
+\begin{figure}[h]
+	\centering
+	\includesvg[width=0.85\linewidth]{../Sequence Diagrams/IOInteractions/Save/Save.svg}
+	\caption{Diagramma di sequenza per il salvataggio dell'archivio \ref{UC-17}}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\includesvg[width=0.85\linewidth]{../Sequence Diagrams/IOInteractions/Open/Open.svg}
+	\caption{Diagramma di sequenza per il salvataggio dell'archivio \ref{UC-17}}
+\end{figure}
 
 \clearpage
 \subsection{Livelli di coesione}
@@ -185,10 +264,10 @@
 		\textbf{Accoppiamento} \\ \hline
 		
 		Loan & Student &
-		\cellcolor{priorityBassa}Per dati \\ \hline
+		\cellcolor{priorityMedia}Per timbro \\ \hline
 		
 		Loan & Book &
-		\cellcolor{priorityBassa}Per dati \\ \hline
+		\cellcolor{priorityMedia}Per timbro \\ \hline
 		
 		Student & StudentRegister &
 		\cellcolor{priorityBassa}Per dati \\ \hline
@@ -223,28 +302,7 @@
 	\end{tabular}
 \end{table}
 
+L'accoppiamento per timbro tra \verb|Loan| e \verb|Student/Book| sussiste in quanto al Loan non sono necessarie tutte le funzionalità fornite dalle due classi. Sebbene fosse possibile ridurre l'accoppiamento mediante introduzione di opportune interfacce ciò avrebbe complicato la stampa del registro prestiti. Si è dunque ritenuto questo accoppiamento accettabile. \\
 
+L'accoppiamento per timbro tra \verb|MainController| e \verb|MenuBarController| sussiste in quando il medesimo riceve dal \verb|MainController| una \verb|Library| che gli dà accesso a più funzionalità di quante ne sono effettivamente richieste. Per le stesse motivazioni sussiste un accoppiamento per timbro tra \verb|MenuBarController| e \verb|LibraryIOManager| (la struttura dati passata è la stessa).
 %% \subsection{}
-
-\section{Principi di buona progettazione}
-
-\subsection{Principio della minima sorpresa}
-Nel design del sistema è stata data priorità alla chiarezza della nomenclatura. Sono stati prediletti identificatori per classi e metodi che, sebbene talvolta lunghi, risultano esplicativi del loro scopo e della loro responsabilità, minimizzando l'ambiguità. Inoltre, è stata mantenuta una rigida coerenza nelle convenzioni di denominazione (naming convention) lungo tutto il progetto: ad esempio, le classi di registro seguono lo schema EntitàRegister (es. StudentRegister) così come i relativi controller (es. StudentRegisterController).
-
-\subsection{Principio di segregazione delle interfacce}
-Questo principio trova specifica applicazione nella gestione dei Pop-up di modifica e inserimento. Attraverso l'utilizzo di interfacce funzionali, i controller dei Pop-up sono stati disaccoppiati dall'intera interfaccia Register. Ad essi vengono passati esclusivamente i riferimenti ai metodi strettamente necessari per l'operazione.
-
-\subsection{Privilegiare l'associazione all'ereditarietà}
-Si è scelto di limitare l’ereditarietà esclusivamente all’estensione di classi astratte per la condivisione di codice strutturale, preferendo l'associazione per le interazioni tra i vari moduli.
-
-
-\subsection{Ortogonalità}
-Le funzionalità di Input/Output e la logica di gestione dei Registri sono mantenute completamente separate, consentendo di modificare l'una senza effetti collaterali sull'altra. Inoltre, è stato garantito l'isolamento tra tutti i componenti che gestiscono l'entità Book e quelli che gestiscono l'entità Student (modelli, controller di registro e controller di pop-up).
-
-
-
-\subsection{DRY - Don't Repeat Yourself}
-Per evitare la duplicazione del codice e favorire la manutenibilità, è stata definita una classe astratta per i Pop-Up contenente le definizioni di attributi e metodi comuni, evitando di ripeterli nelle implementazioni specifiche. Inoltre, l'adozione dell'interfaccia comune Register ha permesso di uniformare le operazioni sui diversi tipi di dati.
-
-\subsection{YANGI - You Ain't Gonna Need It}
-Lo sviluppo si è attenuto strettamente ai \hyperref[reqFun]{Requisiti Funzionali} evitando l’introduzione di funzionalità aggiuntive non richieste.

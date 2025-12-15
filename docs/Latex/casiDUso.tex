@@ -26,7 +26,7 @@
     \item \label{UC-1}
     \textbf{Titolo:} Registrazione libro\\
     \textbf{Attori:} Admin \\\\
-    \textbf{Precondizioni:} L'admin si trova nella schermata principale e ha selezionato la tipologia di elemento "libro".\\
+    \textbf{Precondizioni:} L'admin si trova nella schermata di visualizzazione della tipologia di elemento "libro".\\
     \textbf{Flusso principale: } 
         \begin{enumerate}[label=\arabic*.]
             \item L'admin avvia la funzione di inserimento.
@@ -52,7 +52,7 @@
     \item \label{UC-2}
     \textbf{Titolo:} Modifica libro \\
     \textbf{Attori:} Admin\\\\
-    \textbf{Precondizioni:} L'admin si trova nella schermata di visualizzazione e ha selezionata la tipologia di elemento "libro".\\
+    \textbf{Precondizioni:} L'admin si trova nella schermata di visualizzazione della tipologia di elemento "libro".\\
     \textbf{Flusso principale:} 
         \begin{enumerate}[label=\arabic*.]
             \item L'admin seleziona un libro da modificare.
@@ -75,7 +75,7 @@
     \item \label{UC-3}
     \textbf{Titolo:} Rimozione libro \\
     \textbf{Attori:} Admin \\\\
-    \textbf{Precondizioni:} L'admin si trova nella schermata di visualizzazione e ha selezionato la tipologia di elemento "libro". \\
+    \textbf{Precondizioni:}L'admin si trova nella schermata di visualizzazione della tipologia di elemento "libro". \\
     \textbf{Flusso principale:} 
         \begin{enumerate}[label=\arabic*.]
             \item L'admin seleziona un libro da rimuovere.
@@ -93,10 +93,10 @@
     \item \label{UC-4}
     \textbf{Titolo:} Visualizzazione libri \\
     \textbf{Attori:} Admin \\\\
-    \textbf{Precondizioni:} L'admin si trova nella schermata principale e ha selezionato la tipologia di elemento "libro". \\
+    \textbf{Precondizioni:} L'admin si trova in una schermata di visualizzazione. \\
     \textbf{Flusso principale:} 
         \begin{enumerate}[label=\arabic*.]
-            \item L'admin accede alla schermata di visualizzazione
+            \item L'admin accede alla schermata di visualizzazione selezionando la tipologia di elemento "libro".
             \item L'admin scorre i libri della schermata di visualizzazione.
         \end{enumerate} 
     \textbf{Post-condizioni:} L'admin visualizza i libri registrati
@@ -106,7 +106,7 @@
     \item \label{UC-5}
     \textbf{Titolo:} Ricerca titolo\\
     \textbf{Attori:} Admin\\\\
-    \textbf{Precondizioni:} L'admin si trova nella schermata principale e ha selezionato la tipologia di elemento "libro"\\
+    \textbf{Precondizioni:} L'admin si trova nella schermata di visualizzazione della tipologia di elemento "libro".\\
     \textbf{Flusso principale:} 
         \begin{enumerate}[label=\arabic*.]
             \item L'admin scrive del testo all'interno della barra di ricerca
@@ -118,17 +118,17 @@
     \item \label{UC-6}
     \textbf{Titolo:} Registrazione studente \\
     \textbf{Attori:} Admin\\\\
-    \textbf{Precondizioni:} L'admin si trova nella schermata principale e ha selezionato la tipologia di elemento "studente".\\
+    \textbf{Precondizioni:}L'admin si trova nella schermata di visualizzazione della tipologia di elemento "studente".\\
     \textbf{Flusso principale:} 
         \begin{enumerate}[label=\arabic*.]
             \item L'admin avvia la funzione di inserimento.
-            \item L'admin compila i campi specificati in \ref{df:studente}
+            \item L'admin compila i campi specificati in \ref{df:studente}, eccetto "Lista dei libri attualmente in prestito".
             \item L'admin conferma l'operazione.
         \end{enumerate} 
     \textbf{Post-condizioni:} Lo studente è correttamente inserito nell'elenco studenti.\\\\
     \textbf{Flusso alternativo 1:}
         \begin{enumerate}
-            \item[2] I dati inseriti sono errati. L'admin deve inserirne di nuovi. Si riparte dal punto 2. 
+            \item[3] I dati inseriti sono errati. L'admin deve inserirne di nuovi. Si riparte dal punto 2. 
         \end{enumerate}
     \textbf{Flusso alternativo 2:}
         \begin{enumerate}
@@ -144,22 +144,22 @@
     \item \label{UC-7}
     \textbf{Titolo:} Modifica studente\\
     \textbf{Attori:} Admin\\\\
-    \textbf{Precondizioni:} L'admin si trova nella schermata principale e ha selezionato la tipologia di elemento "studente"\\
+    \textbf{Precondizioni: }L'admin si trova nella schermata di visualizzazione della tipologia di elemento "studente".\\
     \textbf{Flusso principale:} 
         \begin{enumerate}[label=\arabic*.]
             \item L'admin seleziona uno studente da modificare.
             \item L'admin avvia la funzione di modifica.
-            \item L'admin compila i campi (modificabili) specificati in \ref{df:studente}.
+            \item L'admin compila i campi (modificabili) specificati in \ref{df:studente}, eccetto "Lista dei libri attualmente in prestito".
             \item L'admin conferma l'operazione
         \end{enumerate} 
     \textbf{Post-condizioni:} Lo studente è correttamente modificato.\\\\
     \textbf{Flusso alternativo 1:}
         \begin{enumerate}
-            \item[2] I dati sono errati. L'admin deve inserirne di nuovi. Si riparte dal punto 2. 
+            \item[5] I dati sono errati. L'admin deve inserirne di nuovi. Si riparte dal punto 2. 
         \end{enumerate}
     \textbf{Flusso alternativo 2:}
         \begin{enumerate}
-            \item[2] L'admin annulla l'operazione o chiude la finestra.
+            \item[4] L'admin annulla l'operazione o chiude la finestra.
         \end{enumerate}
     %
     \par\noindent\rule{\textwidth}{0.5pt}
@@ -167,7 +167,7 @@
     \item \label{UC-8}
     \textbf{Titolo:} Rimozione studente\\
     \textbf{Attori:} Admin\\\\
-    \textbf{Precondizioni:} L'admin si trova nella schermata principale e ha selezionato la tipologia di elemento "studente"\\
+    \textbf{Precondizioni:} L'admin si trova nella schermata di visualizzazione della tipologia di elemento "studente".\\
     \textbf{Flusso principale:} 
         \begin{enumerate}[label=\arabic*.]
             \item L'admin seleziona uno studente da rimuovere.
@@ -177,7 +177,7 @@
     \textbf{Post-condizioni:} Lo studente è correttamente rimosso dall'elenco studenti\\\\
     \textbf{Flusso alternativo 1:}
         \begin{enumerate}
-            \item[1] L'admin annulla l'operazione o chiude la finestra.
+            \item[4] L'admin annulla l'operazione o chiude la finestra.
         \end{enumerate}
     %
     \par\noindent\rule{\textwidth}{0.5pt}
@@ -185,7 +185,7 @@
     \item \label{UC-9}
     \textbf{Titolo:} Visualizzazione studenti\\
     \textbf{Attori:} Admin\\\\
-    \textbf{Precondizioni:} L'admin si trova nella schermata principale e ha selezionato la tipologia di elemento "studente".\\
+    \textbf{Precondizioni:}L'admin si trova in una schermata di visualizzazione.\\
     \textbf{Flusso principale:} 
         \begin{enumerate}[label=\arabic*.]
             \item L'admin accede alla schermata di visualizzazione.
@@ -198,7 +198,7 @@
     \item \label{UC-10}
     \textbf{Titolo:} Ricerca studente\\
     \textbf{Attori:} Admin\\\\
-    \textbf{Precondizioni:} L'admin si trova nella schermata principale e ha selezionato la tipologia di elemento "studente".\\
+    \textbf{Precondizioni:} L'admin si trova nella schermata di visualizzazione della tipologia di elemento "studente".\\
     \textbf{Flusso principale:} 
         \begin{enumerate}[label=\arabic*.]
             \item L'admin scrive del testo all'interno della barra di ricerca.
@@ -210,17 +210,17 @@
     \item \label{UC-11}
     \textbf{Titolo:} Registrazione prestito\\
     \textbf{Attori:} Admin\\\\
-    \textbf{Precondizioni:} L'admin si trova nella schermata principale e ha selezionato la tipologia di elemento "prestito"\\
+    \textbf{Precondizioni:}L'admin si trova nella schermata di visualizzazione della tipologia di elemento "prestito".\\
     \textbf{Flusso principale:} 
         \begin{enumerate}[label=\arabic*.]
             \item L'admin avvia la funzione di inserimento.
-            \item L'admin compila i campi specificati in \ref{df:prestito}.
+            \item L'admin compila i campi specificati in \ref{df:prestito}, eccetto "Restituzione avvenuta o in attesa".
             \item L'admin conferma l'operazione.
         \end{enumerate} 
     \textbf{Post-condizioni:} Il prestito è correttamente inserito nell'elenco prestiti.\\\\
     \textbf{Flusso alternativo 1:}
         \begin{enumerate}
-            \item[2] I dati inseriti sono errati. L'admin deve inserirne di nuovi. Si riparte dal punto 2. 
+            \item[4] I dati inseriti sono errati. L'admin deve inserirne di nuovi. Si riparte dal punto 2. 
         \end{enumerate}
     \textbf{Flusso alternativo 2:}
         \begin{enumerate}
@@ -240,23 +240,23 @@
     \item \label{UC-12}
     \textbf{Titolo:} Modifica prestito\\
     \textbf{Attori:} Admin\\\\
-    \textbf{Precondizioni:} L'admin si trova nella schermata principale e ha selezionato la tipologia di elemento "prestito".\\
+    \textbf{Precondizioni:}L'admin si trova nella schermata di visualizzazione della tipologia di elemento "prestito".\\
     \textbf{Flusso principale:} 
         \begin{enumerate}[label=\arabic*.]
             \item L'admin seleziona un prestito da modificare.
             \item L'admin avvia la funzione di modifica.
-            \item L'admin compila i campi (modificabili) specificati in \ref{df:prestito}.
+            \item L'admin modifca "Data ultima di restituzione"
             \item L'admin conferma l'operazione.
         \end{enumerate} 
     \textbf{Post-condizioni:} Il prestito è correttamente modificato.\\\\
     \textbf{Flusso alternativo 1:}
         \begin{enumerate}
-            \item[3] I dati inseriti sono errati. L'admin deve inserirne di nuovi. Si riparte dal punto 2. 
+            \item[5] I dati inseriti sono errati. L'admin deve inserirne di nuovi. Si riparte dal punto 2. 
         \end{enumerate}
 
     \textbf{Flusso alternativo 2:}
         \begin{enumerate}
-            \item[4] L'admin annulla l'operazione o chiude la finestra.
+            \item[5] L'admin annulla l'operazione o chiude la finestra.
         \end{enumerate}
     %
     \par\noindent\rule{\textwidth}{0.5pt}
@@ -264,7 +264,7 @@
     \item \label{UC-13}
     \textbf{Titolo:} Rimozione prestito\\
     \textbf{Attori:} Admin\\\\
-    \textbf{Precondizioni:} L'admin si trova nella schermata principale e ha selezionato la tipologia di elemento "prestito".\\
+    \textbf{Precondizioni:} L'admin si trova nella schermata di visualizzazione della tipologia di elemento "prestito".\\
     \textbf{Flusso principale:} 
         \begin{enumerate}[label=\arabic*.]
             \item L'admin seleziona un prestito da rimuovere.
@@ -282,7 +282,7 @@
     \item \label{UC-14}
     \textbf{Titolo:} Visualizzazione prestiti\\
     \textbf{Attori:} Admin\\\\
-    \textbf{Precondizioni:} L'admin si trova nella schermata principale e ha selezionato la tipologia di elemento "prestiti"\\
+    \textbf{Precondizioni:} L'admin si trova nella schermata di una visualizzazione.\\
     \textbf{Flusso principale:} 
         \begin{enumerate}[label=\arabic*.]
             \item L'admin accede alla schermata di visualizzazione.
@@ -295,7 +295,7 @@
     \item \label{UC-15}
     \textbf{Titolo:}  Ricerca prestito\\
     \textbf{Attori:} Admin\\\\
-    \textbf{Precondizioni:} L'admin si trova nella schermata principale e ha selezionato la tipologia di elemento "prestiti".\\
+    \textbf{Precondizioni:} L'admin si trova nella schermata di visualizzazione della tipologia di elemento "prestito".\\
     \textbf{Flusso principale:} 
         \begin{enumerate}[label=\arabic*.]
             \item L'admin scrive del testo all'interno della barra di ricerca.
@@ -307,7 +307,7 @@
     \item \label{UC-16}
     \textbf{Titolo:}  Estinzione prestito\\
     \textbf{Attori:} Admin\\\\
-    \textbf{Precondizioni:} L'admin si trova nella schermata principale e ha selezionato la tipologia di elemento "prestiti".\\
+    \textbf{Precondizioni:} L'admin si trova nella schermata di visualizzazione della tipologia di elemento "prestito".\\
     \textbf{Flusso principale:} 
         \begin{enumerate}[label=\arabic*.]
             \item L'admin seleziona un prestito da estinguere.
@@ -321,15 +321,15 @@
         \end{enumerate}
     \textbf{Flusso alternativo 2:}
         \begin{enumerate}
-            \item[4] Il prestito è già stato estinto. L'operazione è annullata. 
+            \item[2] Il prestito è già stato estinto. L'operazione è disabilitata. 
         \end{enumerate}
     %
     \par\noindent\rule{\textwidth}{0.5pt}
     %
-    \item \label{UC-18}
+    \item \label{UC-17}
     \textbf{Titolo:} Salvataggio archivio\\
     \textbf{Attori:} Admin\\\\
-    \textbf{Precondizioni:} L'admin si trova nella schermata principale. \\
+    \textbf{Precondizioni:} L'admin si trova in una schermata di visualizzazione.\\
     \textbf{Flusso principale:} 
         \begin{enumerate}[label=\arabic*.]
             \item L'admin accede alla schermata di salvataggio.
@@ -344,10 +344,10 @@
     %
     \par\noindent\rule{\textwidth}{0.5pt}
     %
-    \item \label{UC-19}
+    \item \label{UC-18}
     \textbf{Titolo:} Caricamento archivio\\
     \textbf{Attori:} Admin\\\\
-    \textbf{Precondizioni:} L'admin si trova nella schermata principale.\\
+    \textbf{Precondizioni:} L'admin si trova in una schermata di visualizzazione.\\
     \textbf{Flusso principale:} 
         \begin{enumerate}[label=\arabic*.]
             \item L'admin accede alla schermata di caricamento file
@@ -357,11 +357,11 @@
     \textbf{Post-condizioni:} La biblioteca i cui dati erano memorizzati nel file selezionato viene correttamente caricata.\\\\
     \textbf{Flusso alternativo 1:}
         \begin{enumerate}
-            \item[3] L'estensione del file selezionato è diversa da quella prevista. L'operazione è annullata: si ritorna al punto 1. 
+            \item[4] L'estensione del file selezionato è diversa da quella prevista. L'operazione è annullata: si ritorna al punto 1. 
         \end{enumerate}
     \textbf{Flusso alternativo 2:}
         \begin{enumerate}
-            \item[3] Il formato del file selezionato è diverso da quello previsto. L'operazione è annullata si ritorna al punto 1.
+            \item[4] Il formato del file selezionato è diverso da quello previsto. L'operazione è annullata si ritorna al punto 1.
         \end{enumerate}
     \textbf{Flusso alternativo 3:}
         \begin{enumerate}
@@ -371,3 +371,35 @@
     \par\noindent\rule{\textwidth}{0.5pt}
     
 \end{enumerate}
+\clearpage
+\section{Diagrammi dei casi d'uso}
+
+\begin{figure}[!ht]
+	\begin{adjustwidth}{-\oddsidemargin-0.9in}{-\rightmargin}
+		\centering
+		\includesvg[width=0.98\paperwidth]{../Use Case Diagrams/svg/BookDiagram.svg}
+		\caption{\small Diagramma dei casi d'uso: gestione dei libri (\ref{UC-1}, \ref{UC-2}, \ref{UC-3}, \ref{UC-4}, \ref{UC-5}).}
+	\end{adjustwidth}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{adjustwidth}{-\oddsidemargin-0.9in}{-\rightmargin}
+		\centering
+		\includesvg[width=0.98\paperwidth]{../Use Case Diagrams/svg/StudentDiagram.svg}
+		\caption{\footnotesize Diagramma dei casi d'uso: gestione degli studenti (\ref{UC-6}, \ref{UC-7}, \ref{UC-8}, \ref{UC-9}, \ref{UC-10}).}
+	\end{adjustwidth}
+\end{figure}
+
+\begin{figure}[!ht]
+	\begin{adjustwidth}{-\oddsidemargin-0.9in}{-\rightmargin}
+		\centering
+		\includesvg[width=0.98\paperwidth]{../Use Case Diagrams/svg/LoanDiagram.svg}
+		\caption{ Diagramma dei casi d'uso: gestione dei prestiti (\ref{UC-11}, \ref{UC-12}, \ref{UC-13}, \ref{UC-14}, \ref{UC-15}, \ref{UC-16}).}
+	\end{adjustwidth}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\includesvg[width=0.6\linewidth]{../Use Case Diagrams/svg/IODiagram.svg}
+	\caption{Diagramma dei casi d'uso: gestione dell'I/O (\ref{UC-17}, \ref{UC-18}).}
+\end{figure}
