@@ -25,20 +25,24 @@ import java.util.logging.Logger;
  */
 public class LibraryIOManager {
 
-
     private ResultActions resultActions;
+
     /**
      * @brief Costruttore predefinito.
+     * @param[in] actions Interfaccia contente i metodi da esguire in caso
+     *             di successo o fallimento delle operazioni di I/O
+     * @post Viene creato un oggetto LibraryIOManager e impostato il resultActions.
      */
     public LibraryIOManager(ResultActions actions) {
         this.resultActions = actions;
-    } //da cambiare: spostiamo il setter del resultsAction nel costruttore
+    }
 
     /**
      * @brief Salva lo stato corrente della biblioteca su file.
      * @details Serializza l'oggetto Library passato come parametro e lo scrive nel percorso specificato.
      * @param[in] libraryToSave L'istanza della biblioteca contenente tutti i registri da salvare.
      * @param[in] filePath Il percorso del file (incluso nome ed estensione) su cui scrivere.
+     * @post Serializza la libreria in un file, invocando il metodo success in caso di successo e failure in caso di fallimento.
      */
     public void saveLibrary(Library libraryToSave, String filePath) {
         File fileObj = new File(filePath);
@@ -57,6 +61,7 @@ public class LibraryIOManager {
      * @details Legge il file dal percorso specificato e deserializza l'oggetto Library.
      * @param[in] filePath Il percorso del file da cui leggere i dati.
      * @return Library L'istanza della biblioteca ripristinata con tutti i suoi dati.
+     * @post Deserializza la libreria invocando il metodo failure in caso di fallimento.
      */
     public Library loadLibrary(String filePath) {
         File fileObj = new File(filePath);
@@ -69,7 +74,6 @@ public class LibraryIOManager {
 
             if(obj instanceof Library){
                 loadedLibrary = (Library) obj;
-//                resultActions.success();
             } else {
                 resultActions.failure();
             }
@@ -84,4 +88,5 @@ public class LibraryIOManager {
 
         return loadedLibrary;
     }
+
 }
