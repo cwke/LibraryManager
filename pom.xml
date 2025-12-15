@@ -24,7 +24,28 @@
             <version>5.6.0</version>
             <scope>test</scope>
         </dependency>
+
     </dependencies>
+    <profiles>
+        <profile>
+            <id>openjfx</id>
+            <activation>
+                <jdk>[11,)</jdk>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>org.openjfx</groupId>
+                    <artifactId>javafx-controls</artifactId>
+                    <version>13</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.openjfx</groupId>
+                    <artifactId>javafx-fxml</artifactId>
+                    <version>13</version>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
     <build>
         <plugins>
             <plugin>
