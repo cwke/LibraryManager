@@ -88,6 +88,7 @@ class LoanRegisterTest {
         Student oldStud = loan1.getStudent();
         Book oldBook = loan1.getBook();
         assertNotNull(loan2);
+        loan2.returnLoan();
         loanRegister.modify(loan1, loan2);
 
         assertEquals(1, list.size());
@@ -97,6 +98,31 @@ class LoanRegisterTest {
         assertEquals(oldStud, modifiedLoan.getStudent());
         assertEquals(oldBook, modifiedLoan.getBook());
         assertSame(modifiedLoan, loan1);
+        assertTrue(modifiedLoan.isReturned());
+    }
+
+    @Test
+    void testModify2() {
+        loanRegister.add(loan1);
+        List<Loan> list = loanRegister.getRegisterList();
+        assertTrue(list.contains(loan1));
+        Student oldStud = loan1.getStudent();
+        Book oldBook = loan1.getBook();
+        assertNotNull(loan2);
+        loan2.returnLoan();
+        assertTrue(loan2.isReturned());
+        assertFalse(loan1.isReturned());
+        loanRegister.modify(loan1, loan2);
+
+        assertEquals(1, list.size());
+
+        Loan modifiedLoan = list.get(0);
+        assertEquals(loan2.getLoanEnd(), modifiedLoan.getLoanEnd());
+        assertEquals(oldStud, modifiedLoan.getStudent());
+        assertEquals(oldBook, modifiedLoan.getBook());
+        assertSame(modifiedLoan, loan1);
+        assertTrue(modifiedLoan.isReturned());
+        assertTrue(modifiedLoan.isReturned());
     }
 
     /*
