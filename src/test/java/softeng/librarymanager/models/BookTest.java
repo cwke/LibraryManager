@@ -46,6 +46,18 @@ class BookTest {
         //Creazione invalida perché numero di copie disponibili minore di 0
         assertThrows(IllegalArgumentException.class, () -> new Book(validTitle, validAuthors, validBookId, validPublishmentYear, -1));
     }
+    
+    @Test
+    void testSetAvailableCopies() {
+        Book book = new Book(validTitle, validAuthors, validBookId, validPublishmentYear, validAvailableCopies);
+        
+        //Verifica impostazione numero copie disponibili accettabile
+        book.setAvailableCopies(2);
+        assertEquals(2, book.getAvailableCopies());
+        
+        //Verifica impostazione numero copie disponibili non accettabile
+        assertThrows(IllegalArgumentException.class, () -> book.setAvailableCopies(-2));
+    }
 
     @Test
     void testCopy() {
