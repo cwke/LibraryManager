@@ -122,4 +122,22 @@ class LoanTest {
         Loan loan2 = new Loan(validStudent, validBook, validLoanEnd);
         assertFalse(loan.hashCode() == loan2.hashCode());
     }
+    
+    @Test
+    void testIsDelay() {
+        Student validStudent = new Student("Mario", "Rossi", "1234567890", "m.rossi@studenti.unisa.it");
+        Book validBook = new Book("La roba", validAuthors, "1234567890123", 1880, 10);
+
+        Loan inTimeLoan = new Loan(validStudent, validBook, LocalDate.now().plusMonths(1));
+        //Verifica prestito non in ritardo
+        assertFalse(inTimeLoan.isDelay());
+        
+        //Verifica prestito in ritardo
+        Loan lateLoan = new Loan(validStudent, validBook, LocalDate.now().minusMonths(1));
+        assertTrue(lateLoan.isDelay());
+        
+        //Verifica stesso giorno, il prestito non è considerato in ritardo
+        Loan todayLoan = new Loan(validStudent, validBook, LocalDate.now());
+        assertFalse(todayLoan.isDelay());
+    }
 }

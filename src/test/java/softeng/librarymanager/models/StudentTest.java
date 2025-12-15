@@ -139,6 +139,10 @@ class StudentTest {
         l3.activateLoan();
                 
         assertFalse(student.isAvailableForLoan());
+        
+        // Verifica studente disponibile per il prestito dopo averne estinto uno
+        l1.returnLoan();
+        assertTrue(student.isAvailableForLoan());
     }
     
     
