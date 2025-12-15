@@ -1,6 +1,6 @@
 \section{Principi di buona progettazione}
 	\subsection{Progettazione di dettaglio}
-		È stata applicata una decomposizione \textbf{Object-Oriented} attorno le entità del dominio (\textit{Book}, \textit{Student}, \textit{Loan}). Ogni modulo è concepito come un oggetto che incapsula sia lo stato che i comportamento specifici, garantendo un'alta coesione interna. L'architettura sfrutta meccanismi di astrazione come \textit{Interfacce}, \textit{Generics} ed \textit{Ereditarietà}, permettendo di definire logiche di gestione comuni che vengono specializzate per ogni tipo di dato (evidenti nell'interfaccia \verb|Register<T>|).
+		È stata applicata una decomposizione \textbf{Object-Oriented} attorno alle entità del dominio (\textit{Book}, \textit{Student}, \textit{Loan}). Ogni modulo è concepito come un oggetto che incapsula sia lo stato che i comportamento specifici, garantendo un'alta coesione interna. L'architettura sfrutta meccanismi di astrazione come \textit{Interfacce}, \textit{Generics} ed \textit{Ereditarietà}, permettendo di definire logiche di gestione comuni che vengono specializzate per ogni tipo di dato (evidenti nell'interfaccia \verb|Register<T>|).
 		
 	\subsection{Principio della minima sorpresa}
 		Il codice è stato progettato per garantire intuitività e prevedibilità attraverso l'adozione di una \textit{Naming Convention} coerente con gli standard Java, privilegiando identificatori che, sebbene talvolta estesi, risultano autoesplicativi nel definire scopo e responsabilità di classi, metodi e variabili, minimizzando così le ambiguità e facilitando l'immediata comprensione del sistema.
@@ -27,9 +27,10 @@
 		Per evitare dipendenze inutili, è stato evitato il passaggio di oggetti "pesanti" ai componenti che necessitano solo di funzionalità limitate:
 		
 		\begin{itemize}
-			\item \textbf{Gestione Popup:} Invece di passare l'intero oggetto \verb|Register| ai popup di inserimento (dando accesso a metodi non necessari come la rimozione o la lettura), sono state definite interfacce funzionali specifiche e minimali (RegisterAdder, RegisterModifier). Questo riduce l'accoppiamento e aumenta la sicurezza del codice.
+			\item \textbf{Gestione Popup:} Invece di passare l'intero oggetto \verb|Register| ai popup di inserimento (dando accesso a metodi non necessari come la rimozione o la lettura), sono state definite interfacce funzionali specifiche e minimali (\verb|RegisterAdder|, \verb|RegisterModifier|). Questo riduce l'accoppiamento e aumenta la sicurezza del codice.
 			
-			\item\textbf{Gestione I/O:} La comunicazione tra il sideBarController e il MainController avviene tramite interfacce Refresh per 
+			\item\textbf{Gestione I/O:} La comunicazione tra il \verb|MenuBarController| e il \verb|MainController|, e tra il \verb|LibraryIOManager| e il \verb|MenuBarController|, avviene rispettivamente tramite le interfacce \verb|Refresh| e \verb|ResultActions|, che espongono esclusivamente le operazioni strettamente necessarie (ad esempio l'aggiornamento della vista o la notifica dell'esito di un'operazione di caricamento/salvataggio).
+			Questo approccio riduce l'accoppiamento tra i moduli e di conseguenza riduce l'impatto di eventuali modifiche interne favorendo una maggiore manutenibilità del sistema.
 		\end{itemize}
 		
 	\subsection{Principio di inversione delle dipendenze}
@@ -43,19 +44,23 @@
 		Il sistema segue una netta divisione logica:
 		
 		\begin{itemize}
-			\item\textbf{Pattern MVC:}L'architettura permette una chiara separazione delle preoccupazioni: i \textbf{Controllers} assumono un ruolo di mediazione: il loro compito è limitato esclusivamente alla gestione dell'interazione tra l'utente e l'interfaccia grafica (\textbf{View}), recependo gli input e invocando le opportune funzioni dei \textbf{Models} senza eseguire logica di business.
+			\item\textbf{Pattern MVC}: L'architettura permette una chiara separazione delle preoccupazioni: i \textbf{Controllers} assumono un ruolo di mediazione: il loro compito è limitato esclusivamente alla gestione dell'interazione tra l'utente e l'interfaccia grafica (\textbf{View}), recependo gli input e invocando le opportune funzioni dei \textbf{Models} senza eseguire logica di business.
 			
 			\item\textbf{Gestione I/O:} La logica di come salvare i dati è fisicamente separata dalla logica di cosa salvare, mantenendo il core dell'applicazione pulito da dettagli tecnici di I/O.
 		\end{itemize}
 		
 	\subsection{Don't Repeat Yourself (DRY)}
-		La duplicazione del codice è stata minimizzata tramite l'ereditarietà:
+		La duplicazione del codice è stata minimizzata tramite il meccanismo di ereditarietà e di callback:
 		\begin{itemize}
 			\item \textbf{Logica condivisa nei Controller:} Le operazioni comuni, come la chiusura della finestra o gestione della UI, sono implementate una sola volta nelle classi astratte dei popup e riutilizzate automaticamente dalle sottoclassi di inserimento e modifica.
+			
+			\item \textbf{Centralizzazione della logica di business nei modelli:} Le operazioni di aggiunta, rimozione e modifica dei dati sono definite esclusivamente all'interno dei modelli, evitando la replicazione della stessa logica in più controller.
+			
+			\item \textbf{Uso di callback e interfacce funzionali:} Per consentire ai controller di invocare tali operazioni senza duplicarne l'implementazione, i modelli espongono i singoli comportamenti tramite callback incapsulati in interfacce specifiche. I controller ricevono così solo i metodi necessari, mantenendo un chiaro confine tra logica applicativa e logica di presentazione.
 		\end{itemize}
 		
-	\subsection{You Ain't Gonna Need It (YANGI)}
-		Lo sviluppo si è attenuto strettamente ai \hyperref[reqFun]{Requisiti Funzionali} evitando l’introduzione di funzionalità aggiuntive non richieste.
+	\subsection{You Ain't Gonna Need It (YAGNI)}
+		Lo sviluppo si è attenuto strettamente ai \hyperref[reqFun]{Requisiti Funzionali} evitando l'introduzione di funzionalità aggiuntive non richieste.
 		
 		
 	\clearpage
@@ -191,7 +196,7 @@
 \begin{figure}[h]
 	\centering
 	\includesvg[width=0.85\linewidth]{../Sequence Diagrams/IOInteractions/Open/Open.svg}
-	\caption{Diagramma di sequenza per il salvataggio dell'archivio \ref{UC-17}}
+	\caption{Diagramma di sequenza per il caricamento dell'archivio \ref{UC-17}}
 \end{figure}
 
 \clearpage
@@ -304,5 +309,5 @@
 
 L'accoppiamento per timbro tra \verb|Loan| e \verb|Student/Book| sussiste in quanto al Loan non sono necessarie tutte le funzionalità fornite dalle due classi. Sebbene fosse possibile ridurre l'accoppiamento mediante introduzione di opportune interfacce ciò avrebbe complicato la stampa del registro prestiti. Si è dunque ritenuto questo accoppiamento accettabile. \\
 
-L'accoppiamento per timbro tra \verb|MainController| e \verb|MenuBarController| sussiste in quando il medesimo riceve dal \verb|MainController| una \verb|Library| che gli dà accesso a più funzionalità di quante ne sono effettivamente richieste. Per le stesse motivazioni sussiste un accoppiamento per timbro tra \verb|MenuBarController| e \verb|LibraryIOManager| (la struttura dati passata è la stessa).
+L'accoppiamento per timbro tra \verb|MainController| e \verb|MenuBarController| sussiste in quanto il medesimo riceve dal \verb|MainController| una \verb|Library| che gli dà accesso a più funzionalità di quante ne sono effettivamente richieste. Per le stesse motivazioni sussiste un accoppiamento per timbro tra \verb|MenuBarController| e \verb|LibraryIOManager| (la struttura dati passata è la stessa).
 %% \subsection{}
