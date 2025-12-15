@@ -25,7 +25,7 @@ import java.util.logging.Logger;
  */
 public class LibraryIOManager {
 
-    private ResultActions resultActions;
+    private final ResultActions resultActions;
 
     /**
      * @brief Costruttore predefinito.

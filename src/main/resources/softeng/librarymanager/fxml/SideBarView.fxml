@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxWidth="150.0" minWidth="150.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="softeng.librarymanager.controllers.SideBarController">
+<AnchorPane maxWidth="150.0" minWidth="150.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="softeng.librarymanager.controllers.SideBarController">
     <children>
         <VBox fx:id="sideBarVBox" alignment="TOP_CENTER" prefHeight="398.0" prefWidth="115.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <padding>

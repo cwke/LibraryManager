@@ -23,8 +23,8 @@ import softeng.librarymanager.models.RegisterModifier;
  */
 public class BookModifyPopupController extends BookPopupController {
 
-    private RegisterModifier<Book> bookRegisterModifier;
-    private Book bookToModify;
+    private final RegisterModifier<Book> bookRegisterModifier;
+    private final Book bookToModify;
 
     /**
      * @brief Costruttore.

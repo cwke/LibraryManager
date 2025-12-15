@@ -20,21 +20,21 @@ public class Library implements Serializable {
      * @see Register
      * @see Book
      */
-    private Register<Book> bookRegister;
+    private final Register<Book> bookRegister;
 
     /**
      * @brief Registro che gestisce l'elenco degli studenti.
      * @see Register
      * @see Student
      */
-    private Register<Student> studentRegister;
+    private final Register<Student> studentRegister;
 
     /**
      * @brief Registro che gestisce l'elenco dei prestiti.
      * @see Register
      * @see Loan
      */
-    private Register<Loan> loanRegister;
+    private final Register<Loan> loanRegister;
 
     /**
      * @brief Costruttore predefinito della classe Library.

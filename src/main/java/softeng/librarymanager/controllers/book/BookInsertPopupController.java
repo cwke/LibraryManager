@@ -29,6 +29,11 @@ public class BookInsertPopupController extends BookPopupController {
     private final RegisterAdder<Book> bookRegisterAdder;
     private final RegisterValidator<Book> bookRegisterValidator;
 
+    /**
+     * @brief Costruttore del controller.
+     * @param[in] bookRegisterAdder L'oggetto {@link RegisterAdder} per aggiungere il libro al registro.
+     * @param[in] bookRegisterValidator L'oggetto {@link RegisterValidator} per validare il libro.
+     */
     public BookInsertPopupController(RegisterAdder<Book> bookRegisterAdder, RegisterValidator<Book> bookRegisterValidator) {
         this.bookRegisterAdder = bookRegisterAdder;
         this.bookRegisterValidator = bookRegisterValidator;
@@ -43,11 +48,6 @@ public class BookInsertPopupController extends BookPopupController {
         super.initialize();
     }
 
-    /**
-     * @brief Gestisce l'azione di conferma per l'inserimento.
-     * @details Raccoglie i dati dai campi, valida il nuovo oggetto e lo aggiunge.
-     * @param[in] event L'evento click.
-     */
     @Override
     protected void confirmBtnAction(ActionEvent event) {
         try {
@@ -66,4 +66,5 @@ public class BookInsertPopupController extends BookPopupController {
             showAlert(Alert.AlertType.ERROR, "Errore", "Dati non validi", e.getMessage());
         }
     }
+    
 }

@@ -45,7 +45,7 @@ public class MenuBarController implements ResultActions {
     public void initialize() {
         this.libraryIOManager = new LibraryIOManager(this);
     }
-
+    
     /**
      * @brief Imposta l'istanza corrente della libreria.
      * @param[in] library L'oggetto Library su cui operare.
@@ -64,15 +64,8 @@ public class MenuBarController implements ResultActions {
         this.mainRefresher = mainRefresher;
     }
 
-    /**
-     * @brief Gestisce l'azione di apertura di un file di libreria.
-     * @details Apre un FileChooser per selezionare un file .obj. Se il caricamento ha successo,
-     * aggiorna l'istanza interna di Library e invoca il refresh sul MainController.
-     * @param[in] event L'evento generato dal click sulla voce di menu.
-     * @post Carica una libreria contenuta in un file e invoca il refresh.
-     */
     @FXML
-    public void openFile(ActionEvent event) {
+    private void openFile(ActionEvent event) {
         File selectedFile = fileSelection(true);
         if (selectedFile != null) {
             this.defaultSavePath = selectedFile.getAbsolutePath();
@@ -84,29 +77,15 @@ public class MenuBarController implements ResultActions {
         }
     }
 
-    /**
-     * @brief Gestisce l'azione di chiusura della libreria corrente.
-     * @details Resetta il percorso di salvataggio e crea una nuova istanza vuota di Library.
-     * Aggiorna conseguentemente l'interfaccia principale tramite l'invocazione del refresh.
-     * @param[in] event L'evento generato dal click sulla voce di menu.
-     * @post carica una nuova libreria e invoca il refresh.
-     */
     @FXML
-    public void closeFile(ActionEvent event) {
+    private void closeFile(ActionEvent event) {
         this.defaultSavePath = null;
         this.library = new Library();
         if (mainRefresher != null) mainRefresher.refresh(this.library);
     }
 
-    /**
-     * @brief Gestisce l'azione di salvataggio rapido.
-     * @details Se esiste già un percorso di salvataggio predefinito, sovrascrive il file.
-     * Altrimenti, invoca {@link #saveFileWithName(ActionEvent)} per specificare un percorso.
-     * @param[in] event L'evento generato dal click sulla voce di menu.
-     * @post Salva la libreria sovrascrivendo il file puntato dal path.
-     */
     @FXML
-    public void saveFile(ActionEvent event) {
+    private void saveFile(ActionEvent event) {
         if (defaultSavePath == null) {
             saveFileWithName(event);
         } else {
@@ -117,15 +96,8 @@ public class MenuBarController implements ResultActions {
         }
     }
 
-    /**
-     * @brief Gestisce l'azione "Salva con nome".
-     * @details Apre un FileChooser per permettere all'utente di specificare dove salvare
-     * il file della libreria corrente. Infine salva il file.
-     * @param[in] event L'evento generato dal click sulla voce di menu.
-     * @post Salva la libreria sul file puntato dal path.
-     */
     @FXML
-    public void saveFileWithName(ActionEvent event) {
+    private void saveFileWithName(ActionEvent event) {
         File selectedFile = fileSelection(false);
         if (selectedFile != null) {
             this.defaultSavePath = selectedFile.getAbsolutePath();
@@ -151,7 +123,7 @@ public class MenuBarController implements ResultActions {
      */
     @Override
     public void failure() {
-        showAlert(Alert.AlertType.INFORMATION,"Esito operazione", "Operazione fallita.", "Da decidere");
+        showAlert(Alert.AlertType.INFORMATION,"Esito operazione", "Operazione fallita.", "Errore nel caricamento della libreria.");
     }
 
     /**
