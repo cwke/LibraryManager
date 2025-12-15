@@ -29,6 +29,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableRow;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -63,6 +64,8 @@ public class LoanRegisterController {
     
     @FXML 
     private SideBarController sideBarController;
+    
+    private ComboBox<String> filterCB;
 
     private final Library library;
     
@@ -80,10 +83,7 @@ public class LoanRegisterController {
      *          binding per disabilitare i pulsanti modifica e rimuovi e inizializza la ricerca.
      */
     @FXML
-    public void initialize() {
-        // Inizializza la tabella
-        updateTableView();
-        
+    public void initialize() {        
         // Configurazione dei colori per le righe delle tabelle se il prestito è restituito o in ritardo
         loanTable.setRowFactory(tableView -> new TableRow<Loan>() {
             @Override
@@ -114,16 +114,15 @@ public class LoanRegisterController {
         sideBarController.getRemoveBtn().setOnAction(event -> removeFromRegister());
         
         // Listener per la ricerca
-        sideBarController.getSearchBarTF().textProperty().addListener( (observable, oldValue, newValue) -> searchLoan());
+        sideBarController.getSearchBarTF().textProperty().addListener( (observable, oldValue, newValue) -> updateTableView());
         
         // Aggiunta del tasto restituisci
         Button returnBtn = sideBarController.createReturnBtn();
         returnBtn.setOnAction(event -> returnLoan());
 
         // Aggiunta combobox per filtrare
-        ComboBox<String> comboBox = sideBarController.createReturnCB();
-        //comboBox.setOnAction( event -> ); --> da completare baci Cara ti amo....
-
+        this.filterCB = sideBarController.createReturnCB();
+        this.filterCB.setOnAction(event -> updateTableView());
         
         // Binding: Disabilita il tasto returnBtn se la riga selezionata è restituita o non è selezionata
         BooleanBinding returnLoanBinding = Bindings.createBooleanBinding(() -> {
@@ -138,6 +137,7 @@ public class LoanRegisterController {
         sideBarController.getRemoveBtn().disableProperty().bind(noItemSelectedBinding);
         sideBarController.getModifyBtn().disableProperty().bind(noItemSelectedBinding);
         
+        updateTableView();
     }
 
     private void openInsertPopup() {
@@ -226,25 +226,29 @@ public class LoanRegisterController {
             updateTableView();
         }
     }
-
-    private void updateTableView() {
-        loanTable.setItems(FXCollections.observableArrayList(library.getLoanRegister().getRegisterList()));
-        loanTable.refresh();
-    }
     
-    private void searchLoan() {
+    private void updateTableView() {
+        // Recupero testo ricerca
         String searchText = sideBarController.getSearchBarTF().getText();
+        String lowerCaseSearchText = searchText.toLowerCase();
         
-        if (searchText == null || searchText.isEmpty()) {
-            updateTableView();
-            return;
-        }
+        // Recupero selezione combobox
+        String filterType = filterCB.getValue();
         
         ObservableList<Loan> allLoans = FXCollections.observableArrayList(library.getLoanRegister().getRegisterList());
-        String lowerCaseSearchText = searchText.toLowerCase();
         ObservableList<Loan> filteredLoans = FXCollections.observableArrayList();
         
         for (Loan loan : allLoans) {
+            // Filtro per stato (Combobox)
+            if (filterType.equals("Prestiti estinti") && !loan.isReturned()) continue;
+            if (filterType.equals("Prestiti attivi") && loan.isReturned()) continue;
+            
+            // Filtro per ricerca (Search bar)
+            if (lowerCaseSearchText.isEmpty()) {
+                filteredLoans.add(loan);
+                continue;
+            }
+            
             String studentName = loan.getStudent().getName().toLowerCase();
             String studentSurname = loan.getStudent().getSurname().toLowerCase();
             String studentId = loan.getStudent().getStudentId();
@@ -257,10 +261,13 @@ public class LoanRegisterController {
                 loan.getBook().getTitle().toLowerCase().contains(lowerCaseSearchText) ||
                 String.join(", ", loan.getBook().getAuthors()).toLowerCase().contains(lowerCaseSearchText) ||
                 loan.getBook().getBookId().contains(lowerCaseSearchText)) {
+
                 filteredLoans.add(loan);
             }
         }
+        
         loanTable.setItems(filteredLoans);
+        loanTable.refresh();
     }
     
     private void returnLoan() {

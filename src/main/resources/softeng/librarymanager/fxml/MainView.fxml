@@ -12,7 +12,7 @@
                 <fx:include fx:id="menuBar" source="MenuView.fxml" />
                 <TabPane id="TabPane" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
                     <tabs>
-                        <Tab fx:id="bookTab" text="Book Catalog">
+                        <Tab fx:id="bookTab" text="Catalogo Libri">
                             <content>
                             </content>
                             <graphic>
@@ -23,7 +23,7 @@
                                 </ImageView>
                             </graphic>
                         </Tab>
-                        <Tab fx:id="studentTab" text="Student Register">
+                        <Tab fx:id="studentTab" text="Registro Studenti">
                             <content>
                             </content>
                             <graphic>
@@ -34,7 +34,7 @@
                                 </ImageView>
                             </graphic>
                         </Tab>
-                        <Tab fx:id="loanTab" text="Loan Register">
+                        <Tab fx:id="loanTab" text="Registro Prestiti">
                             <content>
                             </content>
                             <graphic>
