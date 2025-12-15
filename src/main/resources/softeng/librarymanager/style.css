@@ -1,27 +1,21 @@
-/* Premium Modern Theme */
 .root {
     /* Color Palette */
     -fx-base: #f4f7fa;
-    /* Soft cool grey background */
     -fx-background: #f4f7fa;
 
-    /* Brand Colors - Indigo/Blue Violet */
     -fx-accent: #6366f1;
     -fx-accent-gradient: linear-gradient(to bottom right, #6366f1, #8b5cf6);
     -fx-accent-hover: linear-gradient(to bottom right, #4f46e5, #7c3aed);
 
     /* Text */
     -fx-text-base: #1e293b;
-    /* Slate 800 */
     -fx-text-muted: #64748b;
-    /* Slate 500 */
     -fx-text-light: #ffffff;
 
     /* Components */
     -fx-card-bg: #ffffff;
     -fx-input-bg: #ffffff;
     -fx-border-color: #e2e8f0;
-    /* Slate 200 */
 
     /* Global Font */
     -fx-font-family: "Segoe UI Semibold", "Segoe UI", sans-serif;
@@ -33,13 +27,11 @@
     -fx-background-color: #f4f7fa;
 }
 
-/* Typography */
 .label,
 .text {
     -fx-text-fill: #1e293b;
 }
 
-/* MenuBar - Float and Clean */
 .menu-bar {
     -fx-background-color: #ffffff;
     -fx-padding: 8 15;
@@ -89,13 +81,11 @@
 
 .menu-item:focused {
     -fx-background-color: rgba(99, 102, 241, 0.1);
-    /* Light indigo */
     -fx-background-radius: 4;
 }
 
 .menu-item:focused .label {
     -fx-text-fill: #6366f1;
-    /* Indigo text on hover */
 }
 
 /* TabPane - Modern Pill/Underline Hybrid */
@@ -138,7 +128,7 @@
     -fx-background-radius: 8;
 }
 
-/* TableView - Card Style */
+/* TableView */
 .table-view {
     -fx-background-color: #ffffff;
     -fx-background-radius: 8;
@@ -162,7 +152,6 @@
 
 .table-view .column-header .label {
     -fx-text-fill: #64748b;
-    /* Muted header text */
     -fx-font-weight: bold;
     -fx-font-size: 12px;
     -fx-text-transform: uppercase;
@@ -172,10 +161,8 @@
     -fx-background-color: transparent;
     -fx-border-width: 0 0 1 0;
     -fx-border-color: #f1f5f9;
-    /* Subtle separator */
 }
 
-/* Striped rows effect manually with odd/even if needed, for now clean white */
 .table-row-cell:odd {
     -fx-background-color: #f8fafc;
 }
@@ -187,7 +174,6 @@
 
 .table-row-cell:selected {
     -fx-background-color: #eef2ff;
-    /* Very light indigo */
     -fx-background-insets: 2 4 2 4;
     -fx-background-radius: 4;
 }
@@ -196,7 +182,6 @@
     -fx-fill: #4f46e5;
 }
 
-/* Buttons - Modern Gradient Pills */
 .button {
     -fx-background-color: linear-gradient(to right, #6366f1, #8b5cf6);
     -fx-text-fill: white;
@@ -204,7 +189,6 @@
     -fx-font-size: 13px;
     -fx-padding: 10 20;
     -fx-background-radius: 20;
-    /* Pill shape */
     -fx-effect: dropshadow(three-pass-box, rgba(99, 102, 241, 0.3), 10, 0, 0, 4);
     -fx-cursor: hand;
     -fx-border-width: 0;
@@ -224,14 +208,13 @@
     -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 5, 0, 0, 1);
 }
 
-/* Sidebar Specific Buttons - Clean Icons */
+/* Sidebar */
 #addBtn,
 #removeBtn,
 #modifyBtn {
     -fx-background-color: #ffffff;
     -fx-text-fill: #1e293b;
     -fx-background-radius: 8;
-    /* Rounded rects, not pills */
     -fx-border-color: #e2e8f0;
     -fx-border-radius: 8;
     -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.02), 4, 0, 0, 2);
@@ -243,11 +226,10 @@
 #modifyBtn:hover {
     -fx-background-color: #f8fafc;
     -fx-border-color: #6366f1;
-    /* Highlight border */
     -fx-text-fill: #6366f1;
 }
 
-/* TextFields - Clean & Modern */
+/* TextFields */
 .text-field {
     -fx-background-color: #ffffff;
     -fx-text-fill: #1e293b;
@@ -272,10 +254,8 @@
 .split-pane .split-pane-divider {
     -fx-background-color: transparent;
     -fx-padding: 0 5 0 5;
-    /* More space between panes */
 }
 
-/* ScrollBar - Modern & Slim */
 .scroll-bar {
     -fx-background-color: transparent;
 }
