@@ -211,7 +211,8 @@
 /* Sidebar */
 #addBtn,
 #removeBtn,
-#modifyBtn {
+#modifyBtn,
+#returnBtn {
     -fx-background-color: #ffffff;
     -fx-text-fill: #1e293b;
     -fx-background-radius: 8;
@@ -219,11 +220,13 @@
     -fx-border-radius: 8;
     -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.02), 4, 0, 0, 2);
     -fx-alignment: CENTER_LEFT;
+    -fx-pref-width: 135;
 }
 
 #addBtn:hover,
 #removeBtn:hover,
-#modifyBtn:hover {
+#modifyBtn:hover,
+#returnBtn:hover {
     -fx-background-color: #f8fafc;
     -fx-border-color: #6366f1;
     -fx-text-fill: #6366f1;

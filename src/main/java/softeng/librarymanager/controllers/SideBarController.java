@@ -11,6 +11,8 @@ package softeng.librarymanager.controllers;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 
 /**
@@ -72,6 +74,14 @@ public class SideBarController {
      */
     public Button createReturnBtn() {
         Button returnBtn = new Button("Restituisci");
+        returnBtn.setId("returnBtn");
+
+        ImageView imageView = new ImageView(new Image(getClass().getResourceAsStream("/softeng/librarymanager/assets/check.png")));
+        imageView.setFitHeight(16);
+        imageView.setFitWidth(16);
+        imageView.setPreserveRatio(true);
+
+        returnBtn.setGraphic(imageView);
         sideBarVBox.getChildren().add(returnBtn);
         return returnBtn;
     }

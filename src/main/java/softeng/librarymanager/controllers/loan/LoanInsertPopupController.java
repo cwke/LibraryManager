@@ -9,6 +9,7 @@
 package softeng.librarymanager.controllers.loan;
 
 import java.time.LocalDate;
+import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.transformation.FilteredList;
@@ -39,7 +40,7 @@ public class LoanInsertPopupController extends LoanPopupController {
     private final RegisterObtainer<Book> bookRegisterObtainer;
     private final RegisterObtainer<Student> studentRegisterObtainer;
     private final RegisterValidator<Loan> loanRegisterValidator;
-    
+
     /**
      * @brief Costruttore del controller.
      * @param[in] loanRegisterAdder L'oggetto {@link RegisterAdder} per aggiungere il prestito al registro.
@@ -64,12 +65,12 @@ public class LoanInsertPopupController extends LoanPopupController {
     public void initialize() {
         setupStudentInsert();
         setupBookInsert();
-        
+
         dateDP.setValue(LocalDate.now().plusMonths(1));
-        
+
         BooleanBinding studentNotSelectedBinding = studentListView.getSelectionModel().selectedItemProperty().isNull();
         BooleanBinding bookNotSelectedBinding = bookListView.getSelectionModel().selectedItemProperty().isNull();
-        
+
         confirmBtn.disableProperty().bind(studentNotSelectedBinding.or(bookNotSelectedBinding));
     }
 
@@ -89,11 +90,14 @@ public class LoanInsertPopupController extends LoanPopupController {
                         student.getSurname().toLowerCase().contains(lowerCaseSearchText) ||
                         student.getStudentId().toLowerCase().contains(lowerCaseSearchText);
             });
-        } );
-        
+        });
+
         SortedList<Student> sortedStudents = new SortedList<>(filteredStudents);
         studentListView.setItems(sortedStudents);
-        
+
+        studentListView.visibleProperty().bind(Bindings.isNotEmpty(sortedStudents));
+        studentListView.managedProperty().bind(studentListView.visibleProperty());
+
         studentListView.setCellFactory(TextFieldListCell.forListView(new StringConverter<Student>() {
             @Override
             public String toString(Student student) {
@@ -111,8 +115,7 @@ public class LoanInsertPopupController extends LoanPopupController {
         
         bookSearchTF.textProperty().addListener( (observable, oldValue, newValue) -> {
             filteredBook.setPredicate(book -> {
-                
-                
+
                 // Escludo i libri che non sono disponibili per un prestito.
                 if (! book.isAvailableForLoan() ) return false;
                 
@@ -123,11 +126,14 @@ public class LoanInsertPopupController extends LoanPopupController {
                 return book.getTitle().toLowerCase().contains(lowerCaseSearchText) ||
                         book.getBookId().toLowerCase().contains(lowerCaseSearchText);
             });
-        } );
-        
+        });
+
         SortedList<Book> sortedBook = new SortedList<>(filteredBook);
         bookListView.setItems(sortedBook);
-        
+
+        bookListView.visibleProperty().bind(Bindings.isNotEmpty(sortedBook));
+        bookListView.managedProperty().bind(bookListView.visibleProperty());
+
         bookListView.setCellFactory(TextFieldListCell.forListView(new StringConverter<Book>() {
             @Override
             public String toString(Book book) {
@@ -139,7 +145,7 @@ public class LoanInsertPopupController extends LoanPopupController {
         
         }));
     }
-    
+
     /**
      * @brief Gestisce l'azione di conferma per l'inserimento.
      * @details Crea un nuovo oggetto Loan associando Studente e Libro selezionati,
@@ -151,7 +157,7 @@ public class LoanInsertPopupController extends LoanPopupController {
         Student selectedStudent = studentListView.getSelectionModel().getSelectedItem();
         Book selectedBook = bookListView.getSelectionModel().getSelectedItem();
         LocalDate selectedDate = dateDP.getValue();
-        
+
         try {
             Loan loanToADd = new Loan(selectedStudent, selectedBook, selectedDate);
             if (loanRegisterValidator.isUnique(loanToADd)) {
@@ -161,11 +167,11 @@ public class LoanInsertPopupController extends LoanPopupController {
             } else {
                 showAlert(Alert.AlertType.ERROR, "Errore", "Dati non validi", "Lo studente ha già lo stesso libro in prestito.");
             }
-            
+
         } catch (IllegalArgumentException | IllegalStateException e) {
             showAlert(Alert.AlertType.ERROR, "Errore", "Dati non validi", e.getMessage());
         }
-        
+
     }
 
 }
