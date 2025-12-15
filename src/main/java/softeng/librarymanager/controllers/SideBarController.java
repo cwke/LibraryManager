@@ -87,13 +87,18 @@ public class SideBarController {
         return returnBtn;
     }
 
+    /**
+     * @brief Restituisce il riferimento al ComboBox per la ricerca dei prestiti.
+     * @return ComboBox<String> Il ComboBox per la ricerca dei prestiti.
+     */
     public ComboBox<String> createReturnCB() {
         ComboBox<String> comboBox = new ComboBox<>();
         comboBox.getItems().addAll(
+                "Tutti",
                 "Prestiti attivi",
-                "Prestiti estinti",
-                "Tutti"
-        );
+                "Prestiti estinti"
+                );
+        comboBox.setId("returnCB");
         comboBox.getSelectionModel().selectFirst();
         sideBarVBox.getChildren().add(comboBox);
         return comboBox;
