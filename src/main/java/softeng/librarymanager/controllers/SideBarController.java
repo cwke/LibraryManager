@@ -10,6 +10,7 @@ package softeng.librarymanager.controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -86,4 +87,15 @@ public class SideBarController {
         return returnBtn;
     }
 
+    public ComboBox<String> createReturnCB() {
+        ComboBox<String> comboBox = new ComboBox<>();
+        comboBox.getItems().addAll(
+                "Prestiti attivi",
+                "Prestiti estinti",
+                "Tutti"
+        );
+        comboBox.getSelectionModel().selectFirst();
+        sideBarVBox.getChildren().add(comboBox);
+        return comboBox;
+    }
 }

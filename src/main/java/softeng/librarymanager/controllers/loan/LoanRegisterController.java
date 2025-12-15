@@ -119,6 +119,11 @@ public class LoanRegisterController {
         // Aggiunta del tasto restituisci
         Button returnBtn = sideBarController.createReturnBtn();
         returnBtn.setOnAction(event -> returnLoan());
+
+        // Aggiunta combobox per filtrare
+        ComboBox<String> comboBox = sideBarController.createReturnCB();
+        //comboBox.setOnAction( event -> ); --> da completare baci Cara ti amo....
+
         
         // Binding: Disabilita il tasto returnBtn se la riga selezionata è restituita o non è selezionata
         BooleanBinding returnLoanBinding = Bindings.createBooleanBinding(() -> {
