@@ -25,7 +25,6 @@ import softeng.librarymanager.models.RegisterValidator;
  */
 public class BookInsertPopupController extends BookPopupController {
 
-
     private final RegisterAdder<Book> bookRegisterAdder;
     private final RegisterValidator<Book> bookRegisterValidator;
 
@@ -46,6 +45,12 @@ public class BookInsertPopupController extends BookPopupController {
     @FXML
     public void initialize() {
         super.initialize();
+        confirmBtn.disableProperty().bind(
+                titleTF.textProperty().isEmpty()
+                        .or(Author1TF.textProperty().isEmpty())
+                        .or(publishYearTF.textProperty().isEmpty())
+                        .or(copiesTF.textProperty().isEmpty())
+                        .or(bookCodeTF.textProperty().isEmpty()));
     }
 
     @Override
@@ -66,5 +71,5 @@ public class BookInsertPopupController extends BookPopupController {
             showAlert(Alert.AlertType.ERROR, "Errore", "Dati non validi", e.getMessage());
         }
     }
-    
+
 }

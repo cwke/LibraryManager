@@ -9,6 +9,7 @@
 package softeng.librarymanager.controllers.student;
 
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import softeng.librarymanager.models.RegisterAdder;
@@ -35,6 +36,18 @@ public class StudentInsertPopupController extends StudentPopupController {
     public StudentInsertPopupController(RegisterAdder<Student> studentRegisterAdder, RegisterValidator<Student> studentRegisterValidator) {
         this.studentRegisterAdder = studentRegisterAdder;
         this.studentRegisterValidator = studentRegisterValidator;
+    }
+
+    /**
+     * @brief Inizializza il controller.
+     */
+    @FXML
+    public void initialize() {
+        confirmBtn.disableProperty().bind(
+                nameTF.textProperty().isEmpty()
+                        .or(surnameTF.textProperty().isEmpty())
+                        .or(studentIdTF.textProperty().isEmpty())
+                        .or(emailTF.textProperty().isEmpty()));
     }
 
     /**
